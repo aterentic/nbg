@@ -1,5 +1,5 @@
 #!/bin/sh
 
-elm make src/Main.elm --output=dist/main.js
-cp src/index.html dist/
-cp src/styles.css dist/
+elm make src/Main.elm --output=docs/main.js
+cp src/index.html docs/
+cp src/styles.css docs/
