@@ -1,8 +1,9 @@
-module Main exposing (..)
+module Main exposing (Flags, Model, Msg(..), init, main, subscriptions, update, view)
 
 import Browser exposing (Document)
 import Browser.Navigation
-import Html exposing (text)
+import Html exposing (img, span, text)
+import Html.Attributes exposing (src)
 import Url exposing (Url)
 
 
@@ -25,7 +26,10 @@ init _ _ _ =
 
 view : Model -> Document Msg
 view _ =
-    Document "NBG" [ text "NBG" ]
+    Document "NBG"
+        [ img [ src "assets/01.jpg" ] []
+        , span [] [ text "NBG" ]
+        ]
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

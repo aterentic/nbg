@@ -1,0 +1,24 @@
+body {
+    background-color: black;
+    color: white;
+    font-family: Arial;
+}
+
+img {
+    margin: auto;
+    margin-top: 6em;
+    display: block;
+    width: 24em;
+    height: 20em;
+    filter: grayscale(66%);
+    border: 2px solid darkslategray;
+}
+
+span {
+    font-weight: bold;
+    font-size: 4em;
+    position: relative;
+    top: -1.2em;
+    left: 15.4em;
+}
+		
