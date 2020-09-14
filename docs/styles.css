@@ -1,24 +1,108 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url('assets/Roboto/Roboto-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto Condensed';
+    src: url('assets/Roboto_Condensed/RobotoCondensed-Regular.ttf');
+}
+
 body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #263A72;
+    color:#d6d6d6;
+    font-family: Roboto Condensed;
+}
+
+header {
+    background-color: #263A72;
+    padding: 1.5em 0em;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+header > h1, header > h2 {
+    margin: 0;
+    padding: 0;
+    margin-left: 6%;
+}
+
+header > h1 {
+    font-size: 2em;
+}
+
+header > h2 {
+    font-size: 1em;
+}
+
+.photo {
     background-color: black;
-    color: white;
-    font-family: Arial;
-}
-
-img {
-    margin: auto;
-    margin-top: 6em;
-    display: block;
-    width: 24em;
-    height: 20em;
-    filter: grayscale(66%);
-    border: 2px solid darkslategray;
-}
-
-span {
-    font-weight: bold;
-    font-size: 4em;
     position: relative;
-    top: -1.2em;
-    left: 15.4em;
+    width: 100%;
 }
-		
+
+.photo .text {
+    float: right;
+    overflow: hidden;
+}
+
+.photo .text > span {
+    padding: 4% 12% 0 0;
+    display: block;
+}
+
+.photo.opened .text {
+    width: 46%;
+    opacity: 100;
+    transition: opacity 0.5s ease 0.5s, width 0.5s ease 0s;
+}
+
+.photo.closed .text {
+    width: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease 0s, width 0.5s ease 0.5s;
+}
+
+
+.photo .headline {
+    margin-left: 8%;
+    top: 80%;
+    position: absolute;
+}
+
+.photo .container {
+    position: relative;
+    overflow: hidden; 
+}
+
+.photo img {
+    display: block;
+}
+
+.photo.closed img {
+    margin: -25% 0 -25% 0;
+    width: 100%;
+    border: solid black 0px;
+    filter: grayscale(80%);
+    transition: border 0.5s ease 0.5s, filter 0.5s ease 0.5s, margin 0.5s ease 0.5s, width 0.5s ease 0.5s;
+}
+
+.photo.opened img {
+    width: 88%;
+    margin: 2% 0 2% 6%;
+    border: solid gray 1px;    
+    filter: grayscale(0%);
+    transition: border 0.5s ease 0s, filter 0.5s ease 0s, margin 0.5s ease 0s, width 0.5s ease 0s;
+}
+
+.headline {
+    cursor: pointer;
+}
+
+.footer {
+    border-top: solid 1px white;
+}
