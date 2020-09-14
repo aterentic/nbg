@@ -11,9 +11,6 @@
 body {
     margin: 0;
     padding: 0;
-}
-
-body {
     background-color: #263A72;
     color:#d6d6d6;
     font-family: Roboto Condensed;
@@ -58,13 +55,15 @@ header > h2 {
 .photo.opened .text {
     width: 46%;
     opacity: 100;
+    height: 100%;
     transition: opacity 0.5s ease 0.5s, width 0.5s ease 0s;
 }
 
 .photo.closed .text {
     width: 0;
     opacity: 0;
-    transition: opacity 0.5s ease 0s, width 0.5s ease 0.5s;
+    height: 0;
+    transition: opacity 0.5s ease 0s, width 0.5s ease 0.5s, height 0.5s ease 0.5s;
 }
 
 
