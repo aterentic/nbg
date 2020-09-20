@@ -5148,10 +5148,9 @@ var $elm$browser$Browser$application = _Browser_application;
 var $author$project$Main$Hidden = function (a) {
 	return {$: 'Hidden', a: a};
 };
-var $author$project$Main$firstIs = $author$project$Main$Hidden;
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
-var $author$project$Main$photos = A2(
+var $author$project$Assets$photos = A2(
 	$elm$core$List$indexedMap,
 	F2(
 		function (i, _v0) {
@@ -5167,19 +5166,9 @@ var $author$project$Main$photos = A2(
 		]));
 var $author$project$Main$init = F3(
 	function (_v0, _v1, _v2) {
-		var _v3 = $author$project$Main$photos;
-		if (_v3.b) {
-			var x = _v3.a;
-			var xs = _v3.b;
-			return _Utils_Tuple2(
-				A2(
-					$elm$core$List$cons,
-					$author$project$Main$firstIs(x),
-					A2($elm$core$List$map, $author$project$Main$Hidden, xs)),
-				$elm$core$Platform$Cmd$none);
-		} else {
-			return _Utils_Tuple2(_List_Nil, $elm$core$Platform$Cmd$none);
-		}
+		return _Utils_Tuple2(
+			A2($elm$core$List$map, $author$project$Main$Hidden, $author$project$Assets$photos),
+			$elm$core$Platform$Cmd$none);
 	});
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
