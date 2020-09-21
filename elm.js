@@ -5175,13 +5175,47 @@ var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $author$project$Main$subscriptions = function (_v0) {
 	return $elm$core$Platform$Sub$none;
 };
-var $author$project$Main$indexOf = function (photoInList) {
+var $author$project$Main$close = function (photoInList) {
 	if (photoInList.$ === 'Visible') {
 		var photo = photoInList.a;
-		return photo.index;
+		return $author$project$Main$Hidden(photo);
 	} else {
+		return photoInList;
+	}
+};
+var $author$project$Main$Full = function (a) {
+	return {$: 'Full', a: a};
+};
+var $author$project$Main$fullscreen = function (photoInList) {
+	if (photoInList.$ === 'Visible') {
 		var photo = photoInList.a;
-		return photo.index;
+		return $author$project$Main$Full(photo);
+	} else {
+		return photoInList;
+	}
+};
+var $author$project$Main$Visible = function (a) {
+	return {$: 'Visible', a: a};
+};
+var $author$project$Main$open = function (photoInList) {
+	if (photoInList.$ === 'Hidden') {
+		var photo = photoInList.a;
+		return $author$project$Main$Visible(photo);
+	} else {
+		return photoInList;
+	}
+};
+var $author$project$Main$indexOf = function (photoInList) {
+	switch (photoInList.$) {
+		case 'Visible':
+			var photo = photoInList.a;
+			return photo.index;
+		case 'Hidden':
+			var photo = photoInList.a;
+			return photo.index;
+		default:
+			var photo = photoInList.a;
+			return photo.index;
 	}
 };
 var $author$project$Main$replace = F2(
@@ -5194,36 +5228,44 @@ var $author$project$Main$replace = F2(
 			});
 		return A2($elm$core$List$indexedMap, replaceElement, list);
 	});
-var $author$project$Main$Visible = function (a) {
-	return {$: 'Visible', a: a};
-};
-var $author$project$Main$toggle = function (photoInList) {
-	if (photoInList.$ === 'Visible') {
-		var photo = photoInList.a;
-		return $author$project$Main$Hidden(photo);
-	} else {
-		var photo = photoInList.a;
-		return $author$project$Main$Visible(photo);
-	}
-};
 var $author$project$Main$update = F2(
 	function (msg, model) {
-		if (msg.$ === 'Toggle') {
-			var photo = msg.a;
-			return _Utils_Tuple2(
-				A2(
-					$author$project$Main$replace,
-					model,
-					$author$project$Main$toggle(photo)),
-				$elm$core$Platform$Cmd$none);
-		} else {
-			return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+		switch (msg.$) {
+			case 'Open':
+				var photo = msg.a;
+				return _Utils_Tuple2(
+					A2(
+						$author$project$Main$replace,
+						model,
+						$author$project$Main$open(photo)),
+					$elm$core$Platform$Cmd$none);
+			case 'Close':
+				var photo = msg.a;
+				return _Utils_Tuple2(
+					A2(
+						$author$project$Main$replace,
+						model,
+						$author$project$Main$close(photo)),
+					$elm$core$Platform$Cmd$none);
+			case 'Fullscreen':
+				var photo = msg.a;
+				return _Utils_Tuple2(
+					A2(
+						$author$project$Main$replace,
+						model,
+						$author$project$Main$fullscreen(photo)),
+					$elm$core$Platform$Cmd$none);
+			default:
+				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 		}
 	});
 var $elm$browser$Browser$Document = F2(
 	function (title, body) {
 		return {body: body, title: title};
 	});
+var $author$project$Assets$description = 'Blokovi, Sava, i poneki opis...';
+var $author$project$Assets$document = 'NBG';
+var $author$project$Assets$header = 'NBG KOLAŽ';
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -5269,8 +5311,18 @@ var $author$project$Main$viewHeader = F2(
 						]))
 				]));
 	});
-var $author$project$Main$Toggle = function (a) {
-	return {$: 'Toggle', a: a};
+var $author$project$Main$Close = function (a) {
+	return {$: 'Close', a: a};
+};
+var $author$project$Main$Fullscreen = function (a) {
+	return {$: 'Fullscreen', a: a};
+};
+var $author$project$Main$Open = function (a) {
+	return {$: 'Open', a: a};
+};
+var $elm$core$String$cons = _String_cons;
+var $elm$core$String$fromChar = function (_char) {
+	return A2($elm$core$String$cons, _char, '');
 };
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
@@ -5333,8 +5385,8 @@ var $author$project$Main$viewText = function (text) {
 					]))
 			]));
 };
-var $author$project$Main$viewPhoto = F3(
-	function (_v0, imageClass, onHeadlineClick) {
+var $author$project$Main$viewPhoto = F4(
+	function (_v0, imageClass, onHeadlineClick, onFullscreenClick) {
 		var headline = _v0.headline;
 		var text = _v0.text;
 		var image = _v0.image;
@@ -5367,33 +5419,57 @@ var $author$project$Main$viewPhoto = F3(
 								[
 									$elm$html$Html$text(headline)
 								]))
+						])),
+					A2(
+					$elm$html$Html$span,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('fullscreen'),
+							$elm$html$Html$Events$onClick(onFullscreenClick)
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text(
+							$elm$core$String$fromChar(
+								_Utils_chr('⛶')))
 						]))
 				]));
 	});
 var $author$project$Main$viewPhotoInList = function (photoInList) {
-	if (photoInList.$ === 'Visible') {
-		var photo = photoInList.a;
-		return A3(
-			$author$project$Main$viewPhoto,
-			photo,
-			'opened',
-			$author$project$Main$Toggle(photoInList));
-	} else {
-		var photo = photoInList.a;
-		return A3(
-			$author$project$Main$viewPhoto,
-			photo,
-			'closed',
-			$author$project$Main$Toggle(photoInList));
+	switch (photoInList.$) {
+		case 'Visible':
+			var photo = photoInList.a;
+			return A4(
+				$author$project$Main$viewPhoto,
+				photo,
+				'opened',
+				$author$project$Main$Close(photoInList),
+				$author$project$Main$Fullscreen(photoInList));
+		case 'Hidden':
+			var photo = photoInList.a;
+			return A4(
+				$author$project$Main$viewPhoto,
+				photo,
+				'closed',
+				$author$project$Main$Open(photoInList),
+				$author$project$Main$Fullscreen(photoInList));
+		default:
+			var photo = photoInList.a;
+			return A4(
+				$author$project$Main$viewPhoto,
+				photo,
+				'fullscreen',
+				$author$project$Main$Close(photoInList),
+				$author$project$Main$Fullscreen(photoInList));
 	}
 };
 var $author$project$Main$view = function (model) {
 	return A2(
 		$elm$browser$Browser$Document,
-		'NBG',
+		$author$project$Assets$document,
 		A2(
 			$elm$core$List$cons,
-			A2($author$project$Main$viewHeader, 'NBG KOLAŽ', 'Blokovi, Sava, i poneki opis...'),
+			A2($author$project$Main$viewHeader, $author$project$Assets$header, $author$project$Assets$description),
 			_Utils_ap(
 				A2($elm$core$List$map, $author$project$Main$viewPhotoInList, model),
 				_List_fromArray(

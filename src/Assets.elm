@@ -1,6 +1,21 @@
-module Assets exposing (photos)
+module Assets exposing (description, document, header, photos)
 
 import Data exposing (Photo)
+
+
+document : String
+document =
+    "NBG"
+
+
+header : String
+header =
+    "NBG KOLAŽ"
+
+
+description : String
+description =
+    "Blokovi, Sava, i poneki opis..."
 
 
 photos : List Photo

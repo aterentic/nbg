@@ -20,12 +20,15 @@ type alias Model =
 
 type Msg
     = None
-    | Toggle PhotoInList
+    | Open PhotoInList
+    | Close PhotoInList
+    | Fullscreen PhotoInList
 
 
 type PhotoInList
     = Visible Photo
     | Hidden Photo
+    | Full Photo
 
 
 init : flags -> Url -> Browser.Navigation.Key -> ( Model, Cmd msg )
@@ -43,12 +46,13 @@ viewText text =
     div [ class "text" ] [ span [] [ Html.text text ] ]
 
 
-viewPhoto : Photo -> String -> Msg -> Html Msg
-viewPhoto { headline, text, image } imageClass onHeadlineClick =
+viewPhoto : Photo -> String -> Msg -> Msg -> Html Msg
+viewPhoto { headline, text, image } imageClass onHeadlineClick onFullscreenClick =
     div [ class "photo", class imageClass ]
         [ viewText text
         , viewImage image
         , h1 [ class "headline" ] [ span [ onClick onHeadlineClick ] [ Html.text headline ] ]
+        , span [ class "fullscreen", onClick onFullscreenClick ] [ Html.text <| String.fromChar '⛶' ]
         ]
 
 
@@ -56,10 +60,13 @@ viewPhotoInList : PhotoInList -> Html Msg
 viewPhotoInList photoInList =
     case photoInList of
         Visible photo ->
-            viewPhoto photo "opened" <| Toggle photoInList
+            viewPhoto photo "opened" (Close photoInList) (Fullscreen photoInList)
 
         Hidden photo ->
-            viewPhoto photo "closed" <| Toggle photoInList
+            viewPhoto photo "closed" (Open photoInList) (Fullscreen photoInList)
+
+        Full photo ->
+            viewPhoto photo "fullscreen" (Close photoInList) (Close photoInList)
 
 
 viewHeader : String -> String -> Html msg
@@ -74,8 +81,8 @@ viewFooter =
 
 view : Model -> Document Msg
 view model =
-    Document "NBG" <|
-        viewHeader "NBG KOLAŽ" "Blokovi, Sava, i poneki opis..."
+    Document Assets.document <|
+        viewHeader Assets.header Assets.description
             :: List.map viewPhotoInList model
             ++ [ viewFooter ]
 
@@ -87,6 +94,9 @@ indexOf photoInList =
             photo.index
 
         Hidden photo ->
+            photo.index
+
+        Full photo ->
             photo.index
 
 
@@ -104,21 +114,50 @@ replace list element =
     List.indexedMap replaceElement list
 
 
-toggle : PhotoInList -> PhotoInList
-toggle photoInList =
+open : PhotoInList -> PhotoInList
+open photoInList =
+    case photoInList of
+        Hidden photo ->
+            Visible photo
+
+        _ ->
+            photoInList
+
+
+close : PhotoInList -> PhotoInList
+close photoInList =
     case photoInList of
         Visible photo ->
             Hidden photo
 
+        Full photo ->
+            Hidden photo
+
+        _ ->
+            photoInList
+
+
+fullscreen : PhotoInList -> PhotoInList
+fullscreen photoInList =
+    case photoInList of
         Hidden photo ->
-            Visible photo
+            Full photo
+
+        _ ->
+            photoInList
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Toggle photo ->
-            ( replace model (toggle photo), Cmd.none )
+        Open photo ->
+            ( replace model (open photo), Cmd.none )
+
+        Close photo ->
+            ( replace model (close photo), Cmd.none )
+
+        Fullscreen photo ->
+            ( replace model (fullscreen photo), Cmd.none )
 
         None ->
             ( model, Cmd.none )
