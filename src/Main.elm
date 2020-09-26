@@ -4,7 +4,7 @@ import Assets
 import Browser exposing (Document)
 import Browser.Navigation
 import Data exposing (Photo)
-import Html exposing (Html, div, h1, h2, header, img, span, text)
+import Html exposing (Html, div, h1, h2, h3, header, img, span, text)
 import Html.Attributes exposing (class, src)
 import Html.Events exposing (onClick)
 import Url exposing (Url)
@@ -15,63 +15,72 @@ type alias Flags =
 
 
 type alias Model =
-    List PhotoInList
+    { list : List PhotoInList
+    , fullscreen : Maybe Photo
+    }
 
 
 type Msg
     = None
-    | Open PhotoInList
-    | Close PhotoInList
-    | Fullscreen PhotoInList
+    | OpenArticle PhotoInList
+    | CloseArticle PhotoInList
+    | GoToFullscreen Photo
+    | CloseFullscreen
 
 
-type PhotoInList
-    = Visible Photo
-    | Hidden Photo
-    | Full Photo
+type PhotoView
+    = Teaser
+    | Article
+
+
+type alias PhotoInList =
+    { index : Int
+    , photo : Photo
+    , photoView : PhotoView
+    }
+
+
+teaser : Int -> Photo -> PhotoInList
+teaser index photo =
+    { index = index, photo = photo, photoView = Teaser }
 
 
 init : flags -> Url -> Browser.Navigation.Key -> ( Model, Cmd msg )
 init _ _ _ =
-    ( List.map Hidden Assets.photos, Cmd.none )
+    ( { list = List.indexedMap teaser Assets.photos, fullscreen = Nothing }, Cmd.none )
 
 
-viewImage : String -> Html Msg
-viewImage image =
-    div [ class "container" ] [ img [ src image ] [] ]
+viewPhoto : Photo -> Msg -> List (Html Msg)
+viewPhoto { headline, text, image } onHeadlineClick =
+    [ div [ class "text" ] [ span [] [ Html.text text ] ]
+    , div [ class "container" ] [ img [ src image ] [] ]
+    , h2 [ class "headline" ] [ span [ onClick onHeadlineClick ] [ Html.text headline ] ]
+    ]
 
 
-viewText : String -> Html Msg
-viewText text =
-    div [ class "text" ] [ span [] [ Html.text text ] ]
-
-
-viewPhoto : Photo -> String -> Msg -> Msg -> Html Msg
-viewPhoto { headline, text, image } imageClass onHeadlineClick onFullscreenClick =
-    div [ class "photo", class imageClass ]
-        [ viewText text
-        , viewImage image
-        , h1 [ class "headline" ] [ span [ onClick onHeadlineClick ] [ Html.text headline ] ]
-        , span [ class "fullscreen", onClick onFullscreenClick ] [ Html.text <| String.fromChar '⛶' ]
-        ]
+viewToggleFullscreen : Msg -> Html Msg
+viewToggleFullscreen onToggleClick =
+    span [ class "fullscreen-button", onClick onToggleClick ] [ Html.text <| String.fromChar '⛶' ]
 
 
 viewPhotoInList : PhotoInList -> Html Msg
 viewPhotoInList photoInList =
-    case photoInList of
-        Visible photo ->
-            viewPhoto photo "opened" (Close photoInList) (Fullscreen photoInList)
+    case photoInList.photoView of
+        Article ->
+            div [ class "photo", class "article" ] <| viewPhoto photoInList.photo (CloseArticle photoInList) ++ [ viewToggleFullscreen (GoToFullscreen photoInList.photo) ]
 
-        Hidden photo ->
-            viewPhoto photo "closed" (Open photoInList) (Fullscreen photoInList)
+        Teaser ->
+            div [ class "photo", class "teaser" ] <| viewPhoto photoInList.photo (OpenArticle photoInList)
 
-        Full photo ->
-            viewPhoto photo "fullscreen" (Close photoInList) (Close photoInList)
+
+viewFullscreen : Maybe Photo -> List (Html Msg)
+viewFullscreen fp =
+    Maybe.withDefault [] <| Maybe.map (\photo -> [ div [ class "fullscreen" ] [ img [ src photo.image ] [], viewToggleFullscreen CloseFullscreen ] ]) fp
 
 
 viewHeader : String -> String -> Html msg
 viewHeader headline description =
-    header [] [ h1 [] [ text headline ], h2 [] [ text description ] ]
+    header [] [ h1 [] [ text headline ], h3 [] [ text description ] ]
 
 
 viewFooter : Html msg
@@ -83,83 +92,40 @@ view : Model -> Document Msg
 view model =
     Document Assets.document <|
         viewHeader Assets.header Assets.description
-            :: List.map viewPhotoInList model
+            :: List.map viewPhotoInList model.list
+            ++ viewFullscreen model.fullscreen
             ++ [ viewFooter ]
 
 
-indexOf : PhotoInList -> Int
-indexOf photoInList =
-    case photoInList of
-        Visible photo ->
-            photo.index
+updatePhotoView : Int -> PhotoView -> List PhotoInList -> List PhotoInList
+updatePhotoView index photoView list =
+    List.map
+        (\p ->
+            if p.index == index then
+                { p | photoView = photoView }
 
-        Hidden photo ->
-            photo.index
-
-        Full photo ->
-            photo.index
-
-
-replace : List PhotoInList -> PhotoInList -> List PhotoInList
-replace list element =
-    let
-        replaceElement =
-            \index photoInList ->
-                if index == indexOf element then
-                    element
-
-                else
-                    photoInList
-    in
-    List.indexedMap replaceElement list
-
-
-open : PhotoInList -> PhotoInList
-open photoInList =
-    case photoInList of
-        Hidden photo ->
-            Visible photo
-
-        _ ->
-            photoInList
-
-
-close : PhotoInList -> PhotoInList
-close photoInList =
-    case photoInList of
-        Visible photo ->
-            Hidden photo
-
-        Full photo ->
-            Hidden photo
-
-        _ ->
-            photoInList
-
-
-fullscreen : PhotoInList -> PhotoInList
-fullscreen photoInList =
-    case photoInList of
-        Hidden photo ->
-            Full photo
-
-        _ ->
-            photoInList
+            else
+                p
+        )
+        list
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Open photo ->
-            ( replace model (open photo), Cmd.none )
+        OpenArticle { index } ->
+            ( { model | list = updatePhotoView index Article model.list, fullscreen = Nothing }, Cmd.none )
 
-        Close photo ->
-            ( replace model (close photo), Cmd.none )
+        CloseArticle { index } ->
+            ( { model | list = updatePhotoView index Teaser model.list, fullscreen = Nothing }, Cmd.none )
 
-        Fullscreen photo ->
-            ( replace model (fullscreen photo), Cmd.none )
+        GoToFullscreen photo ->
+            ( { model | fullscreen = Just photo }, Cmd.none )
 
-        None ->
+        CloseFullscreen ->
+            ( { model | fullscreen = Nothing }, Cmd.none )
+
+        _ ->
             ( model, Cmd.none )
 
 

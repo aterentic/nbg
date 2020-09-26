@@ -1,11 +1,13 @@
 @font-face {
-    font-family: 'Roboto';
-    src: url('assets/Roboto/Roboto-Regular.ttf');
+    font-family: 'Roboto Condensed';
+    src: url('assets/Roboto_Condensed/RobotoCondensed-Regular.ttf');
+    font-weight: 400;
 }
 
 @font-face {
     font-family: 'Roboto Condensed';
-    src: url('assets/Roboto_Condensed/RobotoCondensed-Regular.ttf');
+    src: url('assets/Roboto_Condensed/RobotoCondensed-Light.ttf');
+    font-weight: 300;
 }
 
 body {
@@ -17,23 +19,28 @@ body {
     font-family: Roboto Condensed;
 }
 
-header {
-    padding: 1.5em 0em;
-    border-bottom: 1px solid #d6d6d6;
+h1 {
+    font-size: 2em;
+    letter-spacing: 0.2em;
 }
 
-header > h1, header > h2 {
+h2 {
+    font-size: 1.5em;
+}
+
+h3 {
+    font-size: 1em;
+    font-weight: lighter;    
+}
+
+h1, h2, h3 {
     margin: 0;
     padding: 0;
-    margin-left: 6%;
 }
 
-header > h1 {
-    font-size: 2em;
-}
-
-header > h2 {
-    font-size: 1em;
+header {
+    padding: 1.5em 0% 1.5em 5%;
+    border-bottom: 1px solid #d6d6d6;
 }
 
 .photo {
@@ -42,92 +49,21 @@ header > h2 {
     position: relative;
 }
 
-.photo.fullscreen {
-    position: fixed;
-    height: 100vh;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    overflow: auto;
-}
-
-/* image ratio is 4:3 */
-
-.photo.closed {
-    /* displaying 25% of an image: (25/4)*3vw */
-    height: 18.75vw; 
-    transition: height 0.5s ease 0.5s;
-}
-
-.photo.opened {
-    /* displaying whole image (reduced to 50%): (50/4)*3vw */
-    height: 37.5vw;
-    transition: height 0.5s ease 0s;
-}
-
-.photo.fullscreen .headline {
-    display: none;
-}
-
 .photo .headline {
     background-color: rgba(38, 58, 114, 0.75);
     padding: 0.5em;
     cursor: pointer;
-    margin-left: 8%;
+    margin: 0 0 1em 5%;
     position: absolute;
 }
 
-.photo.closed .headline {
-    bottom: 0;
-    transition: bottom 0.5s ease 0.5s;
+.photo .headline:hover {
+    background-color: rgba(38, 58, 114, 1);
 }
 
-.photo.opened .headline {
-    bottom: 8%;
-    transition: bottom 0.5s ease 0s;    
-}
 
 .photo .container {
     overflow: hidden;
-}
-
-.photo.fullscreen .container {
-    width: 100%;
-    position: relative;
-}
-
-.photo.closed .container {
-    width: 100vw;
-    height: 18.75vw; /* calc(100vw / 16 * 3); Images ratio is 4:3, 1/4 of image is displayed */
-    transition: height 0.5s ease 0.5s, width 0.5s ease 0.5s;
-}
-
-.photo.opened .container {
-    width: 50vw;
-    height: 37.5vw; /* calc(50vw / 4 * 3); Images ratio is 4:3, whole image is displayed */
-    transition: height 0.5s ease 0s, width 0.5s ease 0s;
-}
-
-.photo.fullscreen .container img {
-    width: 90%;
-    margin: 5%;
-    border: solid gray 1px;    
-}
-
-.photo.closed .container img {
-    width: 100%;
-    margin-top: -25%;
-    border: solid black 0px;
-    filter: grayscale(80%);
-    transition: border 0.5s ease 0.5s, filter 0.5s ease 0.5s, margin 0.5s ease 0.5s, width 0.5s ease 0.5s;
-}
-
-.photo.opened .container img {
-    width: 88%;
-    margin: 4% 0 2% 6%;
-    border: solid gray 1px;    
-    filter: grayscale(0%);
-    transition: border 0.5s ease 0s, filter 0.5s ease 0s, margin 0.5s ease 0s, width 0.5s ease 0s;
 }
 
 .photo .text {
@@ -140,41 +76,115 @@ header > h2 {
     display: block;
 }
 
-.photo.fullscreen .text {
-    display: none;
+/* image ratio is 4:3 */
+
+.photo.teaser {
+    /* displaying 25% of an image: (25/4)*3vw */
+    height: 18.75vw; 
+    transition: height 0.5s ease 0.5s;
 }
 
-.photo.opened .text {
-    width: 50%;
-    opacity: 100;
-    height: 100%;
-    transition: opacity 0.5s ease 0.5s, width 0.5s ease 0s;
+.photo.teaser .headline {
+    bottom: 0;
+    transition: bottom 0.5s ease 0.5s;
 }
 
-.photo.closed .text {
+.photo.teaser .container {
+    width: 100vw;
+    height: 18.75vw; /* calc(100vw / 16 * 3); Images ratio is 4:3, 1/4 of image is displayed */
+    transition: height 0.5s ease 0.5s, width 0.5s ease 0.5s;
+}
+
+.photo.teaser .container img {
+    width: 100%;
+    margin-top: -25%;
+    border: solid black 0px;
+    filter: grayscale(80%);
+    transition: border 0.5s ease 0.5s, filter 0.5s ease 0.5s, margin 0.5s ease 0.5s, width 0.5s ease 0.5s;
+}
+
+.photo.teaser .text {
     width: 0;
     opacity: 0;
     height: 0;
     transition: opacity 0.5s ease 0s, width 0.5s ease 0.5s, height 0.5s ease 0.5s;
 }
 
-.photo .fullscreen {
+.photo.article {
+    /* displaying whole image (reduced to 50%): (50/4)*3vw */
+    height: 37.5vw;
+    transition: height 0.5s ease 0s;
+}
+
+.photo.article .headline {
+    bottom: 8%;
+    transition: bottom 0.5s ease 0s;    
+}
+
+.photo.article .container {
+    width: 50vw;
+    height: 37.5vw; /* calc(50vw / 4 * 3); Images ratio is 4:3, whole image is displayed */
+    transition: height 0.5s ease 0s, width 0.5s ease 0s;
+}
+
+.photo.article .container img {
+    width: 88%;
+    margin: 4% 0 2% 6%;
+    border: solid gray 1px;    
+    filter: grayscale(0%);
+    transition: border 0.5s ease 0s, filter 0.5s ease 0s, margin 0.5s ease 0s, width 0.5s ease 0s;
+}
+
+.photo.article .text {
+    width: 50%;
+    opacity: 100;
+    height: 100%;
+    transition: opacity 0.5s ease 0.5s, width 0.5s ease 0s;
+}
+
+.fullscreen-button {
     cursor: pointer;
-    position: absolute;
-    top: 0.75em;
-    right: 0.75em;
     font-size: 2em;
     color: white;
     background-color: rgba(38, 58, 114, 0.75);
     padding: 0 0.3em 0.15em 0.3em;
 }
 
-.photo.fullscreen .fullscreen {
-    border: solid gray 1px;    
+.fullscreen-button:hover {
+    background-color: rgba(38, 58, 114, 1);
+    border: 1px solid rgba(255, 255, 255, 0.75);
 }
 
-.photo.opened .fullscreen {
-    display: none;
+.photo .fullscreen-button {
+    position: absolute;
+    top: 10%;
+    left: 5%;
+}
+
+body > .fullscreen {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.75);
+    overflow: hidden;
+}
+
+body > .fullscreen > img {
+    max-width: calc(88vw - 2px);
+    max-height: calc(88vh - 2px);
+    border: 2px solid rgba(255, 255, 255, 0.75);
+    margin: 6vh auto;
+    display: block;
+}
+
+body > .fullscreen > .fullscreen-button {
+    position: absolute;
+    top: 6vh;
+    right: 1em;
 }
 
 .footer {

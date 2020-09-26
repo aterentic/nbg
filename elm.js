@@ -5145,29 +5145,25 @@ var $elm$core$Task$perform = F2(
 				A2($elm$core$Task$map, toMessage, task)));
 	});
 var $elm$browser$Browser$application = _Browser_application;
-var $author$project$Main$Hidden = function (a) {
-	return {$: 'Hidden', a: a};
-};
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
-var $author$project$Assets$photos = A2(
-	$elm$core$List$indexedMap,
-	F2(
-		function (i, _v0) {
-			var headline = _v0.headline;
-			var text = _v0.text;
-			var image = _v0.image;
-			return {headline: headline, image: image, index: i, text: text};
-		}),
-	_List_fromArray(
-		[
-			{headline: 'Međublokovski prostor', image: 'assets/01.jpg', text: 'Zapravo, zato smo se i doselili ovde. Automobili samo kod garaža, sa jedne strane klinci muljaju po pesku, igraju fudbal na male goliće, platani ih hlade kad je 37 stepeni, kad otvoriš prozor, neko se dere \"Maaaaaamaaaaa\", uveče klinci vare na klupi, i, jebi ga, malo se deru kad treba da se spava. Gomila nedovršenog zelenila i prostora, vidiš komšijin prozor, ali u daljini. Između zapravo možeš da sediš na klupi u hladu, da čekaš klince dok voze bajs, da čekaš klince dok se zimi sankaju niz brdašce od atomskog skloništa. Čak i sneška možeš da praviš jer je površina dovoljno velika da sneg ne upropasti masa ljudi i vozila. A ima i baštica, uvek ima nekog ko bi da se petlja sa tim.'},
-			{headline: 'Savski kej', image: 'assets/02.jpg', text: 'Predivan pogled na divlju gradnju često kvare zalasci sunca na Savi.'}
-		]));
+var $author$project$Assets$photos = _List_fromArray(
+	[
+		{headline: 'Međublokovski prostor', image: 'assets/01.jpg', text: 'Zapravo, zato smo se i doselili ovde. Automobili samo kod garaža, sa jedne strane klinci muljaju po pesku, igraju fudbal na male goliće, platani ih hlade kad je 37 stepeni, kad otvoriš prozor, neko se dere \"Maaaaaamaaaaa\", uveče klinci vare na klupi, i, jebi ga, malo se deru kad treba da se spava. Gomila nedovršenog zelenila i prostora, vidiš komšijin prozor, ali u daljini. Između zapravo možeš da sediš na klupi u hladu, da čekaš klince dok voze bajs, da čekaš klince dok se zimi sankaju niz brdašce od atomskog skloništa. Čak i sneška možeš da praviš jer je površina dovoljno velika da sneg ne upropasti masa ljudi i vozila. A ima i baštica, uvek ima nekog ko bi da se petlja sa tim.'},
+		{headline: 'Savski kej', image: 'assets/02.jpg', text: 'Predivan pogled na divlju gradnju često kvare zalasci sunca na Savi.'}
+	]);
+var $author$project$Main$Teaser = {$: 'Teaser'};
+var $author$project$Main$teaser = F2(
+	function (index, photo) {
+		return {index: index, photo: photo, photoView: $author$project$Main$Teaser};
+	});
 var $author$project$Main$init = F3(
 	function (_v0, _v1, _v2) {
 		return _Utils_Tuple2(
-			A2($elm$core$List$map, $author$project$Main$Hidden, $author$project$Assets$photos),
+			{
+				fullscreen: $elm$core$Maybe$Nothing,
+				list: A2($elm$core$List$indexedMap, $author$project$Main$teaser, $author$project$Assets$photos)
+			},
 			$elm$core$Platform$Cmd$none);
 	});
 var $elm$core$Platform$Sub$batch = _Platform_batch;
@@ -5175,85 +5171,55 @@ var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $author$project$Main$subscriptions = function (_v0) {
 	return $elm$core$Platform$Sub$none;
 };
-var $author$project$Main$close = function (photoInList) {
-	if (photoInList.$ === 'Visible') {
-		var photo = photoInList.a;
-		return $author$project$Main$Hidden(photo);
-	} else {
-		return photoInList;
-	}
-};
-var $author$project$Main$Full = function (a) {
-	return {$: 'Full', a: a};
-};
-var $author$project$Main$fullscreen = function (photoInList) {
-	if (photoInList.$ === 'Visible') {
-		var photo = photoInList.a;
-		return $author$project$Main$Full(photo);
-	} else {
-		return photoInList;
-	}
-};
-var $author$project$Main$Visible = function (a) {
-	return {$: 'Visible', a: a};
-};
-var $author$project$Main$open = function (photoInList) {
-	if (photoInList.$ === 'Hidden') {
-		var photo = photoInList.a;
-		return $author$project$Main$Visible(photo);
-	} else {
-		return photoInList;
-	}
-};
-var $author$project$Main$indexOf = function (photoInList) {
-	switch (photoInList.$) {
-		case 'Visible':
-			var photo = photoInList.a;
-			return photo.index;
-		case 'Hidden':
-			var photo = photoInList.a;
-			return photo.index;
-		default:
-			var photo = photoInList.a;
-			return photo.index;
-	}
-};
-var $author$project$Main$replace = F2(
-	function (list, element) {
-		var replaceElement = F2(
-			function (index, photoInList) {
-				return _Utils_eq(
-					index,
-					$author$project$Main$indexOf(element)) ? element : photoInList;
-			});
-		return A2($elm$core$List$indexedMap, replaceElement, list);
+var $author$project$Main$Article = {$: 'Article'};
+var $author$project$Main$updatePhotoView = F3(
+	function (index, photoView, list) {
+		return A2(
+			$elm$core$List$map,
+			function (p) {
+				return _Utils_eq(p.index, index) ? _Utils_update(
+					p,
+					{photoView: photoView}) : p;
+			},
+			list);
 	});
 var $author$project$Main$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
-			case 'Open':
-				var photo = msg.a;
+			case 'OpenArticle':
+				var index = msg.a.index;
 				return _Utils_Tuple2(
-					A2(
-						$author$project$Main$replace,
+					_Utils_update(
 						model,
-						$author$project$Main$open(photo)),
+						{
+							fullscreen: $elm$core$Maybe$Nothing,
+							list: A3($author$project$Main$updatePhotoView, index, $author$project$Main$Article, model.list)
+						}),
 					$elm$core$Platform$Cmd$none);
-			case 'Close':
-				var photo = msg.a;
+			case 'CloseArticle':
+				var index = msg.a.index;
 				return _Utils_Tuple2(
-					A2(
-						$author$project$Main$replace,
+					_Utils_update(
 						model,
-						$author$project$Main$close(photo)),
+						{
+							fullscreen: $elm$core$Maybe$Nothing,
+							list: A3($author$project$Main$updatePhotoView, index, $author$project$Main$Teaser, model.list)
+						}),
 					$elm$core$Platform$Cmd$none);
-			case 'Fullscreen':
+			case 'GoToFullscreen':
 				var photo = msg.a;
 				return _Utils_Tuple2(
-					A2(
-						$author$project$Main$replace,
+					_Utils_update(
 						model,
-						$author$project$Main$fullscreen(photo)),
+						{
+							fullscreen: $elm$core$Maybe$Just(photo)
+						}),
+					$elm$core$Platform$Cmd$none);
+			case 'CloseFullscreen':
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{fullscreen: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
 			default:
 				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
@@ -5283,42 +5249,23 @@ var $author$project$Main$viewFooter = A2(
 			$elm$html$Html$Attributes$class('footer')
 		]),
 	_List_Nil);
-var $elm$html$Html$h1 = _VirtualDom_node('h1');
-var $elm$html$Html$h2 = _VirtualDom_node('h2');
-var $elm$html$Html$header = _VirtualDom_node('header');
-var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
-var $author$project$Main$viewHeader = F2(
-	function (headline, description) {
-		return A2(
-			$elm$html$Html$header,
-			_List_Nil,
-			_List_fromArray(
-				[
-					A2(
-					$elm$html$Html$h1,
-					_List_Nil,
-					_List_fromArray(
-						[
-							$elm$html$Html$text(headline)
-						])),
-					A2(
-					$elm$html$Html$h2,
-					_List_Nil,
-					_List_fromArray(
-						[
-							$elm$html$Html$text(description)
-						]))
-				]));
+var $author$project$Main$CloseFullscreen = {$: 'CloseFullscreen'};
+var $elm$html$Html$img = _VirtualDom_node('img');
+var $elm$core$Maybe$map = F2(
+	function (f, maybe) {
+		if (maybe.$ === 'Just') {
+			var value = maybe.a;
+			return $elm$core$Maybe$Just(
+				f(value));
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
 	});
-var $author$project$Main$Close = function (a) {
-	return {$: 'Close', a: a};
-};
-var $author$project$Main$Fullscreen = function (a) {
-	return {$: 'Fullscreen', a: a};
-};
-var $author$project$Main$Open = function (a) {
-	return {$: 'Open', a: a};
+var $elm$html$Html$Attributes$src = function (url) {
+	return A2(
+		$elm$html$Html$Attributes$stringProperty,
+		'src',
+		_VirtualDom_noJavaScriptOrHtmlUri(url));
 };
 var $elm$core$String$cons = _String_cons;
 var $elm$core$String$fromChar = function (_char) {
@@ -5342,125 +5289,190 @@ var $elm$html$Html$Events$onClick = function (msg) {
 		$elm$json$Json$Decode$succeed(msg));
 };
 var $elm$html$Html$span = _VirtualDom_node('span');
-var $elm$html$Html$img = _VirtualDom_node('img');
-var $elm$html$Html$Attributes$src = function (url) {
+var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $author$project$Main$viewToggleFullscreen = function (onToggleClick) {
 	return A2(
-		$elm$html$Html$Attributes$stringProperty,
-		'src',
-		_VirtualDom_noJavaScriptOrHtmlUri(url));
-};
-var $author$project$Main$viewImage = function (image) {
-	return A2(
-		$elm$html$Html$div,
+		$elm$html$Html$span,
 		_List_fromArray(
 			[
-				$elm$html$Html$Attributes$class('container')
+				$elm$html$Html$Attributes$class('fullscreen'),
+				$elm$html$Html$Events$onClick(onToggleClick)
 			]),
 		_List_fromArray(
 			[
-				A2(
-				$elm$html$Html$img,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$src(image)
-					]),
-				_List_Nil)
+				$elm$html$Html$text(
+				$elm$core$String$fromChar(
+					_Utils_chr('⛶')))
 			]));
 };
-var $author$project$Main$viewText = function (text) {
+var $elm$core$Maybe$withDefault = F2(
+	function (_default, maybe) {
+		if (maybe.$ === 'Just') {
+			var value = maybe.a;
+			return value;
+		} else {
+			return _default;
+		}
+	});
+var $author$project$Main$viewFullscreen = function (fp) {
 	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('text')
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$span,
-				_List_Nil,
-				_List_fromArray(
+		$elm$core$Maybe$withDefault,
+		_List_Nil,
+		A2(
+			$elm$core$Maybe$map,
+			function (photo) {
+				return _List_fromArray(
 					[
-						$elm$html$Html$text(text)
-					]))
-			]));
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('fullscreen')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$img,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$src(photo.image)
+									]),
+								_List_Nil),
+								$author$project$Main$viewToggleFullscreen($author$project$Main$CloseFullscreen)
+							]))
+					]);
+			},
+			fp));
 };
-var $author$project$Main$viewPhoto = F4(
-	function (_v0, imageClass, onHeadlineClick, onFullscreenClick) {
+var $elm$html$Html$h1 = _VirtualDom_node('h1');
+var $elm$html$Html$h3 = _VirtualDom_node('h3');
+var $elm$html$Html$header = _VirtualDom_node('header');
+var $author$project$Main$viewHeader = F2(
+	function (headline, description) {
+		return A2(
+			$elm$html$Html$header,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$h1,
+					_List_Nil,
+					_List_fromArray(
+						[
+							$elm$html$Html$text(headline)
+						])),
+					A2(
+					$elm$html$Html$h3,
+					_List_Nil,
+					_List_fromArray(
+						[
+							$elm$html$Html$text(description)
+						]))
+				]));
+	});
+var $author$project$Main$CloseArticle = function (a) {
+	return {$: 'CloseArticle', a: a};
+};
+var $author$project$Main$GoToFullscreen = function (a) {
+	return {$: 'GoToFullscreen', a: a};
+};
+var $author$project$Main$OpenArticle = function (a) {
+	return {$: 'OpenArticle', a: a};
+};
+var $elm$html$Html$h2 = _VirtualDom_node('h2');
+var $author$project$Main$viewPhoto = F2(
+	function (_v0, onHeadlineClick) {
 		var headline = _v0.headline;
 		var text = _v0.text;
 		var image = _v0.image;
+		return _List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('text')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$span,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text(text)
+							]))
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('container')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$img,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$src(image)
+							]),
+						_List_Nil)
+					])),
+				A2(
+				$elm$html$Html$h2,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('headline')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$span,
+						_List_fromArray(
+							[
+								$elm$html$Html$Events$onClick(onHeadlineClick)
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text(headline)
+							]))
+					]))
+			]);
+	});
+var $author$project$Main$viewPhotoInList = function (photoInList) {
+	var _v0 = photoInList.photoView;
+	if (_v0.$ === 'Article') {
 		return A2(
 			$elm$html$Html$div,
 			_List_fromArray(
 				[
 					$elm$html$Html$Attributes$class('photo'),
-					$elm$html$Html$Attributes$class(imageClass)
+					$elm$html$Html$Attributes$class('article')
 				]),
+			_Utils_ap(
+				A2(
+					$author$project$Main$viewPhoto,
+					photoInList.photo,
+					$author$project$Main$CloseArticle(photoInList)),
+				_List_fromArray(
+					[
+						$author$project$Main$viewToggleFullscreen(
+						$author$project$Main$GoToFullscreen(photoInList.photo))
+					])));
+	} else {
+		return A2(
+			$elm$html$Html$div,
 			_List_fromArray(
 				[
-					$author$project$Main$viewText(text),
-					$author$project$Main$viewImage(image),
-					A2(
-					$elm$html$Html$h1,
-					_List_fromArray(
-						[
-							$elm$html$Html$Attributes$class('headline')
-						]),
-					_List_fromArray(
-						[
-							A2(
-							$elm$html$Html$span,
-							_List_fromArray(
-								[
-									$elm$html$Html$Events$onClick(onHeadlineClick)
-								]),
-							_List_fromArray(
-								[
-									$elm$html$Html$text(headline)
-								]))
-						])),
-					A2(
-					$elm$html$Html$span,
-					_List_fromArray(
-						[
-							$elm$html$Html$Attributes$class('fullscreen'),
-							$elm$html$Html$Events$onClick(onFullscreenClick)
-						]),
-					_List_fromArray(
-						[
-							$elm$html$Html$text(
-							$elm$core$String$fromChar(
-								_Utils_chr('⛶')))
-						]))
-				]));
-	});
-var $author$project$Main$viewPhotoInList = function (photoInList) {
-	switch (photoInList.$) {
-		case 'Visible':
-			var photo = photoInList.a;
-			return A4(
+					$elm$html$Html$Attributes$class('photo'),
+					$elm$html$Html$Attributes$class('teaser')
+				]),
+			A2(
 				$author$project$Main$viewPhoto,
-				photo,
-				'opened',
-				$author$project$Main$Close(photoInList),
-				$author$project$Main$Fullscreen(photoInList));
-		case 'Hidden':
-			var photo = photoInList.a;
-			return A4(
-				$author$project$Main$viewPhoto,
-				photo,
-				'closed',
-				$author$project$Main$Open(photoInList),
-				$author$project$Main$Fullscreen(photoInList));
-		default:
-			var photo = photoInList.a;
-			return A4(
-				$author$project$Main$viewPhoto,
-				photo,
-				'fullscreen',
-				$author$project$Main$Close(photoInList),
-				$author$project$Main$Fullscreen(photoInList));
+				photoInList.photo,
+				$author$project$Main$OpenArticle(photoInList)));
 	}
 };
 var $author$project$Main$view = function (model) {
@@ -5471,9 +5483,11 @@ var $author$project$Main$view = function (model) {
 			$elm$core$List$cons,
 			A2($author$project$Main$viewHeader, $author$project$Assets$header, $author$project$Assets$description),
 			_Utils_ap(
-				A2($elm$core$List$map, $author$project$Main$viewPhotoInList, model),
-				_List_fromArray(
-					[$author$project$Main$viewFooter]))));
+				A2($elm$core$List$map, $author$project$Main$viewPhotoInList, model.list),
+				_Utils_ap(
+					$author$project$Main$viewFullscreen(model.fullscreen),
+					_List_fromArray(
+						[$author$project$Main$viewFooter])))));
 };
 var $author$project$Main$main = $elm$browser$Browser$application(
 	{
