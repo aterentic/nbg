@@ -3,10 +3,11 @@ module Main exposing (Flags, Model, Msg(..), init, main, subscriptions, update, 
 import Assets
 import Browser exposing (Document)
 import Browser.Navigation
+import Components
 import Data exposing (Photo)
-import Html exposing (Html, div, h1, h2, h3, header, img, span, text)
-import Html.Attributes exposing (class, src)
-import Html.Events exposing (onClick)
+import Html.Styled exposing (Html, div, h1, h2, h3, header, img, span, text, toUnstyled)
+import Html.Styled.Attributes exposing (class, src)
+import Html.Styled.Events exposing (onClick)
 import Url exposing (Url)
 
 
@@ -52,22 +53,17 @@ init _ _ _ =
 
 viewPhoto : Photo -> Msg -> List (Html Msg)
 viewPhoto { headline, text, image } onHeadlineClick =
-    [ div [ class "text" ] [ span [] [ Html.text text ] ]
+    [ div [ class "text" ] [ span [] [ Html.Styled.text text ] ]
     , div [ class "container" ] [ img [ src image ] [] ]
-    , h2 [ class "headline" ] [ span [ onClick onHeadlineClick ] [ Html.text headline ] ]
+    , h2 [ class "headline" ] [ span [ onClick onHeadlineClick ] [ Html.Styled.text headline ] ]
     ]
-
-
-viewToggleFullscreen : Msg -> Html Msg
-viewToggleFullscreen onToggleClick =
-    span [ class "fullscreen-button", onClick onToggleClick ] [ Html.text <| String.fromChar '⛶' ]
 
 
 viewPhotoInList : PhotoInList -> Html Msg
 viewPhotoInList photoInList =
     case photoInList.photoView of
         Article ->
-            div [ class "photo", class "article" ] <| viewPhoto photoInList.photo (CloseArticle photoInList) ++ [ viewToggleFullscreen (GoToFullscreen photoInList.photo) ]
+            div [ class "photo", class "article" ] <| viewPhoto photoInList.photo (CloseArticle photoInList) ++ [ Components.toggleFullscreen (GoToFullscreen photoInList.photo) ]
 
         Teaser ->
             div [ class "photo", class "teaser" ] <| viewPhoto photoInList.photo (OpenArticle photoInList)
@@ -75,7 +71,7 @@ viewPhotoInList photoInList =
 
 viewFullscreen : Maybe Photo -> List (Html Msg)
 viewFullscreen fp =
-    Maybe.withDefault [] <| Maybe.map (\photo -> [ div [ class "fullscreen" ] [ img [ src photo.image ] [], viewToggleFullscreen CloseFullscreen ] ]) fp
+    Maybe.withDefault [] <| Maybe.map (\photo -> [ div [ class "fullscreen" ] [ img [ src photo.image ] [], Components.toggleFullscreen CloseFullscreen ] ]) fp
 
 
 viewHeader : String -> String -> Html msg
@@ -91,10 +87,11 @@ viewFooter =
 view : Model -> Document Msg
 view model =
     Document Assets.document <|
-        viewHeader Assets.header Assets.description
-            :: List.map viewPhotoInList model.list
-            ++ viewFullscreen model.fullscreen
-            ++ [ viewFooter ]
+        List.map toUnstyled <|
+            viewHeader Assets.header Assets.description
+                :: List.map viewPhotoInList model.list
+                ++ viewFullscreen model.fullscreen
+                ++ [ viewFooter ]
 
 
 updatePhotoView : Int -> PhotoView -> List PhotoInList -> List PhotoInList

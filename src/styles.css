@@ -76,6 +76,12 @@ header {
     display: block;
 }
 
+.photo .fullscreen-button {
+    position: absolute;
+    top: 10%;
+    left: 5%;
+}
+
 /* image ratio is 4:3 */
 
 .photo.teaser {
@@ -142,23 +148,15 @@ header {
     transition: opacity 0.5s ease 0.5s, width 0.5s ease 0s;
 }
 
-.fullscreen-button {
-    cursor: pointer;
-    font-size: 2em;
-    color: white;
-    background-color: rgba(38, 58, 114, 0.75);
-    padding: 0 0.3em 0.15em 0.3em;
+.photo.article .fullscreen-button {
+    opacity: 0;
+    animation: fadeIn 0.5s ease 0.5s;
+    animation-fill-mode: forwards;
 }
 
-.fullscreen-button:hover {
-    background-color: rgba(38, 58, 114, 1);
-    border: 1px solid rgba(255, 255, 255, 0.75);
-}
-
-.photo .fullscreen-button {
-    position: absolute;
-    top: 10%;
-    left: 5%;
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 100; }
 }
 
 body > .fullscreen {
