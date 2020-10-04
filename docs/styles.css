@@ -43,34 +43,6 @@ header {
     border-bottom: 1px solid #d6d6d6;
 }
 
-
-.photo .headline {
-    background-color: rgba(38, 58, 114, 0.75);
-    padding: 0.5em;
-    cursor: pointer;
-    margin: 0 0 1em 5%;
-    position: absolute;
-}
-
-.photo .headline:hover {
-    background-color: rgba(38, 58, 114, 1);
-}
-
-
-.photo .container {
-    overflow: hidden;
-}
-
-.photo .text {
-    float: right;
-    overflow: hidden;
-}
-
-.photo .text > span {
-    padding: 4% 8% 0 0;
-    display: block;
-}
-
 .photo .fullscreen-button {
     position: absolute;
     top: 10%;
@@ -85,10 +57,6 @@ header {
     transition: height 0.5s ease 0.5s;
 }
 
-.photo.teaser .headline {
-    bottom: 0;
-    transition: bottom 0.5s ease 0.5s;
-}
 
 .photo.teaser .container {
     width: 100%;
@@ -123,10 +91,6 @@ header {
     transition: height 0.5s ease 0s;
 }
 
-.photo.article .headline {
-    bottom: 8%;
-    transition: bottom 0.5s ease 0s;    
-}
 
 .photo.article .container {
     width: 50vw;
