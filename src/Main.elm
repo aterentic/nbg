@@ -23,50 +23,27 @@ type alias Model =
 
 type Msg
     = None
-    | OpenArticle PhotoInList
-    | CloseArticle PhotoInList
+    | OpenArticle Int
+    | CloseArticle Int
     | GoToFullscreen Photo
     | CloseFullscreen
-
-
-type PhotoView
-    = Teaser
-    | Article
 
 
 type alias PhotoInList =
     { index : Int
     , photo : Photo
-    , photoView : PhotoView
+    , photoView : Components.PhotoView
     }
 
 
 teaser : Int -> Photo -> PhotoInList
 teaser index photo =
-    { index = index, photo = photo, photoView = Teaser }
+    { index = index, photo = photo, photoView = Components.Teaser }
 
 
 init : flags -> Url -> Browser.Navigation.Key -> ( Model, Cmd msg )
 init _ _ _ =
     ( { list = List.indexedMap teaser Assets.photos, fullscreen = Nothing }, Cmd.none )
-
-
-viewPhoto : Photo -> Msg -> List (Html Msg)
-viewPhoto { headline, text, image } onHeadlineClick =
-    [ div [ class "text" ] [ span [] [ Html.Styled.text text ] ]
-    , div [ class "container" ] [ img [ src image ] [] ]
-    , h2 [ class "headline" ] [ span [ onClick onHeadlineClick ] [ Html.Styled.text headline ] ]
-    ]
-
-
-viewPhotoInList : PhotoInList -> Html Msg
-viewPhotoInList photoInList =
-    case photoInList.photoView of
-        Article ->
-            div [ class "photo", class "article" ] <| viewPhoto photoInList.photo (CloseArticle photoInList) ++ [ Components.toggleFullscreen (GoToFullscreen photoInList.photo) ]
-
-        Teaser ->
-            div [ class "photo", class "teaser" ] <| viewPhoto photoInList.photo (OpenArticle photoInList) ++ [ Components.toggleFullscreen None ]
 
 
 viewFullscreen : Maybe Photo -> List (Html Msg)
@@ -86,15 +63,25 @@ viewFooter =
 
 view : Model -> Document Msg
 view model =
+    let
+        pv =
+            \{ photo, photoView, index } ->
+                case photoView of
+                    Components.Article ->
+                        Components.photo Components.Article photo (CloseArticle index) (GoToFullscreen photo)
+
+                    Components.Teaser ->
+                        Components.photo Components.Teaser photo (OpenArticle index) None
+    in
     Document Assets.document <|
         List.map toUnstyled <|
             viewHeader Assets.header Assets.description
-                :: List.map viewPhotoInList model.list
+                :: List.map pv model.list
                 ++ viewFullscreen model.fullscreen
                 ++ [ viewFooter ]
 
 
-updatePhotoView : Int -> PhotoView -> List PhotoInList -> List PhotoInList
+updatePhotoView : Int -> Components.PhotoView -> List PhotoInList -> List PhotoInList
 updatePhotoView index photoView list =
     List.map
         (\p ->
@@ -110,11 +97,11 @@ updatePhotoView index photoView list =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        OpenArticle { index } ->
-            ( { model | list = updatePhotoView index Article model.list, fullscreen = Nothing }, Cmd.none )
+        OpenArticle index ->
+            ( { model | list = updatePhotoView index Components.Article model.list, fullscreen = Nothing }, Cmd.none )
 
-        CloseArticle { index } ->
-            ( { model | list = updatePhotoView index Teaser model.list, fullscreen = Nothing }, Cmd.none )
+        CloseArticle index ->
+            ( { model | list = updatePhotoView index Components.Teaser model.list, fullscreen = Nothing }, Cmd.none )
 
         GoToFullscreen photo ->
             ( { model | fullscreen = Just photo }, Cmd.none )

@@ -1,8 +1,8 @@
-module Components exposing (toggleFullscreen)
+module Components exposing (PhotoView(..), photo, toggleFullscreen)
 
 import Css exposing (Color, LengthOrAuto, Style, backgroundColor, batch, center, color, cursor, em, fontSize, height, hover, pointer, rgb, rgba, textAlign, width)
-import Html.Styled exposing (Html, span, text)
-import Html.Styled.Attributes exposing (class, css)
+import Html.Styled exposing (Html, div, h2, img, span, text)
+import Html.Styled.Attributes exposing (class, css, src)
 import Html.Styled.Events exposing (onClick)
 
 
@@ -37,3 +37,35 @@ toggleFullscreen onToggleClick =
         , onClick onToggleClick
         ]
         [ text <| String.fromChar '⛶' ]
+
+
+type PhotoView
+    = Article
+    | Teaser
+
+
+type alias Photo =
+    { headline : String
+    , text : String
+    , image : String
+    }
+
+
+photoClass : PhotoView -> String
+photoClass pv =
+    case pv of
+        Article ->
+            "article"
+
+        Teaser ->
+            "teaser"
+
+
+photo : PhotoView -> Photo -> msg -> msg -> Html msg
+photo view { headline, text, image } headlineClick fullscreenClick =
+    div [ class "photo", class <| photoClass view ]
+        [ div [ class "text" ] [ span [] [ Html.Styled.text text ] ]
+        , div [ class "container" ] [ img [ src image ] [] ]
+        , h2 [ class "headline" ] [ span [ onClick headlineClick ] [ Html.Styled.text headline ] ]
+        , toggleFullscreen fullscreenClick
+        ]
