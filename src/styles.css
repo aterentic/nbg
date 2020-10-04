@@ -116,6 +116,12 @@ header {
     transition: opacity 0.5s ease 0s, width 0.5s ease 0.5s, height 0.5s ease 0.5s;
 }
 
+.photo.teaser .fullscreen-button {
+    opacity: 100;
+    animation: fadeOut 0.5s ease 0s;
+    animation-fill-mode: forwards;
+}
+
 .photo.article {
     /* displaying whole image (reduced to 50%): (50/4)*3vw */
     height: 37.5vw;
@@ -152,6 +158,11 @@ header {
     opacity: 0;
     animation: fadeIn 0.5s ease 0.5s;
     animation-fill-mode: forwards;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 100; }
+    100% { opacity: 0; }
 }
 
 @keyframes fadeIn {

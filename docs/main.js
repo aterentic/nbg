@@ -8085,10 +8085,15 @@ var $author$project$Main$viewPhotoInList = function (photoInList) {
 					$rtfeldman$elm_css$Html$Styled$Attributes$class('photo'),
 					$rtfeldman$elm_css$Html$Styled$Attributes$class('teaser')
 				]),
-			A2(
-				$author$project$Main$viewPhoto,
-				photoInList.photo,
-				$author$project$Main$OpenArticle(photoInList)));
+			_Utils_ap(
+				A2(
+					$author$project$Main$viewPhoto,
+					photoInList.photo,
+					$author$project$Main$OpenArticle(photoInList)),
+				_List_fromArray(
+					[
+						$author$project$Components$toggleFullscreen($author$project$Main$None)
+					])));
 	}
 };
 var $author$project$Main$view = function (model) {

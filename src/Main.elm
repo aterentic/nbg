@@ -66,7 +66,7 @@ viewPhotoInList photoInList =
             div [ class "photo", class "article" ] <| viewPhoto photoInList.photo (CloseArticle photoInList) ++ [ Components.toggleFullscreen (GoToFullscreen photoInList.photo) ]
 
         Teaser ->
-            div [ class "photo", class "teaser" ] <| viewPhoto photoInList.photo (OpenArticle photoInList)
+            div [ class "photo", class "teaser" ] <| viewPhoto photoInList.photo (OpenArticle photoInList) ++ [ Components.toggleFullscreen None ]
 
 
 viewFullscreen : Maybe Photo -> List (Html Msg)
