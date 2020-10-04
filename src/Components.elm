@@ -1,6 +1,6 @@
 module Components exposing (PhotoView(..), photo, toggleFullscreen)
 
-import Css exposing (Color, LengthOrAuto, Style, backgroundColor, batch, center, color, cursor, em, fontSize, height, hover, pointer, rgb, rgba, textAlign, width)
+import Css exposing (Color, LengthOrAuto, Style, backgroundColor, batch, center, color, cursor, em, fontSize, height, hover, pointer, position, relative, rgb, rgba, textAlign, vw, width)
 import Html.Styled exposing (Html, div, h2, img, span, text)
 import Html.Styled.Attributes exposing (class, css, src)
 import Html.Styled.Events exposing (onClick)
@@ -9,6 +9,11 @@ import Html.Styled.Events exposing (onClick)
 white : Color
 white =
     rgb 255 255 255
+
+
+black : Color
+black =
+    rgb 0 0 0
 
 
 blue : Float -> Color
@@ -63,7 +68,15 @@ photoClass pv =
 
 photo : PhotoView -> Photo -> msg -> msg -> Html msg
 photo view { headline, text, image } headlineClick fullscreenClick =
-    div [ class "photo", class <| photoClass view ]
+    div
+        [ css
+            [ width (vw 100)
+            , backgroundColor black
+            , position relative
+            ]
+        , class "photo"
+        , class <| photoClass view
+        ]
         [ div [ class "text" ] [ span [] [ Html.Styled.text text ] ]
         , div [ class "container" ] [ img [ src image ] [] ]
         , h2 [ class "headline" ] [ span [ onClick headlineClick ] [ Html.Styled.text headline ] ]
