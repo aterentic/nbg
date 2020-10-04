@@ -5182,6 +5182,41 @@ var $elm$core$Task$perform = F2(
 				A2($elm$core$Task$map, toMessage, task)));
 	});
 var $elm$browser$Browser$application = _Browser_application;
+var $elm$core$Array$fromListHelp = F3(
+	function (list, nodeList, nodeListSize) {
+		fromListHelp:
+		while (true) {
+			var _v0 = A2($elm$core$Elm$JsArray$initializeFromList, $elm$core$Array$branchFactor, list);
+			var jsArray = _v0.a;
+			var remainingItems = _v0.b;
+			if (_Utils_cmp(
+				$elm$core$Elm$JsArray$length(jsArray),
+				$elm$core$Array$branchFactor) < 0) {
+				return A2(
+					$elm$core$Array$builderToArray,
+					true,
+					{nodeList: nodeList, nodeListSize: nodeListSize, tail: jsArray});
+			} else {
+				var $temp$list = remainingItems,
+					$temp$nodeList = A2(
+					$elm$core$List$cons,
+					$elm$core$Array$Leaf(jsArray),
+					nodeList),
+					$temp$nodeListSize = nodeListSize + 1;
+				list = $temp$list;
+				nodeList = $temp$nodeList;
+				nodeListSize = $temp$nodeListSize;
+				continue fromListHelp;
+			}
+		}
+	});
+var $elm$core$Array$fromList = function (list) {
+	if (!list.b) {
+		return $elm$core$Array$empty;
+	} else {
+		return A3($elm$core$Array$fromListHelp, list, _List_Nil, 0);
+	}
+};
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Assets$photos = _List_fromArray(
@@ -5191,15 +5226,16 @@ var $author$project$Assets$photos = _List_fromArray(
 	]);
 var $author$project$Components$Teaser = {$: 'Teaser'};
 var $author$project$Main$teaser = F2(
-	function (index, photo) {
-		return {index: index, photo: photo, photoView: $author$project$Components$Teaser};
+	function (_v0, photo) {
+		return {photo: photo, photoView: $author$project$Components$Teaser};
 	});
 var $author$project$Main$init = F3(
 	function (_v0, _v1, _v2) {
 		return _Utils_Tuple2(
 			{
 				fullscreen: $elm$core$Maybe$Nothing,
-				list: A2($elm$core$List$indexedMap, $author$project$Main$teaser, $author$project$Assets$photos)
+				list: $elm$core$Array$fromList(
+					A2($elm$core$List$indexedMap, $author$project$Main$teaser, $author$project$Assets$photos))
 			},
 			$elm$core$Platform$Cmd$none);
 	});
@@ -5209,38 +5245,89 @@ var $author$project$Main$subscriptions = function (_v0) {
 	return $elm$core$Platform$Sub$none;
 };
 var $author$project$Components$Article = {$: 'Article'};
-var $author$project$Main$updatePhotoView = F3(
-	function (index, photoView, list) {
-		return A2(
-			$elm$core$List$map,
-			function (p) {
-				return _Utils_eq(p.index, index) ? _Utils_update(
-					p,
-					{photoView: photoView}) : p;
-			},
-			list);
+var $elm$core$Bitwise$and = _Bitwise_and;
+var $elm$core$Bitwise$shiftRightZfBy = _Bitwise_shiftRightZfBy;
+var $elm$core$Array$bitMask = 4294967295 >>> (32 - $elm$core$Array$shiftStep);
+var $elm$core$Basics$ge = _Utils_ge;
+var $elm$core$Elm$JsArray$unsafeGet = _JsArray_unsafeGet;
+var $elm$core$Elm$JsArray$unsafeSet = _JsArray_unsafeSet;
+var $elm$core$Array$setHelp = F4(
+	function (shift, index, value, tree) {
+		var pos = $elm$core$Array$bitMask & (index >>> shift);
+		var _v0 = A2($elm$core$Elm$JsArray$unsafeGet, pos, tree);
+		if (_v0.$ === 'SubTree') {
+			var subTree = _v0.a;
+			var newSub = A4($elm$core$Array$setHelp, shift - $elm$core$Array$shiftStep, index, value, subTree);
+			return A3(
+				$elm$core$Elm$JsArray$unsafeSet,
+				pos,
+				$elm$core$Array$SubTree(newSub),
+				tree);
+		} else {
+			var values = _v0.a;
+			var newLeaf = A3($elm$core$Elm$JsArray$unsafeSet, $elm$core$Array$bitMask & index, value, values);
+			return A3(
+				$elm$core$Elm$JsArray$unsafeSet,
+				pos,
+				$elm$core$Array$Leaf(newLeaf),
+				tree);
+		}
+	});
+var $elm$core$Bitwise$shiftLeftBy = _Bitwise_shiftLeftBy;
+var $elm$core$Array$tailIndex = function (len) {
+	return (len >>> 5) << 5;
+};
+var $elm$core$Array$set = F3(
+	function (index, value, array) {
+		var len = array.a;
+		var startShift = array.b;
+		var tree = array.c;
+		var tail = array.d;
+		return ((index < 0) || (_Utils_cmp(index, len) > -1)) ? array : ((_Utils_cmp(
+			index,
+			$elm$core$Array$tailIndex(len)) > -1) ? A4(
+			$elm$core$Array$Array_elm_builtin,
+			len,
+			startShift,
+			tree,
+			A3($elm$core$Elm$JsArray$unsafeSet, $elm$core$Array$bitMask & index, value, tail)) : A4(
+			$elm$core$Array$Array_elm_builtin,
+			len,
+			startShift,
+			A4($elm$core$Array$setHelp, startShift, index, value, tree),
+			tail));
 	});
 var $author$project$Main$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
 			case 'OpenArticle':
 				var index = msg.a;
+				var photo = msg.b;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
 							fullscreen: $elm$core$Maybe$Nothing,
-							list: A3($author$project$Main$updatePhotoView, index, $author$project$Components$Article, model.list)
+							list: A3(
+								$elm$core$Array$set,
+								index,
+								{photo: photo, photoView: $author$project$Components$Article},
+								model.list)
 						}),
 					$elm$core$Platform$Cmd$none);
 			case 'CloseArticle':
 				var index = msg.a;
+				var photo = msg.b;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
 							fullscreen: $elm$core$Maybe$Nothing,
-							list: A3($author$project$Main$updatePhotoView, index, $author$project$Components$Teaser, model.list)
+							list: A3(
+								$elm$core$Array$set,
+								index,
+								{photo: photo, photoView: $author$project$Components$Teaser},
+								model.list)
 						}),
 					$elm$core$Platform$Cmd$none);
 			case 'GoToFullscreen':
@@ -5262,9 +5349,10 @@ var $author$project$Main$update = F2(
 				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 		}
 	});
-var $author$project$Main$CloseArticle = function (a) {
-	return {$: 'CloseArticle', a: a};
-};
+var $author$project$Main$CloseArticle = F2(
+	function (a, b) {
+		return {$: 'CloseArticle', a: a, b: b};
+	});
 var $elm$browser$Browser$Document = F2(
 	function (title, body) {
 		return {body: body, title: title};
@@ -5272,12 +5360,51 @@ var $elm$browser$Browser$Document = F2(
 var $author$project$Main$GoToFullscreen = function (a) {
 	return {$: 'GoToFullscreen', a: a};
 };
-var $author$project$Main$OpenArticle = function (a) {
-	return {$: 'OpenArticle', a: a};
-};
+var $author$project$Main$OpenArticle = F2(
+	function (a, b) {
+		return {$: 'OpenArticle', a: a, b: b};
+	});
 var $author$project$Assets$description = 'Blokovi, Sava, i poneki opis...';
 var $author$project$Assets$document = 'NBG';
 var $author$project$Assets$header = 'NBG KOLAŽ';
+var $elm$core$Elm$JsArray$foldl = _JsArray_foldl;
+var $elm$core$Elm$JsArray$indexedMap = _JsArray_indexedMap;
+var $elm$core$Array$indexedMap = F2(
+	function (func, _v0) {
+		var len = _v0.a;
+		var tree = _v0.c;
+		var tail = _v0.d;
+		var initialBuilder = {
+			nodeList: _List_Nil,
+			nodeListSize: 0,
+			tail: A3(
+				$elm$core$Elm$JsArray$indexedMap,
+				func,
+				$elm$core$Array$tailIndex(len),
+				tail)
+		};
+		var helper = F2(
+			function (node, builder) {
+				if (node.$ === 'SubTree') {
+					var subTree = node.a;
+					return A3($elm$core$Elm$JsArray$foldl, helper, builder, subTree);
+				} else {
+					var leaf = node.a;
+					var offset = builder.nodeListSize * $elm$core$Array$branchFactor;
+					var mappedLeaf = $elm$core$Array$Leaf(
+						A3($elm$core$Elm$JsArray$indexedMap, func, offset, leaf));
+					return {
+						nodeList: A2($elm$core$List$cons, mappedLeaf, builder.nodeList),
+						nodeListSize: builder.nodeListSize + 1,
+						tail: builder.tail
+					};
+				}
+			});
+		return A2(
+			$elm$core$Array$builderToArray,
+			true,
+			A3($elm$core$Elm$JsArray$foldl, helper, initialBuilder, tree));
+	});
 var $rtfeldman$elm_css$VirtualDom$Styled$Attribute = F3(
 	function (a, b, c) {
 		return {$: 'Attribute', a: a, b: b, c: c};
@@ -6400,9 +6527,6 @@ var $rtfeldman$elm_css$ElmCssVendor$Murmur3$HashData = F4(
 	});
 var $rtfeldman$elm_css$ElmCssVendor$Murmur3$c1 = 3432918353;
 var $rtfeldman$elm_css$ElmCssVendor$Murmur3$c2 = 461845907;
-var $elm$core$Bitwise$and = _Bitwise_and;
-var $elm$core$Bitwise$shiftLeftBy = _Bitwise_shiftLeftBy;
-var $elm$core$Bitwise$shiftRightZfBy = _Bitwise_shiftRightZfBy;
 var $rtfeldman$elm_css$ElmCssVendor$Murmur3$multiplyBy = F2(
 	function (b, a) {
 		return ((a & 65535) * b) + ((((a >>> 16) * b) & 65535) << 16);
@@ -8074,26 +8198,26 @@ var $author$project$Main$viewHeader = F2(
 				]));
 	});
 var $author$project$Main$view = function (model) {
-	var pv = function (_v0) {
-		var photo = _v0.photo;
-		var photoView = _v0.photoView;
-		var index = _v0.index;
-		if (photoView.$ === 'Article') {
-			return A4(
-				$author$project$Components$photo,
-				$author$project$Components$Article,
-				photo,
-				$author$project$Main$CloseArticle(index),
-				$author$project$Main$GoToFullscreen(photo));
-		} else {
-			return A4(
-				$author$project$Components$photo,
-				$author$project$Components$Teaser,
-				photo,
-				$author$project$Main$OpenArticle(index),
-				$author$project$Main$None);
-		}
-	};
+	var pv = F2(
+		function (index, _v0) {
+			var photo = _v0.photo;
+			var photoView = _v0.photoView;
+			if (photoView.$ === 'Article') {
+				return A4(
+					$author$project$Components$photo,
+					$author$project$Components$Article,
+					photo,
+					A2($author$project$Main$CloseArticle, index, photo),
+					$author$project$Main$GoToFullscreen(photo));
+			} else {
+				return A4(
+					$author$project$Components$photo,
+					$author$project$Components$Teaser,
+					photo,
+					A2($author$project$Main$OpenArticle, index, photo),
+					$author$project$Main$None);
+			}
+		});
 	return A2(
 		$elm$browser$Browser$Document,
 		$author$project$Assets$document,
@@ -8104,7 +8228,8 @@ var $author$project$Main$view = function (model) {
 				$elm$core$List$cons,
 				A2($author$project$Main$viewHeader, $author$project$Assets$header, $author$project$Assets$description),
 				_Utils_ap(
-					A2($elm$core$List$map, pv, model.list),
+					$elm$core$Array$toList(
+						A2($elm$core$Array$indexedMap, pv, model.list)),
 					_Utils_ap(
 						$author$project$Main$viewFullscreen(model.fullscreen),
 						_List_fromArray(
