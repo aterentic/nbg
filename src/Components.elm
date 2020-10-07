@@ -1,8 +1,8 @@
-module Components exposing (PhotoView(..), photo, toggleFullscreen)
+module Components exposing (PhotoView(..), almostWhite, blue, footer, header, photo, toggleFullscreen)
 
-import Css exposing (Color, LengthOrAuto, Style, absolute, backgroundColor, batch, block, bottom, center, color, cursor, display, em, float, fontSize, height, hidden, hover, margin4, overflow, padding, padding4, pct, pointer, position, relative, rgb, rgba, right, textAlign, vw, width)
+import Css exposing (Color, FontSize, LengthOrAuto, Style, absolute, backgroundColor, batch, block, borderBottom3, borderTop3, bottom, center, color, cursor, display, em, float, fontSize, fontWeight, height, hex, hidden, hover, letterSpacing, lighter, margin, margin4, overflow, padding, padding4, pct, pointer, position, px, relative, rgb, right, solid, textAlign, vw, width)
 import Css.Transitions exposing (transition)
-import Html.Styled exposing (Html, div, h2, img, span, text)
+import Html.Styled exposing (Html, div, h1, h2, h3, img, span, text)
 import Html.Styled.Attributes exposing (class, css, src)
 import Html.Styled.Events exposing (onClick)
 
@@ -12,14 +12,19 @@ white =
     rgb 255 255 255
 
 
+almostWhite : Color
+almostWhite =
+    hex "#d6d6d6"
+
+
 black : Color
 black =
     rgb 0 0 0
 
 
-blue : Float -> Color
-blue opacity =
-    rgba 38 58 114 opacity
+blue : Color
+blue =
+    rgb 38 58 114
 
 
 square : LengthOrAuto a -> Style
@@ -37,8 +42,8 @@ toggleFullscreen onToggleClick =
             , color white
             , square (em 1.5)
             , textAlign center
-            , backgroundColor (blue 0.75)
-            , hover [ backgroundColor (blue 1) ]
+            , backgroundColor { blue | alpha = 0.75 }
+            , hover [ backgroundColor blue ]
             ]
         , onClick onToggleClick
         ]
@@ -71,14 +76,16 @@ photoHeadline : String -> Float -> Float -> msg -> Html msg
 photoHeadline headline bottomPercent delay headlineClick =
     h2
         [ css <|
-            [ backgroundColor (blue 0.75)
+            [ fontSize (em 1.5)
+            , color almostWhite
+            , backgroundColor { blue | alpha = 0.75 }
             , padding (em 0.5)
             , cursor pointer
             , margin4 (em 0) (em 0) (em 1) (pct 5)
             , position absolute
             , bottom (pct bottomPercent)
             , transition [ Css.Transitions.bottom3 500 delay Css.Transitions.ease ]
-            , hover [ backgroundColor (blue 1) ]
+            , hover [ backgroundColor blue ]
             ]
         ]
         [ span [ onClick headlineClick ] [ Html.Styled.text headline ] ]
@@ -96,10 +103,7 @@ photo view { headline, text, image } headlineClick fullscreenClick =
         , class <| photoClass view
         ]
         [ div
-            [ css
-                [ float right
-                , overflow hidden
-                ]
+            [ css [ float right, overflow hidden ]
             , class "text"
             ]
             [ span
@@ -123,3 +127,35 @@ photo view { headline, text, image } headlineClick fullscreenClick =
                 photoHeadline headline 0 500 headlineClick
         , toggleFullscreen fullscreenClick
         ]
+
+
+zeroMarginAndPadding : Style
+zeroMarginAndPadding =
+    batch [ margin (px 0), padding (px 0) ]
+
+
+defaultH : FontSize a -> Style
+defaultH fs =
+    batch [ zeroMarginAndPadding, fontSize fs, color almostWhite ]
+
+
+header : String -> String -> Html msg
+header headline description =
+    Html.Styled.header
+        [ css
+            [ padding4 (em 1.5) (pct 0) (em 1.5) (pct 5)
+            , borderBottom3 (px 1) solid almostWhite
+            ]
+        ]
+        [ h1
+            [ css [ defaultH (em 2), letterSpacing (em 0.2) ] ]
+            [ text headline ]
+        , h3
+            [ css [ defaultH (em 1), fontWeight lighter ] ]
+            [ text description ]
+        ]
+
+
+footer : Html msg
+footer =
+    div [ css [ borderTop3 (px 1) solid almostWhite ] ] []

@@ -5,6 +5,8 @@ import Assets
 import Browser exposing (Document)
 import Browser.Navigation
 import Components
+import Css exposing (backgroundColor, color, fontFamilies, hidden, margin, overflowX, px)
+import Css.Global exposing (global, selector)
 import Data exposing (Photo)
 import Html.Styled exposing (Html, div, h1, h3, header, img, text, toUnstyled)
 import Html.Styled.Attributes exposing (class, src)
@@ -55,9 +57,16 @@ viewHeader headline description =
     header [] [ h1 [] [ text headline ], h3 [] [ text description ] ]
 
 
-viewFooter : Html msg
-viewFooter =
-    div [ class "footer" ] []
+bodyStyle : Html msg
+bodyStyle =
+    global
+        [ selector "body"
+            [ overflowX hidden
+            , margin (px 0)
+            , backgroundColor Components.blue
+            , fontFamilies [ "Roboto Condensed" ]
+            ]
+        ]
 
 
 view : Model -> Document Msg
@@ -74,10 +83,11 @@ view model =
     in
     Document Assets.document <|
         List.map toUnstyled <|
-            viewHeader Assets.header Assets.description
+            bodyStyle
+                :: Components.header Assets.headline Assets.description
                 :: Array.toList (Array.indexedMap pv model.list)
                 ++ viewFullscreen model.fullscreen
-                ++ [ viewFooter ]
+                ++ [ Components.footer ]
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

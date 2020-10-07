@@ -1,4 +1,4 @@
-module Assets exposing (description, document, header, photos)
+module Assets exposing (description, document, headline, photos)
 
 import Data exposing (Photo)
 
@@ -8,8 +8,8 @@ document =
     "NBG"
 
 
-header : String
-header =
+headline : String
+headline =
     "NBG KOLAŽ"
 
 
