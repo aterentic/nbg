@@ -7799,7 +7799,6 @@ var $rtfeldman$elm_css$Css$Preprocess$ApplyStyles = function (a) {
 	return {$: 'ApplyStyles', a: a};
 };
 var $rtfeldman$elm_css$Css$batch = $rtfeldman$elm_css$Css$Preprocess$ApplyStyles;
-var $author$project$Components$black = A3($rtfeldman$elm_css$Css$rgb, 0, 0, 0);
 var $rtfeldman$elm_css$Css$block = {display: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'block'};
 var $rtfeldman$elm_css$Css$border3 = $rtfeldman$elm_css$Css$prop3('border');
 var $rtfeldman$elm_css$Css$calcExpressionToString = function (expression) {
@@ -8019,6 +8018,30 @@ var $rtfeldman$elm_css$Css$textAlign = function (fn) {
 		'text-align',
 		fn($rtfeldman$elm_css$Css$Internal$lengthForOverloadedProperty));
 };
+var $rtfeldman$elm_css$Css$rgba = F4(
+	function (r, g, b, alpha) {
+		return {
+			alpha: alpha,
+			blue: b,
+			color: $rtfeldman$elm_css$Css$Structure$Compatible,
+			green: g,
+			red: r,
+			value: A2(
+				$rtfeldman$elm_css$Css$cssFunction,
+				'rgba',
+				_Utils_ap(
+					A2(
+						$elm$core$List$map,
+						$elm$core$String$fromInt,
+						_List_fromArray(
+							[r, g, b])),
+					_List_fromArray(
+						[
+							$elm$core$String$fromFloat(alpha)
+						])))
+		};
+	});
+var $author$project$Components$transparentBlue = A4($rtfeldman$elm_css$Css$rgba, $author$project$Components$blue.red, $author$project$Components$blue.green, $author$project$Components$blue.blue, 0.75);
 var $author$project$Components$white = A3($rtfeldman$elm_css$Css$rgb, 255, 255, 255);
 var $author$project$Components$toggleFullscreen = F2(
 	function (onToggleClick, position) {
@@ -8037,10 +8060,7 @@ var $author$project$Components$toggleFullscreen = F2(
 							$author$project$Components$square(
 							$rtfeldman$elm_css$Css$em(1.5)),
 							$rtfeldman$elm_css$Css$textAlign($rtfeldman$elm_css$Css$center),
-							$rtfeldman$elm_css$Css$backgroundColor(
-							_Utils_update(
-								$author$project$Components$blue,
-								{alpha: 0.75})),
+							$rtfeldman$elm_css$Css$backgroundColor($author$project$Components$transparentBlue),
 							$rtfeldman$elm_css$Css$hover(
 							_List_fromArray(
 								[
@@ -8057,6 +8077,9 @@ var $author$project$Components$toggleFullscreen = F2(
 				]));
 	});
 var $rtfeldman$elm_css$Css$top = $rtfeldman$elm_css$Css$prop1('top');
+var $author$project$Components$black = A3($rtfeldman$elm_css$Css$rgb, 0, 0, 0);
+var $author$project$Components$transparentBlack = A4($rtfeldman$elm_css$Css$rgba, $author$project$Components$black.red, $author$project$Components$black.green, $author$project$Components$black.blue, 0.75);
+var $author$project$Components$transparentWhite = A4($rtfeldman$elm_css$Css$rgba, $author$project$Components$white.red, $author$project$Components$white.green, $author$project$Components$white.blue, 0.75);
 var $rtfeldman$elm_css$Css$VhUnits = {$: 'VhUnits'};
 var $rtfeldman$elm_css$Css$vh = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$VhUnits, 'vh');
 var $rtfeldman$elm_css$Css$VwUnits = {$: 'VwUnits'};
@@ -8083,10 +8106,7 @@ var $author$project$Components$fullscreen = F2(
 							$rtfeldman$elm_css$Css$left(
 							$rtfeldman$elm_css$Css$px(0)),
 							$rtfeldman$elm_css$Css$overflow($rtfeldman$elm_css$Css$auto),
-							$rtfeldman$elm_css$Css$backgroundColor(
-							_Utils_update(
-								$author$project$Components$black,
-								{alpha: 0.75})),
+							$rtfeldman$elm_css$Css$backgroundColor($author$project$Components$transparentBlack),
 							$rtfeldman$elm_css$Css$overflow($rtfeldman$elm_css$Css$hidden)
 						]))
 				]),
@@ -8115,9 +8135,7 @@ var $author$project$Components$fullscreen = F2(
 									$rtfeldman$elm_css$Css$border3,
 									$rtfeldman$elm_css$Css$px(2),
 									$rtfeldman$elm_css$Css$solid,
-									_Utils_update(
-										$author$project$Components$white,
-										{alpha: 0.75})),
+									$author$project$Components$transparentWhite),
 									A2(
 									$rtfeldman$elm_css$Css$margin2,
 									$rtfeldman$elm_css$Css$vh(6),
@@ -8678,16 +8696,14 @@ var $author$project$Components$photoHeadline = F4(
 			$rtfeldman$elm_css$Html$Styled$h2,
 			_List_fromArray(
 				[
+					$rtfeldman$elm_css$Html$Styled$Events$onClick(headlineClick),
 					$rtfeldman$elm_css$Html$Styled$Attributes$css(
 					_List_fromArray(
 						[
 							$rtfeldman$elm_css$Css$fontSize(
 							$rtfeldman$elm_css$Css$em(1.5)),
 							$rtfeldman$elm_css$Css$color($author$project$Components$almostWhite),
-							$rtfeldman$elm_css$Css$backgroundColor(
-							_Utils_update(
-								$author$project$Components$blue,
-								{alpha: 0.75})),
+							$rtfeldman$elm_css$Css$backgroundColor($author$project$Components$transparentBlue),
 							$rtfeldman$elm_css$Css$padding(
 							$rtfeldman$elm_css$Css$em(0.5)),
 							$rtfeldman$elm_css$Css$cursor($rtfeldman$elm_css$Css$pointer),
@@ -8716,10 +8732,7 @@ var $author$project$Components$photoHeadline = F4(
 				[
 					A2(
 					$rtfeldman$elm_css$Html$Styled$span,
-					_List_fromArray(
-						[
-							$rtfeldman$elm_css$Html$Styled$Events$onClick(headlineClick)
-						]),
+					_List_Nil,
 					_List_fromArray(
 						[
 							$rtfeldman$elm_css$Html$Styled$text(headline)

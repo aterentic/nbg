@@ -1,6 +1,6 @@
 module Components exposing (PhotoView(..), almostWhite, blue, footer, fullscreen, header, photo, toggleFullscreen)
 
-import Css exposing (Color, FontSize, LengthOrAuto, Style, absolute, animationDelay, animationDuration, animationName, auto, backgroundColor, batch, block, border3, borderBottom3, borderTop3, bottom, calc, center, color, cursor, display, em, fixed, float, fontSize, fontWeight, height, hex, hidden, hover, int, left, letterSpacing, lighter, margin, margin2, margin4, marginTop, maxHeight, maxWidth, minus, num, opacity, overflow, padding, padding4, pct, pointer, position, property, px, relative, rgb, right, sec, solid, textAlign, top, vh, vw, width, zIndex, zero)
+import Css exposing (Color, FontSize, LengthOrAuto, Style, absolute, animationDelay, animationDuration, animationName, auto, backgroundColor, batch, block, border3, borderBottom3, borderTop3, bottom, calc, center, color, cursor, display, em, fixed, float, fontSize, fontWeight, height, hex, hidden, hover, int, left, letterSpacing, lighter, margin, margin2, margin4, marginTop, maxHeight, maxWidth, minus, num, opacity, overflow, padding, padding4, pct, pointer, position, property, px, relative, rgb, rgba, right, sec, solid, textAlign, top, vh, vw, width, zIndex, zero)
 import Css.Animations exposing (Keyframes, keyframes)
 import Css.Transitions exposing (ease, transition)
 import Html.Styled exposing (Html, div, h1, h2, h3, img, s, span, text)
@@ -11,6 +11,11 @@ import Html.Styled.Events exposing (onClick)
 white : Color
 white =
     rgb 255 255 255
+
+
+transparentWhite : Color
+transparentWhite =
+    rgba white.red white.green white.blue 0.75
 
 
 gray : Color
@@ -28,9 +33,19 @@ black =
     rgb 0 0 0
 
 
+transparentBlack : Color
+transparentBlack =
+    rgba black.red black.green black.blue 0.75
+
+
 blue : Color
 blue =
     rgb 38 58 114
+
+
+transparentBlue : Color
+transparentBlue =
+    rgba blue.red blue.green blue.blue 0.75
 
 
 square : LengthOrAuto a -> Style
@@ -48,7 +63,7 @@ toggleFullscreen onToggleClick position =
             , color white
             , square (em 1.5)
             , textAlign center
-            , backgroundColor { blue | alpha = 0.75 }
+            , backgroundColor transparentBlue
             , hover [ backgroundColor blue ]
             ]
         , onClick onToggleClick
@@ -81,10 +96,11 @@ photoClass pv =
 photoHeadline : String -> Float -> Float -> msg -> Html msg
 photoHeadline headline bottomPercent delay headlineClick =
     h2
-        [ css <|
+        [ onClick headlineClick
+        , css <|
             [ fontSize (em 1.5)
             , color almostWhite
-            , backgroundColor { blue | alpha = 0.75 }
+            , backgroundColor transparentBlue
             , padding (em 0.5)
             , cursor pointer
             , margin4 zero zero (em 1) (pct 5)
@@ -94,7 +110,7 @@ photoHeadline headline bottomPercent delay headlineClick =
             , hover [ backgroundColor blue ]
             ]
         ]
-        [ span [ onClick headlineClick ] [ Html.Styled.text headline ] ]
+        [ span [] [ Html.Styled.text headline ] ]
 
 
 fadeIn : Keyframes {}
@@ -316,7 +332,7 @@ fullscreen fullscreenClick source =
             , top (px 0)
             , left (px 0)
             , overflow auto
-            , backgroundColor { black | alpha = 0.75 }
+            , backgroundColor transparentBlack
             , overflow hidden
             ]
         ]
@@ -324,7 +340,7 @@ fullscreen fullscreenClick source =
             [ css
                 [ maxWidth <| calc (vw 88) minus (px 2)
                 , maxHeight <| calc (vh 88) minus (px 2)
-                , border3 (px 2) solid { white | alpha = 0.75 }
+                , border3 (px 2) solid transparentWhite
                 , margin2 (vh 6) auto
                 , display block
                 ]
