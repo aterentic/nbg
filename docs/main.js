@@ -8856,7 +8856,8 @@ var $author$project$Components$photo = F4(
 											$rtfeldman$elm_css$Css$pct(8),
 											$rtfeldman$elm_css$Css$zero,
 											$rtfeldman$elm_css$Css$zero),
-											$rtfeldman$elm_css$Css$display($rtfeldman$elm_css$Css$block)
+											$rtfeldman$elm_css$Css$display($rtfeldman$elm_css$Css$block),
+											$rtfeldman$elm_css$Css$color($author$project$Components$almostWhite)
 										]))
 								]),
 							_List_fromArray(

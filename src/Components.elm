@@ -83,16 +83,6 @@ type alias Photo =
     }
 
 
-photoClass : PhotoView -> String
-photoClass pv =
-    case pv of
-        Article ->
-            "article"
-
-        Teaser ->
-            "teaser"
-
-
 photoHeadline : String -> Float -> Float -> msg -> Html msg
 photoHeadline headline bottomPercent delay headlineClick =
     h2
@@ -188,6 +178,7 @@ photo view { headline, text, image } headlineClick fullscreenClick =
                 [ css
                     [ padding4 (pct 4) (pct 8) zero zero
                     , display block
+                    , color almostWhite
                     ]
                 ]
                 [ Html.Styled.text text ]
