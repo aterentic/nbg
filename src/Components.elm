@@ -1,8 +1,9 @@
-module Components exposing (PhotoView(..), almostWhite, blue, footer, header, photo, toggleFullscreen)
+module Components exposing (PhotoView(..), almostWhite, blue, footer, fullscreen, header, photo, toggleFullscreen)
 
-import Css exposing (Color, FontSize, LengthOrAuto, Style, absolute, backgroundColor, batch, block, borderBottom3, borderTop3, bottom, center, color, cursor, display, em, float, fontSize, fontWeight, height, hex, hidden, hover, letterSpacing, lighter, margin, margin4, overflow, padding, padding4, pct, pointer, position, px, relative, rgb, right, solid, textAlign, vw, width)
+import Css exposing (Color, FontSize, LengthOrAuto, Style, absolute, animationDelay, animationDuration, animationName, auto, backgroundColor, batch, block, border3, borderBottom3, borderTop3, bottom, calc, center, color, cursor, display, em, fixed, float, fontSize, fontWeight, height, hex, hidden, hover, int, left, letterSpacing, lighter, margin, margin2, margin4, maxHeight, maxWidth, minus, num, opacity, overflow, padding, padding4, pct, pointer, position, property, px, relative, rgb, right, sec, solid, textAlign, top, vh, vw, width, zIndex, zero)
+import Css.Animations exposing (Keyframes, keyframes)
 import Css.Transitions exposing (transition)
-import Html.Styled exposing (Html, div, h1, h2, h3, img, span, text)
+import Html.Styled exposing (Html, div, h1, h2, h3, img, s, span, text)
 import Html.Styled.Attributes exposing (class, css, src)
 import Html.Styled.Events exposing (onClick)
 
@@ -32,12 +33,12 @@ square size =
     batch [ width size, height size ]
 
 
-toggleFullscreen : msg -> Html msg
-toggleFullscreen onToggleClick =
+toggleFullscreen : msg -> Style -> Html msg
+toggleFullscreen onToggleClick position =
     span
-        [ class "fullscreen-button"
-        , css
-            [ cursor pointer
+        [ css
+            [ position
+            , cursor pointer
             , fontSize (em 2)
             , color white
             , square (em 1.5)
@@ -81,7 +82,7 @@ photoHeadline headline bottomPercent delay headlineClick =
             , backgroundColor { blue | alpha = 0.75 }
             , padding (em 0.5)
             , cursor pointer
-            , margin4 (em 0) (em 0) (em 1) (pct 5)
+            , margin4 zero zero (em 1) (pct 5)
             , position absolute
             , bottom (pct bottomPercent)
             , transition [ Css.Transitions.bottom3 500 delay Css.Transitions.ease ]
@@ -89,6 +90,22 @@ photoHeadline headline bottomPercent delay headlineClick =
             ]
         ]
         [ span [ onClick headlineClick ] [ Html.Styled.text headline ] ]
+
+
+fadeIn : Keyframes {}
+fadeIn =
+    keyframes
+        [ ( 0, [ Css.Animations.opacity (num 0) ] )
+        , ( 100, [ Css.Animations.opacity (num 100) ] )
+        ]
+
+
+fadeOut : Keyframes {}
+fadeOut =
+    keyframes
+        [ ( 0, [ Css.Animations.opacity (num 100) ] )
+        , ( 100, [ Css.Animations.opacity (num 0) ] )
+        ]
 
 
 photo : PhotoView -> Photo -> msg -> msg -> Html msg
@@ -108,7 +125,7 @@ photo view { headline, text, image } headlineClick fullscreenClick =
             ]
             [ span
                 [ css
-                    [ padding4 (pct 4) (pct 8) (pct 0) (pct 0)
+                    [ padding4 (pct 4) (pct 8) zero zero
                     , display block
                     ]
                 ]
@@ -125,13 +142,38 @@ photo view { headline, text, image } headlineClick fullscreenClick =
 
             Teaser ->
                 photoHeadline headline 0 500 headlineClick
-        , toggleFullscreen fullscreenClick
+        , case view of
+            Article ->
+                let
+                    animation =
+                        batch
+                            [ opacity zero
+                            , animationName fadeIn
+                            , animationDuration (sec 0.5)
+                            , animationDelay (sec 0.5)
+                            , property "animation-fill-mode" "forwards"
+                            ]
+                in
+                toggleFullscreen fullscreenClick <| batch [ animation, position absolute, top (pct 10), left (pct 5) ]
+
+            Teaser ->
+                let
+                    animation =
+                        batch
+                            [ opacity (num 100)
+                            , animationName fadeOut
+                            , animationDuration (sec 0.5)
+                            , animationDelay (sec 0)
+                            , property "animation-fill-mode" "forwards"
+                            ]
+                in
+                toggleFullscreen fullscreenClick <| batch [ animation, position absolute, top (pct 10), left (pct 5) ]
         ]
 
 
 zeroMarginAndPadding : Style
 zeroMarginAndPadding =
-    batch [ margin (px 0), padding (px 0) ]
+    batch [ margin zero, padding zero ]
 
 
 defaultH : FontSize a -> Style
@@ -143,7 +185,7 @@ header : String -> String -> Html msg
 header headline description =
     Html.Styled.header
         [ css
-            [ padding4 (em 1.5) (pct 0) (em 1.5) (pct 5)
+            [ padding4 (em 1.5) zero (em 1.5) (pct 5)
             , borderBottom3 (px 1) solid almostWhite
             ]
         ]
@@ -159,3 +201,33 @@ header headline description =
 footer : Html msg
 footer =
     div [ css [ borderTop3 (px 1) solid almostWhite ] ] []
+
+
+fullscreen : msg -> String -> Html msg
+fullscreen fullscreenClick source =
+    div
+        [ css
+            [ position fixed
+            , width (pct 100)
+            , height (vh 100)
+            , zIndex (int 1)
+            , top (px 0)
+            , left (px 0)
+            , overflow auto
+            , backgroundColor { black | alpha = 0.75 }
+            , overflow hidden
+            ]
+        ]
+        [ img
+            [ css
+                [ maxWidth <| calc (vw 88) minus (px 2)
+                , maxHeight <| calc (vh 88) minus (px 2)
+                , border3 (px 2) solid { white | alpha = 0.75 }
+                , margin2 (vh 6) auto
+                , display block
+                ]
+            , src source
+            ]
+            []
+        , toggleFullscreen fullscreenClick <| batch [ position absolute, top (vh 6), right (em 1) ]
+        ]

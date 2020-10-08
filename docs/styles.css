@@ -10,11 +10,6 @@
     font-weight: 300;
 }
 
-.photo .fullscreen-button {
-    position: absolute;
-    top: 10%;
-    left: 5%;
-}
 
 /* image ratio is 4:3 */
 
@@ -46,12 +41,6 @@
     transition: opacity 0.5s ease 0s, width 0.5s ease 0.5s, height 0.5s ease 0.5s;
 }
 
-.photo.teaser .fullscreen-button {
-    opacity: 100;
-    animation: fadeOut 0.5s ease 0s;
-    animation-fill-mode: forwards;
-}
-
 .photo.article {
     /* displaying whole image (reduced to 50%): (50/4)*3vw */
     height: 37.5vw;
@@ -80,44 +69,4 @@
     transition: opacity 0.5s ease 0.5s, width 0.5s ease 0s;
 }
 
-.photo.article .fullscreen-button {
-    opacity: 0;
-    animation: fadeIn 0.5s ease 0.5s;
-    animation-fill-mode: forwards;
-}
 
-@keyframes fadeOut {
-    0% { opacity: 100; }
-    100% { opacity: 0; }
-}
-
-@keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 100; }
-}
-
-body > .fullscreen {
-    position: fixed;
-    width: 100%;
-    height: 100vh;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.75);
-    overflow: hidden;
-}
-
-body > .fullscreen > img {
-    max-width: calc(88vw - 2px);
-    max-height: calc(88vh - 2px);
-    border: 2px solid rgba(255, 255, 255, 0.75);
-    margin: 6vh auto;
-    display: block;
-}
-
-body > .fullscreen > .fullscreen-button {
-    position: absolute;
-    top: 6vh;
-    right: 1em;
-}

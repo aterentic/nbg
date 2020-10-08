@@ -5,11 +5,10 @@ import Assets
 import Browser exposing (Document)
 import Browser.Navigation
 import Components
-import Css exposing (backgroundColor, color, fontFamilies, hidden, margin, overflowX, px)
+import Css exposing (backgroundColor, fontFamilies, hidden, margin, overflowX, px)
 import Css.Global exposing (global, selector)
 import Data exposing (Photo)
-import Html.Styled exposing (Html, div, h1, h3, header, img, text, toUnstyled)
-import Html.Styled.Attributes exposing (class, src)
+import Html.Styled exposing (Html, header, toUnstyled)
 import Url exposing (Url)
 
 
@@ -47,16 +46,6 @@ init _ _ _ =
     ( { list = Array.fromList <| List.indexedMap teaser Assets.photos, fullscreen = Nothing }, Cmd.none )
 
 
-viewFullscreen : Maybe Photo -> List (Html Msg)
-viewFullscreen fp =
-    Maybe.withDefault [] <| Maybe.map (\photo -> [ div [ class "fullscreen" ] [ img [ src photo.image ] [], Components.toggleFullscreen CloseFullscreen ] ]) fp
-
-
-viewHeader : String -> String -> Html msg
-viewHeader headline description =
-    header [] [ h1 [] [ text headline ], h3 [] [ text description ] ]
-
-
 bodyStyle : Html msg
 bodyStyle =
     global
@@ -86,7 +75,7 @@ view model =
             bodyStyle
                 :: Components.header Assets.headline Assets.description
                 :: Array.toList (Array.indexedMap pv model.list)
-                ++ viewFullscreen model.fullscreen
+                ++ Maybe.withDefault [] (Maybe.map (\{ image } -> [ Components.fullscreen CloseFullscreen image ]) model.fullscreen)
                 ++ [ Components.footer ]
 
 
