@@ -28,4 +28,16 @@ photos =
       , text = "Predivan pogled na divlju gradnju često kvare zalasci sunca na Savi."
       , image = "assets/02.jpg"
       }
+    , { headline = "Savski kej II"
+      , text = "Sa pogledom na stari..."
+      , image = "assets/03.jpg"
+      }
+    , { headline = "Gazela"
+      , text = "Sa pogledaom na očaj..."
+      , image = "assets/04.jpg"
+      }
+    , { headline = "Jesen"
+      , text = "Lepo i opasno (ispod jesenjeg lišća)"
+      , image = "assets/05.jpg"
+      }
     ]
