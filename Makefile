@@ -10,6 +10,5 @@ clean:
 build:
 	@elm make src/Main.elm --output=docs/main.js
 	@cp src/index.html docs/
-	@cp src/styles.css docs/
 	@mkdir -p docs/assets
 	@cp -r src/assets/* docs/assets/

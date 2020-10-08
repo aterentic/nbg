@@ -1,8 +1,8 @@
 module Components exposing (PhotoView(..), almostWhite, blue, footer, fullscreen, header, photo, toggleFullscreen)
 
-import Css exposing (Color, FontSize, LengthOrAuto, Style, absolute, animationDelay, animationDuration, animationName, auto, backgroundColor, batch, block, border3, borderBottom3, borderTop3, bottom, calc, center, color, cursor, display, em, fixed, float, fontSize, fontWeight, height, hex, hidden, hover, int, left, letterSpacing, lighter, margin, margin2, margin4, maxHeight, maxWidth, minus, num, opacity, overflow, padding, padding4, pct, pointer, position, property, px, relative, rgb, right, sec, solid, textAlign, top, vh, vw, width, zIndex, zero)
+import Css exposing (Color, FontSize, LengthOrAuto, Style, absolute, animationDelay, animationDuration, animationName, auto, backgroundColor, batch, block, border3, borderBottom3, borderTop3, bottom, calc, center, color, cursor, display, em, fixed, float, fontSize, fontWeight, height, hex, hidden, hover, int, left, letterSpacing, lighter, margin, margin2, margin4, marginTop, maxHeight, maxWidth, minus, num, opacity, overflow, padding, padding4, pct, pointer, position, property, px, relative, rgb, right, sec, solid, textAlign, top, vh, vw, width, zIndex, zero)
 import Css.Animations exposing (Keyframes, keyframes)
-import Css.Transitions exposing (transition)
+import Css.Transitions exposing (ease, transition)
 import Html.Styled exposing (Html, div, h1, h2, h3, img, s, span, text)
 import Html.Styled.Attributes exposing (class, css, src)
 import Html.Styled.Events exposing (onClick)
@@ -11,6 +11,11 @@ import Html.Styled.Events exposing (onClick)
 white : Color
 white =
     rgb 255 255 255
+
+
+gray : Color
+gray =
+    rgb 127 127 127
 
 
 almostWhite : Color
@@ -108,20 +113,60 @@ fadeOut =
         ]
 
 
+
+-- image ratio is 4:3
+
+
 photo : PhotoView -> Photo -> msg -> msg -> Html msg
 photo view { headline, text, image } headlineClick fullscreenClick =
     div
-        [ css
+        [ css <|
             [ width (vw 100)
             , backgroundColor black
             , position relative
             ]
-        , class "photo"
-        , class <| photoClass view
+                ++ (case view of
+                        Article ->
+                            -- displaying whole image (reduced to 50%): (50/4)*3vw
+                            [ height (vw 37.5)
+                            , transition [ Css.Transitions.height3 500 0 ease ]
+                            ]
+
+                        Teaser ->
+                            -- displaying 25% of an image: (25/4)*3vw
+                            [ height (vw 18.75)
+                            , transition [ Css.Transitions.height3 500 500 ease ]
+                            ]
+                   )
         ]
         [ div
-            [ css [ float right, overflow hidden ]
-            , class "text"
+            [ case view of
+                Article ->
+                    css
+                        [ float right
+                        , overflow hidden
+                        , width (pct 50)
+                        , opacity (num 100)
+                        , height (pct 100)
+                        , transition
+                            [ Css.Transitions.opacity3 500 500 ease
+                            , Css.Transitions.width3 500 0 ease
+                            ]
+                        ]
+
+                Teaser ->
+                    css
+                        [ float right
+                        , overflow hidden
+                        , width zero
+                        , opacity zero
+                        , height zero
+                        , transition
+                            [ Css.Transitions.opacity3 500 0 ease
+                            , Css.Transitions.width3 500 500 ease
+                            , Css.Transitions.height3 500 500 ease
+                            ]
+                        ]
             ]
             [ span
                 [ css
@@ -131,11 +176,68 @@ photo view { headline, text, image } headlineClick fullscreenClick =
                 ]
                 [ Html.Styled.text text ]
             ]
-        , div
-            [ css [ overflow hidden ]
-            , class "container"
-            ]
-            [ img [ src image ] [] ]
+        , case view of
+            Article ->
+                div
+                    -- calc(50vw / 4 * 3); Images ratio is 4:3, whole image is displayed
+                    [ css
+                        [ overflow hidden
+                        , width (vw 50)
+                        , height (vw 37.5)
+                        , transition
+                            [ Css.Transitions.height3 500 0 ease
+                            , Css.Transitions.width3 500 0 ease
+                            ]
+                        ]
+                    ]
+                    [ img
+                        [ css
+                            [ width (pct 88)
+                            , margin4 (pct 4) zero (pct 2) (pct 6)
+                            , border3 (px 1) solid gray
+                            , property "filter" "grayscale(0%)"
+                            , transition
+                                [ Css.Transitions.border3 500 0 ease
+                                , Css.Transitions.filter3 500 0 ease
+                                , Css.Transitions.margin3 500 0 ease
+                                , Css.Transitions.width3 500 0 ease
+                                ]
+                            ]
+                        , src image
+                        ]
+                        []
+                    ]
+
+            Teaser ->
+                div
+                    -- calc(100vw / 16 * 3); Images ratio is 4:3, 1/4 of image is displayed
+                    [ css
+                        [ overflow hidden
+                        , width (pct 100)
+                        , height (vw 18.75)
+                        , transition
+                            [ Css.Transitions.height3 500 500 ease
+                            , Css.Transitions.width3 500 500 ease
+                            ]
+                        ]
+                    ]
+                    [ img
+                        [ css
+                            [ width (pct 100)
+                            , marginTop (pct -25)
+                            , border3 (px 0) solid black
+                            , property "filter" "grayscale(80%)"
+                            , transition
+                                [ Css.Transitions.border3 500 500 ease
+                                , Css.Transitions.filter3 500 500 ease
+                                , Css.Transitions.margin3 500 500 ease
+                                , Css.Transitions.width3 500 500 ease
+                                ]
+                            ]
+                        , src image
+                        ]
+                        []
+                    ]
         , case view of
             Article ->
                 photoHeadline headline 8 0 headlineClick
