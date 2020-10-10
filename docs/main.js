@@ -7339,6 +7339,65 @@ var $author$project$Main$bodyStyle = $rtfeldman$elm_css$Css$Global$global(
 		]));
 var $author$project$Assets$description = 'Blokovi, Sava, i poneki opis...';
 var $author$project$Assets$document = 'NBG';
+var $rtfeldman$elm_css$Css$prop3 = F4(
+	function (key, argA, argB, argC) {
+		return A2(
+			$rtfeldman$elm_css$Css$property,
+			key,
+			A2(
+				$elm$core$String$join,
+				' ',
+				_List_fromArray(
+					[argA.value, argB.value, argC.value])));
+	});
+var $rtfeldman$elm_css$Css$borderTop3 = $rtfeldman$elm_css$Css$prop3('border-top');
+var $rtfeldman$elm_css$VirtualDom$Styled$Attribute = F3(
+	function (a, b, c) {
+		return {$: 'Attribute', a: a, b: b, c: c};
+	});
+var $rtfeldman$elm_css$VirtualDom$Styled$murmurSeed = 15739;
+var $rtfeldman$elm_css$VirtualDom$Styled$getClassname = function (styles) {
+	return $elm$core$List$isEmpty(styles) ? 'unstyled' : A2(
+		$elm$core$String$cons,
+		_Utils_chr('_'),
+		$rtfeldman$elm_hex$Hex$toString(
+			A2(
+				$rtfeldman$elm_css$ElmCssVendor$Murmur3$hashString,
+				$rtfeldman$elm_css$VirtualDom$Styled$murmurSeed,
+				$rtfeldman$elm_css$Css$Preprocess$Resolve$compile(
+					$elm$core$List$singleton(
+						$rtfeldman$elm_css$Css$Preprocess$stylesheet(
+							$elm$core$List$singleton(
+								A2(
+									$rtfeldman$elm_css$VirtualDom$Styled$makeSnippet,
+									styles,
+									$rtfeldman$elm_css$Css$Structure$UniversalSelectorSequence(_List_Nil)))))))));
+};
+var $elm$virtual_dom$VirtualDom$property = F2(
+	function (key, value) {
+		return A2(
+			_VirtualDom_property,
+			_VirtualDom_noInnerHtmlOrFormAction(key),
+			_VirtualDom_noJavaScriptOrHtmlUri(value));
+	});
+var $elm$json$Json$Encode$string = _Json_wrap;
+var $rtfeldman$elm_css$Html$Styled$Internal$css = function (styles) {
+	var classname = $rtfeldman$elm_css$VirtualDom$Styled$getClassname(styles);
+	var classProperty = A2(
+		$elm$virtual_dom$VirtualDom$property,
+		'className',
+		$elm$json$Json$Encode$string(classname));
+	return A3($rtfeldman$elm_css$VirtualDom$Styled$Attribute, classProperty, styles, classname);
+};
+var $rtfeldman$elm_css$Html$Styled$Attributes$css = $rtfeldman$elm_css$Html$Styled$Internal$css;
+var $rtfeldman$elm_css$VirtualDom$Styled$Node = F3(
+	function (a, b, c) {
+		return {$: 'Node', a: a, b: b, c: c};
+	});
+var $rtfeldman$elm_css$VirtualDom$Styled$node = $rtfeldman$elm_css$VirtualDom$Styled$Node;
+var $rtfeldman$elm_css$Html$Styled$node = $rtfeldman$elm_css$VirtualDom$Styled$node;
+var $rtfeldman$elm_css$Html$Styled$div = $rtfeldman$elm_css$Html$Styled$node('div');
+var $rtfeldman$elm_css$Css$solid = {borderStyle: $rtfeldman$elm_css$Css$Structure$Compatible, textDecorationStyle: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'solid'};
 var $rtfeldman$elm_css$Css$withPrecedingHash = function (str) {
 	return A2($elm$core$String$startsWith, '#', str) ? str : A2(
 		$elm$core$String$cons,
@@ -7721,66 +7780,7 @@ var $rtfeldman$elm_css$Css$hex = function (str) {
 	}
 	return $rtfeldman$elm_css$Css$erroneousHex(str);
 };
-var $author$project$Components$almostWhite = $rtfeldman$elm_css$Css$hex('#d6d6d6');
-var $rtfeldman$elm_css$Css$prop3 = F4(
-	function (key, argA, argB, argC) {
-		return A2(
-			$rtfeldman$elm_css$Css$property,
-			key,
-			A2(
-				$elm$core$String$join,
-				' ',
-				_List_fromArray(
-					[argA.value, argB.value, argC.value])));
-	});
-var $rtfeldman$elm_css$Css$borderTop3 = $rtfeldman$elm_css$Css$prop3('border-top');
-var $rtfeldman$elm_css$VirtualDom$Styled$Attribute = F3(
-	function (a, b, c) {
-		return {$: 'Attribute', a: a, b: b, c: c};
-	});
-var $rtfeldman$elm_css$VirtualDom$Styled$murmurSeed = 15739;
-var $rtfeldman$elm_css$VirtualDom$Styled$getClassname = function (styles) {
-	return $elm$core$List$isEmpty(styles) ? 'unstyled' : A2(
-		$elm$core$String$cons,
-		_Utils_chr('_'),
-		$rtfeldman$elm_hex$Hex$toString(
-			A2(
-				$rtfeldman$elm_css$ElmCssVendor$Murmur3$hashString,
-				$rtfeldman$elm_css$VirtualDom$Styled$murmurSeed,
-				$rtfeldman$elm_css$Css$Preprocess$Resolve$compile(
-					$elm$core$List$singleton(
-						$rtfeldman$elm_css$Css$Preprocess$stylesheet(
-							$elm$core$List$singleton(
-								A2(
-									$rtfeldman$elm_css$VirtualDom$Styled$makeSnippet,
-									styles,
-									$rtfeldman$elm_css$Css$Structure$UniversalSelectorSequence(_List_Nil)))))))));
-};
-var $elm$virtual_dom$VirtualDom$property = F2(
-	function (key, value) {
-		return A2(
-			_VirtualDom_property,
-			_VirtualDom_noInnerHtmlOrFormAction(key),
-			_VirtualDom_noJavaScriptOrHtmlUri(value));
-	});
-var $elm$json$Json$Encode$string = _Json_wrap;
-var $rtfeldman$elm_css$Html$Styled$Internal$css = function (styles) {
-	var classname = $rtfeldman$elm_css$VirtualDom$Styled$getClassname(styles);
-	var classProperty = A2(
-		$elm$virtual_dom$VirtualDom$property,
-		'className',
-		$elm$json$Json$Encode$string(classname));
-	return A3($rtfeldman$elm_css$VirtualDom$Styled$Attribute, classProperty, styles, classname);
-};
-var $rtfeldman$elm_css$Html$Styled$Attributes$css = $rtfeldman$elm_css$Html$Styled$Internal$css;
-var $rtfeldman$elm_css$VirtualDom$Styled$Node = F3(
-	function (a, b, c) {
-		return {$: 'Node', a: a, b: b, c: c};
-	});
-var $rtfeldman$elm_css$VirtualDom$Styled$node = $rtfeldman$elm_css$VirtualDom$Styled$Node;
-var $rtfeldman$elm_css$Html$Styled$node = $rtfeldman$elm_css$VirtualDom$Styled$node;
-var $rtfeldman$elm_css$Html$Styled$div = $rtfeldman$elm_css$Html$Styled$node('div');
-var $rtfeldman$elm_css$Css$solid = {borderStyle: $rtfeldman$elm_css$Css$Structure$Compatible, textDecorationStyle: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'solid'};
+var $author$project$Components$white = $rtfeldman$elm_css$Css$hex('#d6d6d6');
 var $author$project$Components$footer = A2(
 	$rtfeldman$elm_css$Html$Styled$div,
 	_List_fromArray(
@@ -7792,16 +7792,12 @@ var $author$project$Components$footer = A2(
 					$rtfeldman$elm_css$Css$borderTop3,
 					$rtfeldman$elm_css$Css$px(1),
 					$rtfeldman$elm_css$Css$solid,
-					$author$project$Components$almostWhite)
+					$author$project$Components$white)
 				]))
 		]),
 	_List_Nil);
-var $rtfeldman$elm_css$Css$absolute = {position: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'absolute'};
 var $rtfeldman$elm_css$Css$auto = {alignItemsOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible, cursor: $rtfeldman$elm_css$Css$Structure$Compatible, flexBasis: $rtfeldman$elm_css$Css$Structure$Compatible, intOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible, justifyContentOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrAutoOrCoverOrContain: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNumberOrAutoOrNoneOrContent: $rtfeldman$elm_css$Css$Structure$Compatible, overflow: $rtfeldman$elm_css$Css$Structure$Compatible, pointerEvents: $rtfeldman$elm_css$Css$Structure$Compatible, tableLayout: $rtfeldman$elm_css$Css$Structure$Compatible, textRendering: $rtfeldman$elm_css$Css$Structure$Compatible, touchAction: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'auto'};
-var $rtfeldman$elm_css$Css$Preprocess$ApplyStyles = function (a) {
-	return {$: 'ApplyStyles', a: a};
-};
-var $rtfeldman$elm_css$Css$batch = $rtfeldman$elm_css$Css$Preprocess$ApplyStyles;
+var $author$project$Components$black = A3($rtfeldman$elm_css$Css$rgb, 0, 0, 0);
 var $rtfeldman$elm_css$Css$block = {display: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'block'};
 var $rtfeldman$elm_css$Css$border3 = $rtfeldman$elm_css$Css$prop3('border');
 var $rtfeldman$elm_css$Css$calcExpressionToString = function (expression) {
@@ -7836,69 +7832,13 @@ var $rtfeldman$elm_css$Css$display = $rtfeldman$elm_css$Css$prop1('display');
 var $rtfeldman$elm_css$Css$EmUnits = {$: 'EmUnits'};
 var $rtfeldman$elm_css$Css$em = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$EmUnits, 'em');
 var $rtfeldman$elm_css$Css$fixed = {backgroundAttachment: $rtfeldman$elm_css$Css$Structure$Compatible, position: $rtfeldman$elm_css$Css$Structure$Compatible, tableLayout: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'fixed'};
-var $rtfeldman$elm_css$Css$height = $rtfeldman$elm_css$Css$prop1('height');
-var $rtfeldman$elm_css$Html$Styled$img = $rtfeldman$elm_css$Html$Styled$node('img');
-var $rtfeldman$elm_css$Css$UnitlessInteger = {$: 'UnitlessInteger'};
-var $rtfeldman$elm_css$Css$int = function (val) {
-	return {
-		fontWeight: $rtfeldman$elm_css$Css$Structure$Compatible,
-		intOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible,
-		lengthOrNumber: $rtfeldman$elm_css$Css$Structure$Compatible,
-		lengthOrNumberOrAutoOrNoneOrContent: $rtfeldman$elm_css$Css$Structure$Compatible,
-		number: $rtfeldman$elm_css$Css$Structure$Compatible,
-		numberOrInfinite: $rtfeldman$elm_css$Css$Structure$Compatible,
-		numericValue: val,
-		unitLabel: '',
-		units: $rtfeldman$elm_css$Css$UnitlessInteger,
-		value: $elm$core$String$fromInt(val)
-	};
-};
-var $rtfeldman$elm_css$Css$left = $rtfeldman$elm_css$Css$prop1('left');
-var $rtfeldman$elm_css$Css$prop2 = F3(
-	function (key, argA, argB) {
-		return A2(
-			$rtfeldman$elm_css$Css$property,
-			key,
-			A2(
-				$elm$core$String$join,
-				' ',
-				_List_fromArray(
-					[argA.value, argB.value])));
-	});
-var $rtfeldman$elm_css$Css$margin2 = $rtfeldman$elm_css$Css$prop2('margin');
-var $rtfeldman$elm_css$Css$maxHeight = $rtfeldman$elm_css$Css$prop1('max-height');
-var $rtfeldman$elm_css$Css$maxWidth = $rtfeldman$elm_css$Css$prop1('max-width');
-var $rtfeldman$elm_css$Css$Subtraction = {$: 'Subtraction'};
-var $rtfeldman$elm_css$Css$minus = $rtfeldman$elm_css$Css$Subtraction;
-var $rtfeldman$elm_css$Css$overflow = $rtfeldman$elm_css$Css$prop1('overflow');
-var $rtfeldman$elm_css$Css$PercentageUnits = {$: 'PercentageUnits'};
-var $rtfeldman$elm_css$Css$pct = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$PercentageUnits, '%');
-var $rtfeldman$elm_css$Css$position = $rtfeldman$elm_css$Css$prop1('position');
-var $rtfeldman$elm_css$Css$right = $rtfeldman$elm_css$Css$prop1('right');
-var $rtfeldman$elm_css$VirtualDom$Styled$property = F2(
-	function (key, value) {
-		return A3(
-			$rtfeldman$elm_css$VirtualDom$Styled$Attribute,
-			A2($elm$virtual_dom$VirtualDom$property, key, value),
-			_List_Nil,
-			'');
-	});
-var $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty = F2(
-	function (key, string) {
-		return A2(
-			$rtfeldman$elm_css$VirtualDom$Styled$property,
-			key,
-			$elm$json$Json$Encode$string(string));
-	});
-var $rtfeldman$elm_css$Html$Styled$Attributes$src = function (url) {
-	return A2($rtfeldman$elm_css$Html$Styled$Attributes$stringProperty, 'src', url);
-};
 var $rtfeldman$elm_css$Css$center = $rtfeldman$elm_css$Css$prop1('center');
 var $rtfeldman$elm_css$Css$color = function (c) {
 	return A2($rtfeldman$elm_css$Css$property, 'color', c.value);
 };
 var $rtfeldman$elm_css$Css$cursor = $rtfeldman$elm_css$Css$prop1('cursor');
 var $rtfeldman$elm_css$Css$fontSize = $rtfeldman$elm_css$Css$prop1('font-size');
+var $rtfeldman$elm_css$Css$height = $rtfeldman$elm_css$Css$prop1('height');
 var $rtfeldman$elm_css$Css$Preprocess$ExtendSelector = F2(
 	function (a, b) {
 		return {$: 'ExtendSelector', a: a, b: b};
@@ -7937,21 +7877,42 @@ var $rtfeldman$elm_css$Html$Styled$Events$onClick = function (msg) {
 		$elm$json$Json$Decode$succeed(msg));
 };
 var $rtfeldman$elm_css$Css$pointer = {cursor: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'pointer'};
+var $rtfeldman$elm_css$Css$rgba = F4(
+	function (r, g, b, alpha) {
+		return {
+			alpha: alpha,
+			blue: b,
+			color: $rtfeldman$elm_css$Css$Structure$Compatible,
+			green: g,
+			red: r,
+			value: A2(
+				$rtfeldman$elm_css$Css$cssFunction,
+				'rgba',
+				_Utils_ap(
+					A2(
+						$elm$core$List$map,
+						$elm$core$String$fromInt,
+						_List_fromArray(
+							[r, g, b])),
+					_List_fromArray(
+						[
+							$elm$core$String$fromFloat(alpha)
+						])))
+		};
+	});
+var $author$project$Components$setAlpha = F2(
+	function (color, alpha) {
+		return A4($rtfeldman$elm_css$Css$rgba, color.red, color.green, color.blue, alpha);
+	});
 var $rtfeldman$elm_css$Html$Styled$span = $rtfeldman$elm_css$Html$Styled$node('span');
-var $rtfeldman$elm_css$Css$width = $rtfeldman$elm_css$Css$prop1('width');
-var $author$project$Components$square = function (size) {
-	return $rtfeldman$elm_css$Css$batch(
-		_List_fromArray(
-			[
-				$rtfeldman$elm_css$Css$width(size),
-				$rtfeldman$elm_css$Css$height(size)
-			]));
-};
 var $rtfeldman$elm_css$VirtualDom$Styled$text = function (str) {
 	return $rtfeldman$elm_css$VirtualDom$Styled$Unstyled(
 		$elm$virtual_dom$VirtualDom$text(str));
 };
 var $rtfeldman$elm_css$Html$Styled$text = $rtfeldman$elm_css$VirtualDom$Styled$text;
+var $rtfeldman$elm_css$Css$Preprocess$ApplyStyles = function (a) {
+	return {$: 'ApplyStyles', a: a};
+};
 var $rtfeldman$elm_css$Css$Internal$property = F2(
 	function (key, value) {
 		return $rtfeldman$elm_css$Css$Preprocess$AppendProperty(key + (':' + value));
@@ -8021,68 +7982,110 @@ var $rtfeldman$elm_css$Css$textAlign = function (fn) {
 		'text-align',
 		fn($rtfeldman$elm_css$Css$Internal$lengthForOverloadedProperty));
 };
-var $rtfeldman$elm_css$Css$rgba = F4(
-	function (r, g, b, alpha) {
-		return {
-			alpha: alpha,
-			blue: b,
-			color: $rtfeldman$elm_css$Css$Structure$Compatible,
-			green: g,
-			red: r,
-			value: A2(
-				$rtfeldman$elm_css$Css$cssFunction,
-				'rgba',
-				_Utils_ap(
-					A2(
-						$elm$core$List$map,
-						$elm$core$String$fromInt,
-						_List_fromArray(
-							[r, g, b])),
-					_List_fromArray(
-						[
-							$elm$core$String$fromFloat(alpha)
-						])))
-		};
-	});
-var $author$project$Components$transparentBlue = A4($rtfeldman$elm_css$Css$rgba, $author$project$Components$blue.red, $author$project$Components$blue.green, $author$project$Components$blue.blue, 0.75);
-var $author$project$Components$white = A3($rtfeldman$elm_css$Css$rgb, 255, 255, 255);
-var $author$project$Components$toggleFullscreen = F2(
-	function (onToggleClick, position) {
+var $rtfeldman$elm_css$Css$width = $rtfeldman$elm_css$Css$prop1('width');
+var $author$project$Components$fullscreenButton = F2(
+	function (onButtonClick, moreStyles) {
+		var style = _List_fromArray(
+			[
+				$rtfeldman$elm_css$Css$cursor($rtfeldman$elm_css$Css$pointer),
+				$rtfeldman$elm_css$Css$fontSize(
+				$rtfeldman$elm_css$Css$em(2)),
+				$rtfeldman$elm_css$Css$color($author$project$Components$white),
+				$rtfeldman$elm_css$Css$width(
+				$rtfeldman$elm_css$Css$em(1.5)),
+				$rtfeldman$elm_css$Css$height(
+				$rtfeldman$elm_css$Css$em(1.5)),
+				$rtfeldman$elm_css$Css$textAlign($rtfeldman$elm_css$Css$center),
+				$rtfeldman$elm_css$Css$backgroundColor(
+				A2($author$project$Components$setAlpha, $author$project$Components$blue, 0.75)),
+				$rtfeldman$elm_css$Css$hover(
+				_List_fromArray(
+					[
+						$rtfeldman$elm_css$Css$backgroundColor($author$project$Components$blue)
+					]))
+			]);
 		return A2(
 			$rtfeldman$elm_css$Html$Styled$span,
 			_List_fromArray(
 				[
 					$rtfeldman$elm_css$Html$Styled$Attributes$css(
-					_List_fromArray(
-						[
-							position,
-							$rtfeldman$elm_css$Css$cursor($rtfeldman$elm_css$Css$pointer),
-							$rtfeldman$elm_css$Css$fontSize(
-							$rtfeldman$elm_css$Css$em(2)),
-							$rtfeldman$elm_css$Css$color($author$project$Components$white),
-							$author$project$Components$square(
-							$rtfeldman$elm_css$Css$em(1.5)),
-							$rtfeldman$elm_css$Css$textAlign($rtfeldman$elm_css$Css$center),
-							$rtfeldman$elm_css$Css$backgroundColor($author$project$Components$transparentBlue),
-							$rtfeldman$elm_css$Css$hover(
-							_List_fromArray(
-								[
-									$rtfeldman$elm_css$Css$backgroundColor($author$project$Components$blue)
-								]))
-						])),
-					$rtfeldman$elm_css$Html$Styled$Events$onClick(onToggleClick)
+					_Utils_ap(moreStyles, style)),
+					$rtfeldman$elm_css$Html$Styled$Events$onClick(onButtonClick)
 				]),
 			_List_fromArray(
 				[
-					$rtfeldman$elm_css$Html$Styled$text(
-					$elm$core$String$fromChar(
-						_Utils_chr('⛶')))
+					$rtfeldman$elm_css$Html$Styled$text('⛶')
 				]));
 	});
+var $rtfeldman$elm_css$Html$Styled$img = $rtfeldman$elm_css$Html$Styled$node('img');
+var $rtfeldman$elm_css$Css$UnitlessInteger = {$: 'UnitlessInteger'};
+var $rtfeldman$elm_css$Css$int = function (val) {
+	return {
+		fontWeight: $rtfeldman$elm_css$Css$Structure$Compatible,
+		intOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible,
+		lengthOrNumber: $rtfeldman$elm_css$Css$Structure$Compatible,
+		lengthOrNumberOrAutoOrNoneOrContent: $rtfeldman$elm_css$Css$Structure$Compatible,
+		number: $rtfeldman$elm_css$Css$Structure$Compatible,
+		numberOrInfinite: $rtfeldman$elm_css$Css$Structure$Compatible,
+		numericValue: val,
+		unitLabel: '',
+		units: $rtfeldman$elm_css$Css$UnitlessInteger,
+		value: $elm$core$String$fromInt(val)
+	};
+};
+var $rtfeldman$elm_css$Css$left = $rtfeldman$elm_css$Css$prop1('left');
+var $rtfeldman$elm_css$Css$prop2 = F3(
+	function (key, argA, argB) {
+		return A2(
+			$rtfeldman$elm_css$Css$property,
+			key,
+			A2(
+				$elm$core$String$join,
+				' ',
+				_List_fromArray(
+					[argA.value, argB.value])));
+	});
+var $rtfeldman$elm_css$Css$margin2 = $rtfeldman$elm_css$Css$prop2('margin');
+var $rtfeldman$elm_css$Css$maxHeight = $rtfeldman$elm_css$Css$prop1('max-height');
+var $rtfeldman$elm_css$Css$maxWidth = $rtfeldman$elm_css$Css$prop1('max-width');
+var $rtfeldman$elm_css$Css$Subtraction = {$: 'Subtraction'};
+var $rtfeldman$elm_css$Css$minus = $rtfeldman$elm_css$Css$Subtraction;
+var $rtfeldman$elm_css$Css$overflow = $rtfeldman$elm_css$Css$prop1('overflow');
+var $rtfeldman$elm_css$Css$PercentageUnits = {$: 'PercentageUnits'};
+var $rtfeldman$elm_css$Css$pct = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$PercentageUnits, '%');
+var $rtfeldman$elm_css$Css$position = $rtfeldman$elm_css$Css$prop1('position');
+var $rtfeldman$elm_css$VirtualDom$Styled$property = F2(
+	function (key, value) {
+		return A3(
+			$rtfeldman$elm_css$VirtualDom$Styled$Attribute,
+			A2($elm$virtual_dom$VirtualDom$property, key, value),
+			_List_Nil,
+			'');
+	});
+var $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			$rtfeldman$elm_css$VirtualDom$Styled$property,
+			key,
+			$elm$json$Json$Encode$string(string));
+	});
+var $rtfeldman$elm_css$Html$Styled$Attributes$src = function (url) {
+	return A2($rtfeldman$elm_css$Html$Styled$Attributes$stringProperty, 'src', url);
+};
 var $rtfeldman$elm_css$Css$top = $rtfeldman$elm_css$Css$prop1('top');
-var $author$project$Components$black = A3($rtfeldman$elm_css$Css$rgb, 0, 0, 0);
-var $author$project$Components$transparentBlack = A4($rtfeldman$elm_css$Css$rgba, $author$project$Components$black.red, $author$project$Components$black.green, $author$project$Components$black.blue, 0.75);
-var $author$project$Components$transparentWhite = A4($rtfeldman$elm_css$Css$rgba, $author$project$Components$white.red, $author$project$Components$white.green, $author$project$Components$white.blue, 0.75);
+var $rtfeldman$elm_css$Css$absolute = {position: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'absolute'};
+var $rtfeldman$elm_css$Css$batch = $rtfeldman$elm_css$Css$Preprocess$ApplyStyles;
+var $rtfeldman$elm_css$Css$right = $rtfeldman$elm_css$Css$prop1('right');
+var $author$project$Components$topRight = F2(
+	function (topPos, rightPos) {
+		return $rtfeldman$elm_css$Css$batch(
+			_List_fromArray(
+				[
+					$rtfeldman$elm_css$Css$position($rtfeldman$elm_css$Css$absolute),
+					$rtfeldman$elm_css$Css$top(topPos),
+					$rtfeldman$elm_css$Css$right(rightPos)
+				]));
+	});
 var $rtfeldman$elm_css$Css$VhUnits = {$: 'VhUnits'};
 var $rtfeldman$elm_css$Css$vh = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$VhUnits, 'vh');
 var $rtfeldman$elm_css$Css$VwUnits = {$: 'VwUnits'};
@@ -8109,7 +8112,8 @@ var $author$project$Components$fullscreen = F2(
 							$rtfeldman$elm_css$Css$left(
 							$rtfeldman$elm_css$Css$px(0)),
 							$rtfeldman$elm_css$Css$overflow($rtfeldman$elm_css$Css$auto),
-							$rtfeldman$elm_css$Css$backgroundColor($author$project$Components$transparentBlack),
+							$rtfeldman$elm_css$Css$backgroundColor(
+							A2($author$project$Components$setAlpha, $author$project$Components$black, 0.75)),
 							$rtfeldman$elm_css$Css$overflow($rtfeldman$elm_css$Css$hidden)
 						]))
 				]),
@@ -8138,7 +8142,7 @@ var $author$project$Components$fullscreen = F2(
 									$rtfeldman$elm_css$Css$border3,
 									$rtfeldman$elm_css$Css$px(2),
 									$rtfeldman$elm_css$Css$solid,
-									$author$project$Components$transparentWhite),
+									A2($author$project$Components$setAlpha, $author$project$Components$white, 0.75)),
 									A2(
 									$rtfeldman$elm_css$Css$margin2,
 									$rtfeldman$elm_css$Css$vh(6),
@@ -8149,17 +8153,15 @@ var $author$project$Components$fullscreen = F2(
 						]),
 					_List_Nil),
 					A2(
-					$author$project$Components$toggleFullscreen,
+					$author$project$Components$fullscreenButton,
 					fullscreenClick,
-					$rtfeldman$elm_css$Css$batch(
-						_List_fromArray(
-							[
-								$rtfeldman$elm_css$Css$position($rtfeldman$elm_css$Css$absolute),
-								$rtfeldman$elm_css$Css$top(
-								$rtfeldman$elm_css$Css$vh(6)),
-								$rtfeldman$elm_css$Css$right(
-								$rtfeldman$elm_css$Css$em(1))
-							])))
+					_List_fromArray(
+						[
+							A2(
+							$author$project$Components$topRight,
+							$rtfeldman$elm_css$Css$vh(6),
+							$rtfeldman$elm_css$Css$em(1))
+						]))
 				]));
 	});
 var $rtfeldman$elm_css$Css$borderBottom3 = $rtfeldman$elm_css$Css$prop3('border-bottom');
@@ -8177,7 +8179,7 @@ var $author$project$Components$defaultH = function (fs) {
 			[
 				$author$project$Components$zeroMarginAndPadding,
 				$rtfeldman$elm_css$Css$fontSize(fs),
-				$rtfeldman$elm_css$Css$color($author$project$Components$almostWhite)
+				$rtfeldman$elm_css$Css$color($author$project$Components$white)
 			]));
 };
 var $rtfeldman$elm_css$Css$fontWeight = function (_v0) {
@@ -8220,7 +8222,7 @@ var $author$project$Components$header = F2(
 							$rtfeldman$elm_css$Css$borderBottom3,
 							$rtfeldman$elm_css$Css$px(1),
 							$rtfeldman$elm_css$Css$solid,
-							$author$project$Components$almostWhite)
+							$author$project$Components$white)
 						]))
 				]),
 			_List_fromArray(
@@ -8299,18 +8301,6 @@ var $elm$core$Array$indexedMap = F2(
 			true,
 			A3($elm$core$Elm$JsArray$foldl, helper, initialBuilder, tree));
 	});
-var $rtfeldman$elm_css$Css$animationDelay = function (arg) {
-	return A2($rtfeldman$elm_css$Css$prop1, 'animation-delay', arg);
-};
-var $rtfeldman$elm_css$Css$animationDuration = function (arg) {
-	return A2($rtfeldman$elm_css$Css$prop1, 'animation-duration', arg);
-};
-var $rtfeldman$elm_css$Css$Preprocess$WithKeyframes = function (a) {
-	return {$: 'WithKeyframes', a: a};
-};
-var $rtfeldman$elm_css$Css$animationName = function (arg) {
-	return ((arg.value === 'none') || ((arg.value === 'inherit') || ((arg.value === 'unset') || (arg.value === 'initial')))) ? A2($rtfeldman$elm_css$Css$prop1, 'animation-name', arg) : $rtfeldman$elm_css$Css$Preprocess$WithKeyframes(arg.value);
-};
 var $rtfeldman$elm_css$Css$Transitions$Border = {$: 'Border'};
 var $rtfeldman$elm_css$Css$Transitions$Transition = function (a) {
 	return {$: 'Transition', a: a};
@@ -8328,6 +8318,18 @@ var $rtfeldman$elm_css$Css$Transitions$fullTransition = F4(
 var $rtfeldman$elm_css$Css$Transitions$border3 = $rtfeldman$elm_css$Css$Transitions$fullTransition($rtfeldman$elm_css$Css$Transitions$Border);
 var $rtfeldman$elm_css$Css$Transitions$Ease = {$: 'Ease'};
 var $rtfeldman$elm_css$Css$Transitions$ease = $rtfeldman$elm_css$Css$Transitions$Ease;
+var $rtfeldman$elm_css$Css$animationDelay = function (arg) {
+	return A2($rtfeldman$elm_css$Css$prop1, 'animation-delay', arg);
+};
+var $rtfeldman$elm_css$Css$animationDuration = function (arg) {
+	return A2($rtfeldman$elm_css$Css$prop1, 'animation-duration', arg);
+};
+var $rtfeldman$elm_css$Css$Preprocess$WithKeyframes = function (a) {
+	return {$: 'WithKeyframes', a: a};
+};
+var $rtfeldman$elm_css$Css$animationName = function (arg) {
+	return ((arg.value === 'none') || ((arg.value === 'inherit') || ((arg.value === 'unset') || (arg.value === 'initial')))) ? A2($rtfeldman$elm_css$Css$prop1, 'animation-name', arg) : $rtfeldman$elm_css$Css$Preprocess$WithKeyframes(arg.value);
+};
 var $rtfeldman$elm_css$Css$Internal$printKeyframeSelector = function (_v0) {
 	var percentage = _v0.a;
 	var properties = _v0.b;
@@ -8377,42 +8379,58 @@ var $rtfeldman$elm_css$Css$Animations$opacity = function (_v0) {
 	var value = _v0.value;
 	return $rtfeldman$elm_css$Css$Internal$Property('opacity:' + value);
 };
-var $author$project$Components$fadeIn = $rtfeldman$elm_css$Css$Animations$keyframes(
-	_List_fromArray(
-		[
-			_Utils_Tuple2(
-			0,
+var $author$project$Components$fadeKeyframes = F2(
+	function (from, to) {
+		return $rtfeldman$elm_css$Css$Animations$keyframes(
 			_List_fromArray(
 				[
-					$rtfeldman$elm_css$Css$Animations$opacity(
-					$rtfeldman$elm_css$Css$num(0))
-				])),
-			_Utils_Tuple2(
-			100,
+					_Utils_Tuple2(
+					0,
+					_List_fromArray(
+						[
+							$rtfeldman$elm_css$Css$Animations$opacity(
+							$rtfeldman$elm_css$Css$num(from))
+						])),
+					_Utils_Tuple2(
+					100,
+					_List_fromArray(
+						[
+							$rtfeldman$elm_css$Css$Animations$opacity(
+							$rtfeldman$elm_css$Css$num(to))
+						]))
+				]));
+	});
+var $rtfeldman$elm_css$Css$opacity = $rtfeldman$elm_css$Css$prop1('opacity');
+var $rtfeldman$elm_css$Css$sec = function (amount) {
+	return {
+		duration: $rtfeldman$elm_css$Css$Structure$Compatible,
+		value: $elm$core$String$fromFloat(amount) + 's'
+	};
+};
+var $author$project$Components$fade = F4(
+	function (from, to, duration, delay) {
+		return $rtfeldman$elm_css$Css$batch(
 			_List_fromArray(
 				[
-					$rtfeldman$elm_css$Css$Animations$opacity(
-					$rtfeldman$elm_css$Css$num(100))
-				]))
-		]));
-var $author$project$Components$fadeOut = $rtfeldman$elm_css$Css$Animations$keyframes(
-	_List_fromArray(
-		[
-			_Utils_Tuple2(
-			0,
-			_List_fromArray(
-				[
-					$rtfeldman$elm_css$Css$Animations$opacity(
-					$rtfeldman$elm_css$Css$num(100))
-				])),
-			_Utils_Tuple2(
-			100,
-			_List_fromArray(
-				[
-					$rtfeldman$elm_css$Css$Animations$opacity(
-					$rtfeldman$elm_css$Css$num(0))
-				]))
-		]));
+					$rtfeldman$elm_css$Css$opacity(
+					$rtfeldman$elm_css$Css$num(from)),
+					$rtfeldman$elm_css$Css$animationName(
+					A2($author$project$Components$fadeKeyframes, from, to)),
+					A2($rtfeldman$elm_css$Css$property, 'animation-fill-mode', 'forwards'),
+					$rtfeldman$elm_css$Css$animationDuration(
+					$rtfeldman$elm_css$Css$sec(duration)),
+					$rtfeldman$elm_css$Css$animationDelay(
+					$rtfeldman$elm_css$Css$sec(delay))
+				]));
+	});
+var $author$project$Components$fadeIn = F2(
+	function (duration, delay) {
+		return A4($author$project$Components$fade, 0, 100, duration, delay);
+	});
+var $author$project$Components$fadeOut = F2(
+	function (duration, delay) {
+		return A4($author$project$Components$fade, 100, 0, duration, delay);
+	});
 var $rtfeldman$elm_css$Css$Transitions$Filter = {$: 'Filter'};
 var $rtfeldman$elm_css$Css$Transitions$filter3 = $rtfeldman$elm_css$Css$Transitions$fullTransition($rtfeldman$elm_css$Css$Transitions$Filter);
 var $rtfeldman$elm_css$Css$float = function (fn) {
@@ -8429,7 +8447,6 @@ var $rtfeldman$elm_css$Css$Transitions$Margin = {$: 'Margin'};
 var $rtfeldman$elm_css$Css$Transitions$margin3 = $rtfeldman$elm_css$Css$Transitions$fullTransition($rtfeldman$elm_css$Css$Transitions$Margin);
 var $rtfeldman$elm_css$Css$margin4 = $rtfeldman$elm_css$Css$prop4('margin');
 var $rtfeldman$elm_css$Css$marginTop = $rtfeldman$elm_css$Css$prop1('margin-top');
-var $rtfeldman$elm_css$Css$opacity = $rtfeldman$elm_css$Css$prop1('opacity');
 var $rtfeldman$elm_css$Css$Transitions$Opacity = {$: 'Opacity'};
 var $rtfeldman$elm_css$Css$Transitions$opacity3 = $rtfeldman$elm_css$Css$Transitions$fullTransition($rtfeldman$elm_css$Css$Transitions$Opacity);
 var $rtfeldman$elm_css$Css$bottom = $rtfeldman$elm_css$Css$prop1('bottom');
@@ -8705,8 +8722,9 @@ var $author$project$Components$photoHeadline = F4(
 						[
 							$rtfeldman$elm_css$Css$fontSize(
 							$rtfeldman$elm_css$Css$em(1.5)),
-							$rtfeldman$elm_css$Css$color($author$project$Components$almostWhite),
-							$rtfeldman$elm_css$Css$backgroundColor($author$project$Components$transparentBlue),
+							$rtfeldman$elm_css$Css$color($author$project$Components$white),
+							$rtfeldman$elm_css$Css$backgroundColor(
+							A2($author$project$Components$setAlpha, $author$project$Components$blue, 0.75)),
 							$rtfeldman$elm_css$Css$padding(
 							$rtfeldman$elm_css$Css$em(0.5)),
 							$rtfeldman$elm_css$Css$cursor($rtfeldman$elm_css$Css$pointer),
@@ -8743,12 +8761,16 @@ var $author$project$Components$photoHeadline = F4(
 				]));
 	});
 var $rtfeldman$elm_css$Css$relative = {position: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'relative'};
-var $rtfeldman$elm_css$Css$sec = function (amount) {
-	return {
-		duration: $rtfeldman$elm_css$Css$Structure$Compatible,
-		value: $elm$core$String$fromFloat(amount) + 's'
-	};
-};
+var $author$project$Components$topLeft = F2(
+	function (topPos, leftPos) {
+		return $rtfeldman$elm_css$Css$batch(
+			_List_fromArray(
+				[
+					$rtfeldman$elm_css$Css$position($rtfeldman$elm_css$Css$absolute),
+					$rtfeldman$elm_css$Css$top(topPos),
+					$rtfeldman$elm_css$Css$left(leftPos)
+				]));
+	});
 var $rtfeldman$elm_css$Css$Transitions$Width = {$: 'Width'};
 var $rtfeldman$elm_css$Css$Transitions$width3 = $rtfeldman$elm_css$Css$Transitions$fullTransition($rtfeldman$elm_css$Css$Transitions$Width);
 var $author$project$Components$photo = F4(
@@ -8857,7 +8879,7 @@ var $author$project$Components$photo = F4(
 											$rtfeldman$elm_css$Css$zero,
 											$rtfeldman$elm_css$Css$zero),
 											$rtfeldman$elm_css$Css$display($rtfeldman$elm_css$Css$block),
-											$rtfeldman$elm_css$Css$color($author$project$Components$almostWhite)
+											$rtfeldman$elm_css$Css$color($author$project$Components$white)
 										]))
 								]),
 							_List_fromArray(
@@ -8987,56 +9009,29 @@ var $author$project$Components$photo = F4(
 				}(),
 					function () {
 					if (view.$ === 'Article') {
-						var animation = $rtfeldman$elm_css$Css$batch(
+						return A2(
+							$author$project$Components$fullscreenButton,
+							fullscreenClick,
 							_List_fromArray(
 								[
-									$rtfeldman$elm_css$Css$opacity($rtfeldman$elm_css$Css$zero),
-									$rtfeldman$elm_css$Css$animationName($author$project$Components$fadeIn),
-									$rtfeldman$elm_css$Css$animationDuration(
-									$rtfeldman$elm_css$Css$sec(0.5)),
-									$rtfeldman$elm_css$Css$animationDelay(
-									$rtfeldman$elm_css$Css$sec(0.5)),
-									A2($rtfeldman$elm_css$Css$property, 'animation-fill-mode', 'forwards')
+									A2($author$project$Components$fadeIn, 0.5, 0.5),
+									A2(
+									$author$project$Components$topLeft,
+									$rtfeldman$elm_css$Css$pct(10),
+									$rtfeldman$elm_css$Css$pct(5))
 								]));
-						return A2(
-							$author$project$Components$toggleFullscreen,
-							fullscreenClick,
-							$rtfeldman$elm_css$Css$batch(
-								_List_fromArray(
-									[
-										animation,
-										$rtfeldman$elm_css$Css$position($rtfeldman$elm_css$Css$absolute),
-										$rtfeldman$elm_css$Css$top(
-										$rtfeldman$elm_css$Css$pct(10)),
-										$rtfeldman$elm_css$Css$left(
-										$rtfeldman$elm_css$Css$pct(5))
-									])));
 					} else {
-						var animation = $rtfeldman$elm_css$Css$batch(
+						return A2(
+							$author$project$Components$fullscreenButton,
+							fullscreenClick,
 							_List_fromArray(
 								[
-									$rtfeldman$elm_css$Css$opacity(
-									$rtfeldman$elm_css$Css$num(100)),
-									$rtfeldman$elm_css$Css$animationName($author$project$Components$fadeOut),
-									$rtfeldman$elm_css$Css$animationDuration(
-									$rtfeldman$elm_css$Css$sec(0.5)),
-									$rtfeldman$elm_css$Css$animationDelay(
-									$rtfeldman$elm_css$Css$sec(0)),
-									A2($rtfeldman$elm_css$Css$property, 'animation-fill-mode', 'forwards')
+									A2($author$project$Components$fadeOut, 0.5, 0),
+									A2(
+									$author$project$Components$topLeft,
+									$rtfeldman$elm_css$Css$pct(10),
+									$rtfeldman$elm_css$Css$pct(5))
 								]));
-						return A2(
-							$author$project$Components$toggleFullscreen,
-							fullscreenClick,
-							$rtfeldman$elm_css$Css$batch(
-								_List_fromArray(
-									[
-										animation,
-										$rtfeldman$elm_css$Css$position($rtfeldman$elm_css$Css$absolute),
-										$rtfeldman$elm_css$Css$top(
-										$rtfeldman$elm_css$Css$pct(10)),
-										$rtfeldman$elm_css$Css$left(
-										$rtfeldman$elm_css$Css$pct(5))
-									])));
 					}
 				}()
 				]));
