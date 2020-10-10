@@ -291,7 +291,7 @@ header headline description =
 
 footer : Html msg
 footer =
-    div [ css [ borderTop3 (px 1) solid white ] ] []
+    div [ css [ height (em 4), borderTop3 (px 1) solid white ] ] []
 
 
 fullscreen : msg -> String -> Html msg
