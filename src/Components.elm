@@ -1,6 +1,7 @@
-module Components exposing (PhotoView(..), blue, footer, fullscreen, fullscreenButton, header, photo, white)
+module Components exposing (blue, footer, fullscreen, fullscreenButton, header, photo, white)
 
-import Css exposing (Color, FontSize, LengthOrAuto, Style, absolute, animationDelay, animationDuration, animationName, auto, backgroundColor, batch, block, border3, borderBottom3, borderTop3, bottom, calc, center, color, cursor, display, em, fixed, float, fontSize, fontWeight, height, hex, hidden, hover, int, left, letterSpacing, lighter, margin, margin2, margin4, marginTop, maxHeight, maxWidth, minus, num, opacity, overflow, padding, padding4, pct, pointer, position, property, px, relative, rgb, rgba, right, sec, solid, textAlign, top, vh, vw, width, zIndex, zero)
+import Components.Photo exposing (View(..))
+import Css exposing (Color, LengthOrAuto, Style, absolute, animationDelay, animationDuration, animationName, auto, backgroundColor, batch, block, border3, borderBottom3, borderTop3, bottom, calc, center, color, cursor, display, em, fixed, float, fontSize, fontWeight, height, hex, hidden, hover, int, left, letterSpacing, lighter, margin, margin2, margin4, marginTop, maxHeight, maxWidth, minus, num, opacity, overflow, padding, padding4, pct, pointer, position, property, px, relative, rgb, rgba, right, sec, solid, textAlign, top, vh, vw, width, zIndex, zero)
 import Css.Animations exposing (Keyframes, keyframes)
 import Css.Transitions exposing (Transition, ease, transition)
 import Html.Styled exposing (Html, div, h1, h2, h3, img, span, text)
@@ -27,14 +28,14 @@ gray =
     rgb 127 127 127
 
 
-black : Color
-black =
-    rgb 0 0 0
-
-
 blue : Color
 blue =
     rgb 38 58 114
+
+
+black : Color
+black =
+    rgb 0 0 0
 
 
 
@@ -149,11 +150,6 @@ fullscreenButton onButtonClick moreStyles =
     span [ css <| moreStyles ++ style, onClick onButtonClick ] [ text "⛶" ]
 
 
-type PhotoView
-    = Article
-    | Teaser
-
-
 type alias Photo =
     { headline : String
     , text : String
@@ -185,7 +181,37 @@ photoHeadline headline bottomPercent duration delay headlineClick =
 -- image ratio is 4:3
 
 
-photo : PhotoView -> Photo -> msg -> msg -> Html msg
+photoImage : View -> String -> Float -> Float -> Html msg
+photoImage view image duration delay =
+    case view of
+        Article ->
+            img
+                [ css
+                    [ width (pct 88)
+                    , margin4 (pct 4) zero (pct 2) (pct 6)
+                    , border3 (px 1) solid gray
+                    , property "filter" "grayscale(0%)"
+                    , transitions [ easeBorder, easeFilter, easeMargin, easeWidth ] duration delay
+                    ]
+                , src image
+                ]
+                []
+
+        Teaser ->
+            img
+                [ css
+                    [ width (pct 100)
+                    , marginTop (pct -25)
+                    , border3 (px 0) solid black
+                    , property "filter" "grayscale(80%)"
+                    , transitions [ easeBorder, easeFilter, easeMargin, easeWidth ] duration delay
+                    ]
+                , src image
+                ]
+                []
+
+
+photo : View -> Photo -> msg -> msg -> Html msg
 photo view { headline, text, image } headlineClick fullscreenClick =
     div
         [ css <|
@@ -234,7 +260,19 @@ photo view { headline, text, image } headlineClick fullscreenClick =
                 ]
                 [ Html.Styled.text text ]
             ]
-        , case view of
+        , let
+            duration =
+                500
+
+            delay =
+                case view of
+                    Article ->
+                        0
+
+                    Teaser ->
+                        500
+          in
+          case view of
             Article ->
                 div
                     -- calc(50vw / 4 * 3); Images ratio is 4:3, whole image is displayed
@@ -242,21 +280,10 @@ photo view { headline, text, image } headlineClick fullscreenClick =
                         [ overflow hidden
                         , width (vw 50)
                         , height (vw 37.5)
-                        , transitions [ easeHeight, easeWidth ] 500 0
+                        , transitions [ easeHeight, easeWidth ] duration delay
                         ]
                     ]
-                    [ img
-                        [ css
-                            [ width (pct 88)
-                            , margin4 (pct 4) zero (pct 2) (pct 6)
-                            , border3 (px 1) solid gray
-                            , property "filter" "grayscale(0%)"
-                            , transitions [ easeBorder, easeFilter, easeMargin, easeWidth ] 500 0
-                            ]
-                        , src image
-                        ]
-                        []
-                    ]
+                    [ photoImage Article image duration delay ]
 
             Teaser ->
                 div
@@ -265,21 +292,10 @@ photo view { headline, text, image } headlineClick fullscreenClick =
                         [ overflow hidden
                         , width (pct 100)
                         , height (vw 18.75)
-                        , transitions [ easeHeight, easeWidth ] 500 500
+                        , transitions [ easeHeight, easeWidth ] duration delay
                         ]
                     ]
-                    [ img
-                        [ css
-                            [ width (pct 100)
-                            , marginTop (pct -25)
-                            , border3 (px 0) solid black
-                            , property "filter" "grayscale(80%)"
-                            , transitions [ easeBorder, easeFilter, easeMargin, easeWidth ] 500 500
-                            ]
-                        , src image
-                        ]
-                        []
-                    ]
+                    [ photoImage Teaser image duration delay ]
         , case view of
             Article ->
                 photoHeadline headline 8 500 0 headlineClick

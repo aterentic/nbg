@@ -5,6 +5,7 @@ import Assets
 import Browser exposing (Document)
 import Browser.Navigation
 import Components
+import Components.Photo
 import Css exposing (backgroundColor, fontFamilies, hidden, margin, overflowX, px)
 import Css.Global exposing (global, selector)
 import Data exposing (Photo)
@@ -32,13 +33,13 @@ type Msg
 
 type alias PhotoInList =
     { photo : Photo
-    , photoView : Components.PhotoView
+    , photoView : Components.Photo.View
     }
 
 
 teaser : Int -> Photo -> PhotoInList
 teaser _ photo =
-    { photo = photo, photoView = Components.Teaser }
+    { photo = photo, photoView = Components.Photo.Teaser }
 
 
 init : flags -> Url -> Browser.Navigation.Key -> ( Model, Cmd msg )
@@ -64,11 +65,11 @@ view model =
         pv =
             \index { photo, photoView } ->
                 case photoView of
-                    Components.Article ->
-                        Components.photo Components.Article photo (CloseArticle index photo) (GoToFullscreen photo)
+                    Components.Photo.Article ->
+                        Components.photo Components.Photo.Article photo (CloseArticle index photo) (GoToFullscreen photo)
 
-                    Components.Teaser ->
-                        Components.photo Components.Teaser photo (OpenArticle index photo) None
+                    Components.Photo.Teaser ->
+                        Components.photo Components.Photo.Teaser photo (OpenArticle index photo) None
     in
     Document Assets.document <|
         List.map toUnstyled <|
@@ -83,10 +84,10 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         OpenArticle index photo ->
-            ( { model | list = Array.set index { photoView = Components.Article, photo = photo } model.list, fullscreen = Nothing }, Cmd.none )
+            ( { model | list = Array.set index { photoView = Components.Photo.Article, photo = photo } model.list, fullscreen = Nothing }, Cmd.none )
 
         CloseArticle index photo ->
-            ( { model | list = Array.set index { photoView = Components.Teaser, photo = photo } model.list, fullscreen = Nothing }, Cmd.none )
+            ( { model | list = Array.set index { photoView = Components.Photo.Teaser, photo = photo } model.list, fullscreen = Nothing }, Cmd.none )
 
         GoToFullscreen photo ->
             ( { model | fullscreen = Just photo }, Cmd.none )
