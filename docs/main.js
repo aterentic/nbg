@@ -8721,12 +8721,6 @@ var $author$project$Components$Photo$container = F4(
 					A4($author$project$Components$Photo$image, view, imgSrc, duration, delay)
 				]));
 	});
-var $rtfeldman$elm_css$Css$Transitions$Opacity = {$: 'Opacity'};
-var $rtfeldman$elm_css$Css$Transitions$opacity3 = $rtfeldman$elm_css$Css$Transitions$fullTransition($rtfeldman$elm_css$Css$Transitions$Opacity);
-var $author$project$Utils$easeOpacity = F2(
-	function (duration, delay) {
-		return A3($rtfeldman$elm_css$Css$Transitions$opacity3, duration, delay, $rtfeldman$elm_css$Css$Transitions$ease);
-	});
 var $rtfeldman$elm_css$Css$animationDelay = function (arg) {
 	return A2($rtfeldman$elm_css$Css$prop1, 'animation-delay', arg);
 };
@@ -8840,13 +8834,6 @@ var $author$project$Utils$fadeOut = F2(
 	function (duration, delay) {
 		return A4($author$project$Utils$fade, 100, 0, duration, delay);
 	});
-var $rtfeldman$elm_css$Css$float = function (fn) {
-	return A3(
-		$rtfeldman$elm_css$Css$Internal$getOverloadedProperty,
-		'float',
-		'float',
-		fn($rtfeldman$elm_css$Css$Internal$lengthForOverloadedProperty));
-};
 var $rtfeldman$elm_css$Css$bottom = $rtfeldman$elm_css$Css$prop1('bottom');
 var $rtfeldman$elm_css$Css$Transitions$Bottom = {$: 'Bottom'};
 var $rtfeldman$elm_css$Css$Transitions$bottom3 = $rtfeldman$elm_css$Css$Transitions$fullTransition($rtfeldman$elm_css$Css$Transitions$Bottom);
@@ -8916,6 +8903,90 @@ var $author$project$Components$Photo$headline = F5(
 				]));
 	});
 var $rtfeldman$elm_css$Css$relative = {position: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'relative'};
+var $rtfeldman$elm_css$Css$Transitions$Opacity = {$: 'Opacity'};
+var $rtfeldman$elm_css$Css$Transitions$opacity3 = $rtfeldman$elm_css$Css$Transitions$fullTransition($rtfeldman$elm_css$Css$Transitions$Opacity);
+var $author$project$Utils$easeOpacity = F2(
+	function (duration, delay) {
+		return A3($rtfeldman$elm_css$Css$Transitions$opacity3, duration, delay, $rtfeldman$elm_css$Css$Transitions$ease);
+	});
+var $rtfeldman$elm_css$Css$float = function (fn) {
+	return A3(
+		$rtfeldman$elm_css$Css$Internal$getOverloadedProperty,
+		'float',
+		'float',
+		fn($rtfeldman$elm_css$Css$Internal$lengthForOverloadedProperty));
+};
+var $author$project$Components$Photo$text = F4(
+	function (view, articleText, duration, delay) {
+		return A2(
+			$rtfeldman$elm_css$Html$Styled$div,
+			_List_fromArray(
+				[
+					function () {
+					if (view.$ === 'Article') {
+						return $rtfeldman$elm_css$Html$Styled$Attributes$css(
+							_List_fromArray(
+								[
+									$rtfeldman$elm_css$Css$float($rtfeldman$elm_css$Css$right),
+									$rtfeldman$elm_css$Css$overflow($rtfeldman$elm_css$Css$hidden),
+									$rtfeldman$elm_css$Css$width(
+									$rtfeldman$elm_css$Css$pct(50)),
+									$rtfeldman$elm_css$Css$opacity(
+									$rtfeldman$elm_css$Css$num(100)),
+									$rtfeldman$elm_css$Css$height(
+									$rtfeldman$elm_css$Css$pct(100)),
+									$rtfeldman$elm_css$Css$Transitions$transition(
+									_List_fromArray(
+										[
+											A2($author$project$Utils$easeOpacity, duration, delay),
+											A2($author$project$Utils$easeWidth, duration, 0)
+										]))
+								]));
+					} else {
+						return $rtfeldman$elm_css$Html$Styled$Attributes$css(
+							_List_fromArray(
+								[
+									$rtfeldman$elm_css$Css$float($rtfeldman$elm_css$Css$right),
+									$rtfeldman$elm_css$Css$overflow($rtfeldman$elm_css$Css$hidden),
+									$rtfeldman$elm_css$Css$width($rtfeldman$elm_css$Css$zero),
+									$rtfeldman$elm_css$Css$opacity($rtfeldman$elm_css$Css$zero),
+									$rtfeldman$elm_css$Css$height($rtfeldman$elm_css$Css$zero),
+									$rtfeldman$elm_css$Css$Transitions$transition(
+									_List_fromArray(
+										[
+											A2($author$project$Utils$easeOpacity, duration, 0),
+											A2($author$project$Utils$easeWidth, duration, delay),
+											A2($author$project$Utils$easeHeight, duration, delay)
+										]))
+								]));
+					}
+				}()
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$rtfeldman$elm_css$Html$Styled$span,
+					_List_fromArray(
+						[
+							$rtfeldman$elm_css$Html$Styled$Attributes$css(
+							_List_fromArray(
+								[
+									A4(
+									$rtfeldman$elm_css$Css$padding4,
+									$rtfeldman$elm_css$Css$pct(4),
+									$rtfeldman$elm_css$Css$pct(8),
+									$rtfeldman$elm_css$Css$zero,
+									$rtfeldman$elm_css$Css$zero),
+									$rtfeldman$elm_css$Css$display($rtfeldman$elm_css$Css$block),
+									$rtfeldman$elm_css$Css$color($author$project$Utils$white)
+								]))
+						]),
+					_List_fromArray(
+						[
+							$rtfeldman$elm_css$Html$Styled$text(articleText)
+						]))
+				]));
+	});
 var $author$project$Utils$topLeft = F2(
 	function (topPos, leftPos) {
 		return $rtfeldman$elm_css$Css$batch(
@@ -8974,74 +9045,7 @@ var $author$project$Components$photo = F6(
 				]),
 			_List_fromArray(
 				[
-					A2(
-					$rtfeldman$elm_css$Html$Styled$div,
-					_List_fromArray(
-						[
-							function () {
-							if (view.$ === 'Article') {
-								return $rtfeldman$elm_css$Html$Styled$Attributes$css(
-									_List_fromArray(
-										[
-											$rtfeldman$elm_css$Css$float($rtfeldman$elm_css$Css$right),
-											$rtfeldman$elm_css$Css$overflow($rtfeldman$elm_css$Css$hidden),
-											$rtfeldman$elm_css$Css$width(
-											$rtfeldman$elm_css$Css$pct(50)),
-											$rtfeldman$elm_css$Css$opacity(
-											$rtfeldman$elm_css$Css$num(100)),
-											$rtfeldman$elm_css$Css$height(
-											$rtfeldman$elm_css$Css$pct(100)),
-											$rtfeldman$elm_css$Css$Transitions$transition(
-											_List_fromArray(
-												[
-													A2($author$project$Utils$easeOpacity, duration, delay),
-													A2($author$project$Utils$easeWidth, duration, 0)
-												]))
-										]));
-							} else {
-								return $rtfeldman$elm_css$Html$Styled$Attributes$css(
-									_List_fromArray(
-										[
-											$rtfeldman$elm_css$Css$float($rtfeldman$elm_css$Css$right),
-											$rtfeldman$elm_css$Css$overflow($rtfeldman$elm_css$Css$hidden),
-											$rtfeldman$elm_css$Css$width($rtfeldman$elm_css$Css$zero),
-											$rtfeldman$elm_css$Css$opacity($rtfeldman$elm_css$Css$zero),
-											$rtfeldman$elm_css$Css$height($rtfeldman$elm_css$Css$zero),
-											$rtfeldman$elm_css$Css$Transitions$transition(
-											_List_fromArray(
-												[
-													A2($author$project$Utils$easeOpacity, duration, 0),
-													A2($author$project$Utils$easeWidth, duration, delay),
-													A2($author$project$Utils$easeHeight, duration, delay)
-												]))
-										]));
-							}
-						}()
-						]),
-					_List_fromArray(
-						[
-							A2(
-							$rtfeldman$elm_css$Html$Styled$span,
-							_List_fromArray(
-								[
-									$rtfeldman$elm_css$Html$Styled$Attributes$css(
-									_List_fromArray(
-										[
-											A4(
-											$rtfeldman$elm_css$Css$padding4,
-											$rtfeldman$elm_css$Css$pct(4),
-											$rtfeldman$elm_css$Css$pct(8),
-											$rtfeldman$elm_css$Css$zero,
-											$rtfeldman$elm_css$Css$zero),
-											$rtfeldman$elm_css$Css$display($rtfeldman$elm_css$Css$block),
-											$rtfeldman$elm_css$Css$color($author$project$Utils$white)
-										]))
-								]),
-							_List_fromArray(
-								[
-									$rtfeldman$elm_css$Html$Styled$text(text)
-								]))
-						])),
+					A4($author$project$Components$Photo$text, view, text, duration, delay),
 					A4($author$project$Components$Photo$container, view, image, duration, delay),
 					A5($author$project$Components$Photo$headline, view, headline, duration, delay, headlineClick),
 					function () {

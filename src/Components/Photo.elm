@@ -1,15 +1,51 @@
-module Components.Photo exposing (View(..), container, headline)
+module Components.Photo exposing (View(..), container, headline, text)
 
-import Css exposing (absolute, backgroundColor, border3, bottom, color, cursor, em, fontSize, height, hidden, hover, margin4, marginTop, overflow, padding, pct, pointer, position, property, px, solid, vw, width, zero)
+import Css exposing (absolute, backgroundColor, block, border3, bottom, color, cursor, display, em, float, fontSize, height, hidden, hover, margin4, marginTop, num, opacity, overflow, padding, padding4, pct, pointer, position, property, px, right, solid, vw, width, zero)
+import Css.Transitions exposing (transition)
 import Html.Styled exposing (Html, div, h2, img, span)
 import Html.Styled.Attributes exposing (css, src)
 import Html.Styled.Events exposing (onClick)
-import Utils exposing (black, blue, easeBorder, easeBottom, easeFilter, easeHeight, easeMargin, easeWidth, gray, setAlpha, transitions, white)
+import Utils exposing (black, blue, easeBorder, easeBottom, easeFilter, easeHeight, easeMargin, easeOpacity, easeWidth, gray, setAlpha, transitions, white)
 
 
 type View
     = Article
     | Teaser
+
+
+text : View -> String -> Float -> Float -> Html msg
+text view articleText duration delay =
+    div
+        [ case view of
+            Article ->
+                css
+                    [ float right
+                    , overflow hidden
+                    , width (pct 50)
+                    , opacity (num 100)
+                    , height (pct 100)
+                    , transition [ easeOpacity duration delay, easeWidth duration 0 ]
+                    ]
+
+            Teaser ->
+                css
+                    [ float right
+                    , overflow hidden
+                    , width zero
+                    , opacity zero
+                    , height zero
+                    , transition [ easeOpacity duration 0, easeWidth duration delay, easeHeight duration delay ]
+                    ]
+        ]
+        [ span
+            [ css
+                [ padding4 (pct 4) (pct 8) zero zero
+                , display block
+                , color white
+                ]
+            ]
+            [ Html.Styled.text articleText ]
+        ]
 
 
 headline : View -> String -> Float -> Float -> msg -> Html msg

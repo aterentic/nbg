@@ -60,37 +60,7 @@ photo view { headline, text, image } headlineClick fullscreenClick duration dela
                             [ height (vw 18.75), transitions [ easeHeight ] duration delay ]
                    )
         ]
-        [ div
-            [ case view of
-                Article ->
-                    css
-                        [ float right
-                        , overflow hidden
-                        , width (pct 50)
-                        , opacity (num 100)
-                        , height (pct 100)
-                        , transition [ easeOpacity duration delay, easeWidth duration 0 ]
-                        ]
-
-                Teaser ->
-                    css
-                        [ float right
-                        , overflow hidden
-                        , width zero
-                        , opacity zero
-                        , height zero
-                        , transition [ easeOpacity duration 0, easeWidth duration delay, easeHeight duration delay ]
-                        ]
-            ]
-            [ span
-                [ css
-                    [ padding4 (pct 4) (pct 8) zero zero
-                    , display block
-                    , color white
-                    ]
-                ]
-                [ Html.Styled.text text ]
-            ]
+        [ Components.Photo.text view text duration delay
         , Components.Photo.container view image duration delay
         , Components.Photo.headline view headline duration delay headlineClick
         , case view of
