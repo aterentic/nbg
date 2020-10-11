@@ -1,6 +1,7 @@
-module Utils exposing (black, blue, easeBorder, easeBottom, easeFilter, easeHeight, easeMargin, easeOpacity, easeWidth, gray, setAlpha, transitions, white)
+module Utils exposing (black, blue, easeBorder, easeBottom, easeFilter, easeHeight, easeMargin, easeOpacity, easeWidth, fadeIn, fadeOut, gray, setAlpha, topLeft, topRight, transitions, white)
 
-import Css exposing (Color, Style, hex, rgb, rgba)
+import Css exposing (Color, LengthOrAuto, Style, absolute, animationDelay, animationDuration, animationName, batch, hex, left, num, opacity, position, property, rgb, rgba, right, sec, top)
+import Css.Animations exposing (Keyframes, keyframes)
 import Css.Transitions exposing (Transition, ease, transition)
 
 
@@ -75,3 +76,50 @@ easeBorder duration delay =
 transitions : List (Float -> Float -> Transition) -> Float -> Float -> Style
 transitions tfs duration delay =
     transition <| List.map (\f -> f duration delay) tfs
+
+
+
+-- Animations
+
+
+fadeKeyframes : Float -> Float -> Keyframes {}
+fadeKeyframes from to =
+    keyframes
+        [ ( 0, [ Css.Animations.opacity (num from) ] )
+        , ( 100, [ Css.Animations.opacity (num to) ] )
+        ]
+
+
+fade : Float -> Float -> Float -> Float -> Style
+fade from to duration delay =
+    batch
+        [ opacity (num from)
+        , animationName <| fadeKeyframes from to
+        , property "animation-fill-mode" "forwards"
+        , animationDuration (sec <| duration / 1000)
+        , animationDelay (sec <| delay / 1000)
+        ]
+
+
+fadeIn : Float -> Float -> Style
+fadeIn duration delay =
+    fade 0 100 duration delay
+
+
+fadeOut : Float -> Float -> Style
+fadeOut duration delay =
+    fade 100 0 duration delay
+
+
+
+-- Positioning
+
+
+topRight : LengthOrAuto a -> LengthOrAuto b -> Style
+topRight topPos rightPos =
+    batch [ position absolute, top topPos, right rightPos ]
+
+
+topLeft : LengthOrAuto a -> LengthOrAuto b -> Style
+topLeft topPos leftPos =
+    batch [ position absolute, top topPos, left leftPos ]

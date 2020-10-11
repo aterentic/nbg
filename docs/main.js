@@ -8078,7 +8078,7 @@ var $rtfeldman$elm_css$Css$top = $rtfeldman$elm_css$Css$prop1('top');
 var $rtfeldman$elm_css$Css$absolute = {position: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'absolute'};
 var $rtfeldman$elm_css$Css$batch = $rtfeldman$elm_css$Css$Preprocess$ApplyStyles;
 var $rtfeldman$elm_css$Css$right = $rtfeldman$elm_css$Css$prop1('right');
-var $author$project$Components$topRight = F2(
+var $author$project$Utils$topRight = F2(
 	function (topPos, rightPos) {
 		return $rtfeldman$elm_css$Css$batch(
 			_List_fromArray(
@@ -8160,7 +8160,7 @@ var $author$project$Components$fullscreen = F2(
 					_List_fromArray(
 						[
 							A2(
-							$author$project$Components$topRight,
+							$author$project$Utils$topRight,
 							$rtfeldman$elm_css$Css$vh(6),
 							$rtfeldman$elm_css$Css$em(1))
 						]))
@@ -8788,7 +8788,7 @@ var $rtfeldman$elm_css$Css$Animations$opacity = function (_v0) {
 	var value = _v0.value;
 	return $rtfeldman$elm_css$Css$Internal$Property('opacity:' + value);
 };
-var $author$project$Components$fadeKeyframes = F2(
+var $author$project$Utils$fadeKeyframes = F2(
 	function (from, to) {
 		return $rtfeldman$elm_css$Css$Animations$keyframes(
 			_List_fromArray(
@@ -8816,7 +8816,7 @@ var $rtfeldman$elm_css$Css$sec = function (amount) {
 		value: $elm$core$String$fromFloat(amount) + 's'
 	};
 };
-var $author$project$Components$fade = F4(
+var $author$project$Utils$fade = F4(
 	function (from, to, duration, delay) {
 		return $rtfeldman$elm_css$Css$batch(
 			_List_fromArray(
@@ -8824,21 +8824,21 @@ var $author$project$Components$fade = F4(
 					$rtfeldman$elm_css$Css$opacity(
 					$rtfeldman$elm_css$Css$num(from)),
 					$rtfeldman$elm_css$Css$animationName(
-					A2($author$project$Components$fadeKeyframes, from, to)),
+					A2($author$project$Utils$fadeKeyframes, from, to)),
 					A2($rtfeldman$elm_css$Css$property, 'animation-fill-mode', 'forwards'),
 					$rtfeldman$elm_css$Css$animationDuration(
-					$rtfeldman$elm_css$Css$sec(duration)),
+					$rtfeldman$elm_css$Css$sec(duration / 1000)),
 					$rtfeldman$elm_css$Css$animationDelay(
-					$rtfeldman$elm_css$Css$sec(delay))
+					$rtfeldman$elm_css$Css$sec(delay / 1000))
 				]));
 	});
-var $author$project$Components$fadeIn = F2(
+var $author$project$Utils$fadeIn = F2(
 	function (duration, delay) {
-		return A4($author$project$Components$fade, 0, 100, duration, delay);
+		return A4($author$project$Utils$fade, 0, 100, duration, delay);
 	});
-var $author$project$Components$fadeOut = F2(
+var $author$project$Utils$fadeOut = F2(
 	function (duration, delay) {
-		return A4($author$project$Components$fade, 100, 0, duration, delay);
+		return A4($author$project$Utils$fade, 100, 0, duration, delay);
 	});
 var $rtfeldman$elm_css$Css$float = function (fn) {
 	return A3(
@@ -8855,8 +8855,17 @@ var $author$project$Utils$easeBottom = F2(
 		return A3($rtfeldman$elm_css$Css$Transitions$bottom3, duration, delay, $rtfeldman$elm_css$Css$Transitions$ease);
 	});
 var $rtfeldman$elm_css$Html$Styled$h2 = $rtfeldman$elm_css$Html$Styled$node('h2');
-var $author$project$Components$photoHeadline = F5(
-	function (headline, bottomPercent, duration, delay, headlineClick) {
+var $author$project$Components$Photo$headline = F5(
+	function (view, headlineText, duration, delay, headlineClick) {
+		var _v0 = function () {
+			if (view.$ === 'Article') {
+				return _Utils_Tuple2(8, 0);
+			} else {
+				return _Utils_Tuple2(0, delay);
+			}
+		}();
+		var bottomPercent = _v0.a;
+		var transitionDelay = _v0.b;
 		return A2(
 			$rtfeldman$elm_css$Html$Styled$h2,
 			_List_fromArray(
@@ -8887,7 +8896,7 @@ var $author$project$Components$photoHeadline = F5(
 							_List_fromArray(
 								[$author$project$Utils$easeBottom]),
 							duration,
-							delay),
+							transitionDelay),
 							$rtfeldman$elm_css$Css$hover(
 							_List_fromArray(
 								[
@@ -8902,12 +8911,12 @@ var $author$project$Components$photoHeadline = F5(
 					_List_Nil,
 					_List_fromArray(
 						[
-							$rtfeldman$elm_css$Html$Styled$text(headline)
+							$rtfeldman$elm_css$Html$Styled$text(headlineText)
 						]))
 				]));
 	});
 var $rtfeldman$elm_css$Css$relative = {position: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'relative'};
-var $author$project$Components$topLeft = F2(
+var $author$project$Utils$topLeft = F2(
 	function (topPos, leftPos) {
 		return $rtfeldman$elm_css$Css$batch(
 			_List_fromArray(
@@ -9034,13 +9043,7 @@ var $author$project$Components$photo = F6(
 								]))
 						])),
 					A4($author$project$Components$Photo$container, view, image, duration, delay),
-					function () {
-					if (view.$ === 'Article') {
-						return A5($author$project$Components$photoHeadline, headline, 8, duration, 0, headlineClick);
-					} else {
-						return A5($author$project$Components$photoHeadline, headline, 0, duration, delay, headlineClick);
-					}
-				}(),
+					A5($author$project$Components$Photo$headline, view, headline, duration, delay, headlineClick),
 					function () {
 					if (view.$ === 'Article') {
 						return A2(
@@ -9048,9 +9051,9 @@ var $author$project$Components$photo = F6(
 							fullscreenClick,
 							_List_fromArray(
 								[
-									A2($author$project$Components$fadeIn, 0.5, 0.5),
+									A2($author$project$Utils$fadeIn, duration, delay),
 									A2(
-									$author$project$Components$topLeft,
+									$author$project$Utils$topLeft,
 									$rtfeldman$elm_css$Css$pct(10),
 									$rtfeldman$elm_css$Css$pct(5))
 								]));
@@ -9060,9 +9063,9 @@ var $author$project$Components$photo = F6(
 							fullscreenClick,
 							_List_fromArray(
 								[
-									A2($author$project$Components$fadeOut, 0.5, 0),
+									A2($author$project$Utils$fadeOut, duration, 0),
 									A2(
-									$author$project$Components$topLeft,
+									$author$project$Utils$topLeft,
 									$rtfeldman$elm_css$Css$pct(10),
 									$rtfeldman$elm_css$Css$pct(5))
 								]));

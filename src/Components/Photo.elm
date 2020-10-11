@@ -1,14 +1,44 @@
-module Components.Photo exposing (View(..), container)
+module Components.Photo exposing (View(..), container, headline)
 
-import Css exposing (border3, height, hidden, margin4, marginTop, overflow, pct, property, px, solid, vw, width, zero)
-import Html.Styled exposing (Html, div, img)
+import Css exposing (absolute, backgroundColor, border3, bottom, color, cursor, em, fontSize, height, hidden, hover, margin4, marginTop, overflow, padding, pct, pointer, position, property, px, solid, vw, width, zero)
+import Html.Styled exposing (Html, div, h2, img, span)
 import Html.Styled.Attributes exposing (css, src)
-import Utils exposing (black, easeBorder, easeFilter, easeHeight, easeMargin, easeWidth, gray, transitions)
+import Html.Styled.Events exposing (onClick)
+import Utils exposing (black, blue, easeBorder, easeBottom, easeFilter, easeHeight, easeMargin, easeWidth, gray, setAlpha, transitions, white)
 
 
 type View
     = Article
     | Teaser
+
+
+headline : View -> String -> Float -> Float -> msg -> Html msg
+headline view headlineText duration delay headlineClick =
+    let
+        ( bottomPercent, transitionDelay ) =
+            case view of
+                Article ->
+                    ( 8, 0 )
+
+                Teaser ->
+                    ( 0, delay )
+    in
+    h2
+        [ onClick headlineClick
+        , css <|
+            [ fontSize (em 1.5)
+            , color white
+            , backgroundColor <| setAlpha blue 0.75
+            , padding (em 0.5)
+            , cursor pointer
+            , margin4 zero zero (em 1) (pct 5)
+            , position absolute
+            , bottom (pct bottomPercent)
+            , transitions [ easeBottom ] duration transitionDelay
+            , hover [ backgroundColor blue ]
+            ]
+        ]
+        [ span [] [ Html.Styled.text headlineText ] ]
 
 
 image : View -> String -> Float -> Float -> Html msg

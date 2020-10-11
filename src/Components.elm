@@ -11,53 +11,6 @@ import Utils exposing (..)
 
 
 
--- Animations
-
-
-fadeKeyframes : Float -> Float -> Keyframes {}
-fadeKeyframes from to =
-    keyframes
-        [ ( 0, [ Css.Animations.opacity (num from) ] )
-        , ( 100, [ Css.Animations.opacity (num to) ] )
-        ]
-
-
-fade : Float -> Float -> Float -> Float -> Style
-fade from to duration delay =
-    batch
-        [ opacity (num from)
-        , animationName <| fadeKeyframes from to
-        , property "animation-fill-mode" "forwards"
-        , animationDuration (sec duration)
-        , animationDelay (sec delay)
-        ]
-
-
-fadeIn : Float -> Float -> Style
-fadeIn duration delay =
-    fade 0 100 duration delay
-
-
-fadeOut : Float -> Float -> Style
-fadeOut duration delay =
-    fade 100 0 duration delay
-
-
-
--- Positioning
-
-
-topRight : LengthOrAuto a -> LengthOrAuto b -> Style
-topRight topPos rightPos =
-    batch [ position absolute, top topPos, right rightPos ]
-
-
-topLeft : LengthOrAuto a -> LengthOrAuto b -> Style
-topLeft topPos leftPos =
-    batch [ position absolute, top topPos, left leftPos ]
-
-
-
 -- Elements
 
 
@@ -83,26 +36,6 @@ type alias Photo =
     , text : String
     , image : String
     }
-
-
-photoHeadline : String -> Float -> Float -> Float -> msg -> Html msg
-photoHeadline headline bottomPercent duration delay headlineClick =
-    h2
-        [ onClick headlineClick
-        , css <|
-            [ fontSize (em 1.5)
-            , color white
-            , backgroundColor <| setAlpha blue 0.75
-            , padding (em 0.5)
-            , cursor pointer
-            , margin4 zero zero (em 1) (pct 5)
-            , position absolute
-            , bottom (pct bottomPercent)
-            , transitions [ easeBottom ] duration delay
-            , hover [ backgroundColor blue ]
-            ]
-        ]
-        [ span [] [ Html.Styled.text headline ] ]
 
 
 
@@ -159,18 +92,13 @@ photo view { headline, text, image } headlineClick fullscreenClick duration dela
                 [ Html.Styled.text text ]
             ]
         , Components.Photo.container view image duration delay
+        , Components.Photo.headline view headline duration delay headlineClick
         , case view of
             Article ->
-                photoHeadline headline 8 duration 0 headlineClick
+                fullscreenButton fullscreenClick [ fadeIn duration delay, topLeft (pct 10) (pct 5) ]
 
             Teaser ->
-                photoHeadline headline 0 duration delay headlineClick
-        , case view of
-            Article ->
-                fullscreenButton fullscreenClick [ fadeIn 0.5 0.5, topLeft (pct 10) (pct 5) ]
-
-            Teaser ->
-                fullscreenButton fullscreenClick [ fadeOut 0.5 0, topLeft (pct 10) (pct 5) ]
+                fullscreenButton fullscreenClick [ fadeOut duration 0, topLeft (pct 10) (pct 5) ]
         ]
 
 
