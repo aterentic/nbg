@@ -1,41 +1,13 @@
-module Components exposing (blue, footer, fullscreen, fullscreenButton, header, photo, white)
+module Components exposing (footer, fullscreen, fullscreenButton, header, photo)
 
 import Components.Photo exposing (View(..))
-import Css exposing (Color, LengthOrAuto, Style, absolute, animationDelay, animationDuration, animationName, auto, backgroundColor, batch, block, border3, borderBottom3, borderTop3, bottom, calc, center, color, cursor, display, em, fixed, float, fontSize, fontWeight, height, hex, hidden, hover, int, left, letterSpacing, lighter, margin, margin2, margin4, marginTop, maxHeight, maxWidth, minus, num, opacity, overflow, padding, padding4, pct, pointer, position, property, px, relative, rgb, rgba, right, sec, solid, textAlign, top, vh, vw, width, zIndex, zero)
+import Css exposing (LengthOrAuto, Style, absolute, animationDelay, animationDuration, animationName, auto, backgroundColor, batch, block, border3, borderBottom3, borderTop3, bottom, calc, center, color, cursor, display, em, fixed, float, fontSize, fontWeight, height, hidden, hover, int, left, letterSpacing, lighter, margin, margin2, margin4, maxHeight, maxWidth, minus, num, opacity, overflow, padding, padding4, pct, pointer, position, property, px, relative, right, sec, solid, textAlign, top, vh, vw, width, zIndex, zero)
 import Css.Animations exposing (Keyframes, keyframes)
-import Css.Transitions exposing (Transition, ease, transition)
+import Css.Transitions exposing (transition)
 import Html.Styled exposing (Html, div, h1, h2, h3, img, span, text)
 import Html.Styled.Attributes exposing (css, src)
 import Html.Styled.Events exposing (onClick)
-
-
-
--- Colors
-
-
-setAlpha : Color -> Float -> Color
-setAlpha color alpha =
-    rgba color.red color.green color.blue alpha
-
-
-white : Color
-white =
-    hex "#d6d6d6"
-
-
-gray : Color
-gray =
-    rgb 127 127 127
-
-
-blue : Color
-blue =
-    rgb 38 58 114
-
-
-black : Color
-black =
-    rgb 0 0 0
+import Utils exposing (..)
 
 
 
@@ -69,50 +41,6 @@ fadeIn duration delay =
 fadeOut : Float -> Float -> Style
 fadeOut duration delay =
     fade 100 0 duration delay
-
-
-
--- Transitions
-
-
-easeWidth : Float -> Float -> Transition
-easeWidth duration delay =
-    Css.Transitions.width3 duration delay ease
-
-
-easeHeight : Float -> Float -> Transition
-easeHeight duration delay =
-    Css.Transitions.height3 duration delay ease
-
-
-easeBottom : Float -> Float -> Transition
-easeBottom duration delay =
-    Css.Transitions.bottom3 duration delay ease
-
-
-easeOpacity : Float -> Float -> Transition
-easeOpacity duration delay =
-    Css.Transitions.opacity3 duration delay ease
-
-
-easeFilter : Float -> Float -> Transition
-easeFilter duration delay =
-    Css.Transitions.filter3 duration delay ease
-
-
-easeMargin : Float -> Float -> Transition
-easeMargin duration delay =
-    Css.Transitions.margin3 duration delay ease
-
-
-easeBorder : Float -> Float -> Transition
-easeBorder duration delay =
-    Css.Transitions.border3 duration delay ease
-
-
-transitions : List (Float -> Float -> Transition) -> Float -> Float -> Style
-transitions tfs duration delay =
-    transition <| List.map (\f -> f duration delay) tfs
 
 
 
@@ -179,36 +107,6 @@ photoHeadline headline bottomPercent duration delay headlineClick =
 
 
 -- image ratio is 4:3
-
-
-photoImage : View -> String -> Float -> Float -> Html msg
-photoImage view image duration delay =
-    case view of
-        Article ->
-            img
-                [ css
-                    [ width (pct 88)
-                    , margin4 (pct 4) zero (pct 2) (pct 6)
-                    , border3 (px 1) solid gray
-                    , property "filter" "grayscale(0%)"
-                    , transitions [ easeBorder, easeFilter, easeMargin, easeWidth ] duration delay
-                    ]
-                , src image
-                ]
-                []
-
-        Teaser ->
-            img
-                [ css
-                    [ width (pct 100)
-                    , marginTop (pct -25)
-                    , border3 (px 0) solid black
-                    , property "filter" "grayscale(80%)"
-                    , transitions [ easeBorder, easeFilter, easeMargin, easeWidth ] duration delay
-                    ]
-                , src image
-                ]
-                []
 
 
 photo : View -> Photo -> msg -> msg -> Html msg
@@ -283,7 +181,7 @@ photo view { headline, text, image } headlineClick fullscreenClick =
                         , transitions [ easeHeight, easeWidth ] duration delay
                         ]
                     ]
-                    [ photoImage Article image duration delay ]
+                    [ Components.Photo.image Article image duration delay ]
 
             Teaser ->
                 div
@@ -295,7 +193,7 @@ photo view { headline, text, image } headlineClick fullscreenClick =
                         , transitions [ easeHeight, easeWidth ] duration delay
                         ]
                     ]
-                    [ photoImage Teaser image duration delay ]
+                    [ Components.Photo.image Teaser image duration delay ]
         , case view of
             Article ->
                 photoHeadline headline 8 500 0 headlineClick

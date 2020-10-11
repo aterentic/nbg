@@ -11,6 +11,7 @@ import Css.Global exposing (global, selector)
 import Data exposing (Photo)
 import Html.Styled exposing (Html, header, toUnstyled)
 import Url exposing (Url)
+import Utils
 
 
 type alias Flags =
@@ -53,7 +54,7 @@ bodyStyle =
         [ selector "body"
             [ overflowX hidden
             , margin (px 0)
-            , backgroundColor Components.blue
+            , backgroundColor Utils.blue
             , fontFamilies [ "Roboto Condensed" ]
             ]
         ]
