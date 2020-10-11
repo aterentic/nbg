@@ -1,6 +1,5 @@
-module Components exposing (footer, fullscreen, fullscreenButton, header, photo)
+module Components exposing (footer, fullscreen, fullscreenButton, header)
 
-import Components.Photo exposing (View(..))
 import Css exposing (LengthOrAuto, Style, absolute, animationDelay, animationDuration, animationName, auto, backgroundColor, batch, block, border3, borderBottom3, borderTop3, bottom, calc, center, color, cursor, display, em, fixed, float, fontSize, fontWeight, height, hidden, hover, int, left, letterSpacing, lighter, margin, margin2, margin4, maxHeight, maxWidth, minus, num, opacity, overflow, padding, padding4, pct, pointer, position, property, px, relative, right, sec, solid, textAlign, top, vh, vw, width, zIndex, zero)
 import Css.Animations exposing (Keyframes, keyframes)
 import Css.Transitions exposing (transition)
@@ -29,47 +28,6 @@ fullscreenButton onButtonClick moreStyles =
             ]
     in
     span [ css <| moreStyles ++ style, onClick onButtonClick ] [ text "⛶" ]
-
-
-type alias Photo =
-    { headline : String
-    , text : String
-    , image : String
-    }
-
-
-
--- image ratio is 4:3
-
-
-photo : View -> Photo -> msg -> msg -> Float -> Float -> Html msg
-photo view { headline, text, image } headlineClick fullscreenClick duration delay =
-    div
-        [ css <|
-            [ width (vw 100)
-            , backgroundColor black
-            , position relative
-            ]
-                ++ (case view of
-                        Article ->
-                            -- displaying whole image (reduced to 50%): (50/4)*3vw
-                            [ height (vw 37.5), transitions [ easeHeight ] duration 0 ]
-
-                        Teaser ->
-                            -- displaying 25% of an image: (25/4)*3vw
-                            [ height (vw 18.75), transitions [ easeHeight ] duration delay ]
-                   )
-        ]
-        [ Components.Photo.text view text duration delay
-        , Components.Photo.container view image duration delay
-        , Components.Photo.headline view headline duration delay headlineClick
-        , case view of
-            Article ->
-                fullscreenButton fullscreenClick [ fadeIn duration delay, topLeft (pct 10) (pct 5) ]
-
-            Teaser ->
-                fullscreenButton fullscreenClick [ fadeOut duration 0, topLeft (pct 10) (pct 5) ]
-        ]
 
 
 zeroMarginAndPadding : Style

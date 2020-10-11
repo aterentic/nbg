@@ -1,6 +1,7 @@
-module Components.Photo exposing (View(..), container, headline, text)
+module Components.Photo exposing (View(..), pht)
 
-import Css exposing (absolute, backgroundColor, block, border3, bottom, color, cursor, display, em, float, fontSize, height, hidden, hover, margin4, marginTop, num, opacity, overflow, padding, padding4, pct, pointer, position, property, px, right, solid, vw, width, zero)
+import Components exposing (fullscreenButton)
+import Css exposing (absolute, backgroundColor, block, border3, bottom, color, cursor, display, em, float, fontSize, height, hidden, hover, margin4, marginTop, num, opacity, overflow, padding, padding4, pct, pointer, position, property, px, relative, right, solid, vw, width, zero)
 import Css.Transitions exposing (transition)
 import Html.Styled exposing (Html, div, h2, img, span)
 import Html.Styled.Attributes exposing (css, src)
@@ -123,3 +124,45 @@ container view imgSrc duration delay =
                     ]
     in
     div [ css style ] [ image view imgSrc duration delay ]
+
+
+
+-- image ratio is 4:3
+
+
+type alias Photo a =
+    { a
+        | headline : String
+        , text : String
+        , image : String
+    }
+
+
+pht : View -> Photo a -> msg -> msg -> Float -> Float -> Html msg
+pht view photo headlineClick fullscreenClick duration delay =
+    div
+        [ css <|
+            [ width (vw 100)
+            , backgroundColor black
+            , position relative
+            ]
+                ++ (case view of
+                        Article ->
+                            -- displaying whole image (reduced to 50%): (50/4)*3vw
+                            [ height (vw 37.5), transitions [ easeHeight ] duration 0 ]
+
+                        Teaser ->
+                            -- displaying 25% of an image: (25/4)*3vw
+                            [ height (vw 18.75), transitions [ easeHeight ] duration delay ]
+                   )
+        ]
+        [ text view photo.text duration delay
+        , container view photo.image duration delay
+        , headline view photo.headline duration delay headlineClick
+        , case view of
+            Article ->
+                fullscreenButton fullscreenClick [ Utils.fadeIn duration delay, Utils.topLeft (pct 10) (pct 5) ]
+
+            Teaser ->
+                fullscreenButton fullscreenClick [ Utils.fadeOut duration 0, Utils.topLeft (pct 10) (pct 5) ]
+        ]

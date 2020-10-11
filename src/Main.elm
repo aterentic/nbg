@@ -67,10 +67,10 @@ view model =
             \index { photo, photoView } ->
                 case photoView of
                     Components.Photo.Article ->
-                        Components.photo Components.Photo.Article photo (CloseArticle index photo) (GoToFullscreen photo) 500 500
+                        Components.Photo.pht photoView photo (CloseArticle index photo) (GoToFullscreen photo) 500 500
 
                     Components.Photo.Teaser ->
-                        Components.photo Components.Photo.Teaser photo (OpenArticle index photo) None 500 500
+                        Components.Photo.pht photoView photo (OpenArticle index photo) None 500 500
     in
     Document Assets.document <|
         List.map toUnstyled <|

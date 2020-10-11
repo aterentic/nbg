@@ -8997,11 +8997,8 @@ var $author$project$Utils$topLeft = F2(
 					$rtfeldman$elm_css$Css$left(leftPos)
 				]));
 	});
-var $author$project$Components$photo = F6(
-	function (view, _v0, headlineClick, fullscreenClick, duration, delay) {
-		var headline = _v0.headline;
-		var text = _v0.text;
-		var image = _v0.image;
+var $author$project$Components$Photo$pht = F6(
+	function (view, photo, headlineClick, fullscreenClick, duration, delay) {
 		return A2(
 			$rtfeldman$elm_css$Html$Styled$div,
 			_List_fromArray(
@@ -9045,9 +9042,9 @@ var $author$project$Components$photo = F6(
 				]),
 			_List_fromArray(
 				[
-					A4($author$project$Components$Photo$text, view, text, duration, delay),
-					A4($author$project$Components$Photo$container, view, image, duration, delay),
-					A5($author$project$Components$Photo$headline, view, headline, duration, delay, headlineClick),
+					A4($author$project$Components$Photo$text, view, photo.text, duration, delay),
+					A4($author$project$Components$Photo$container, view, photo.image, duration, delay),
+					A5($author$project$Components$Photo$headline, view, photo.headline, duration, delay, headlineClick),
 					function () {
 					if (view.$ === 'Article') {
 						return A2(
@@ -9561,8 +9558,8 @@ var $author$project$Main$view = function (model) {
 			var photoView = _v1.photoView;
 			if (photoView.$ === 'Article') {
 				return A6(
-					$author$project$Components$photo,
-					$author$project$Components$Photo$Article,
+					$author$project$Components$Photo$pht,
+					photoView,
 					photo,
 					A2($author$project$Main$CloseArticle, index, photo),
 					$author$project$Main$GoToFullscreen(photo),
@@ -9570,8 +9567,8 @@ var $author$project$Main$view = function (model) {
 					500);
 			} else {
 				return A6(
-					$author$project$Components$photo,
-					$author$project$Components$Photo$Teaser,
+					$author$project$Components$Photo$pht,
+					photoView,
 					photo,
 					A2($author$project$Main$OpenArticle, index, photo),
 					$author$project$Main$None,
