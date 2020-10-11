@@ -5182,6 +5182,7 @@ var $elm$core$Task$perform = F2(
 				A2($elm$core$Task$map, toMessage, task)));
 	});
 var $elm$browser$Browser$application = _Browser_application;
+var $author$project$Main$Teaser = {$: 'Teaser'};
 var $elm$core$Array$fromListHelp = F3(
 	function (list, nodeList, nodeListSize) {
 		fromListHelp:
@@ -5217,6 +5218,31 @@ var $elm$core$Array$fromList = function (list) {
 		return A3($elm$core$Array$fromListHelp, list, _List_Nil, 0);
 	}
 };
+var $elm$core$Elm$JsArray$map = _JsArray_map;
+var $elm$core$Array$map = F2(
+	function (func, _v0) {
+		var len = _v0.a;
+		var startShift = _v0.b;
+		var tree = _v0.c;
+		var tail = _v0.d;
+		var helper = function (node) {
+			if (node.$ === 'SubTree') {
+				var subTree = node.a;
+				return $elm$core$Array$SubTree(
+					A2($elm$core$Elm$JsArray$map, helper, subTree));
+			} else {
+				var values = node.a;
+				return $elm$core$Array$Leaf(
+					A2($elm$core$Elm$JsArray$map, func, values));
+			}
+		};
+		return A4(
+			$elm$core$Array$Array_elm_builtin,
+			len,
+			startShift,
+			A2($elm$core$Elm$JsArray$map, helper, tree),
+			A2($elm$core$Elm$JsArray$map, func, tail));
+	});
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Assets$photos = _List_fromArray(
@@ -5227,18 +5253,18 @@ var $author$project$Assets$photos = _List_fromArray(
 		{headline: 'Gazela', image: 'assets/04.jpg', text: 'Sa pogledaom na očaj...'},
 		{headline: 'Jesen', image: 'assets/05.jpg', text: 'Lepo i opasno (ispod jesenjeg lišća)'}
 	]);
-var $author$project$Components$Photo$Teaser = {$: 'Teaser'};
-var $author$project$Main$teaser = F2(
-	function (_v0, photo) {
-		return {photo: photo, photoView: $author$project$Components$Photo$Teaser};
-	});
 var $author$project$Main$init = F3(
 	function (_v0, _v1, _v2) {
+		var teaser = function (photo) {
+			return {photo: photo, photoView: $author$project$Main$Teaser};
+		};
 		return _Utils_Tuple2(
 			{
 				fullscreen: $elm$core$Maybe$Nothing,
-				list: $elm$core$Array$fromList(
-					A2($elm$core$List$indexedMap, $author$project$Main$teaser, $author$project$Assets$photos))
+				list: A2(
+					$elm$core$Array$map,
+					teaser,
+					$elm$core$Array$fromList($author$project$Assets$photos))
 			},
 			$elm$core$Platform$Cmd$none);
 	});
@@ -5247,7 +5273,7 @@ var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $author$project$Main$subscriptions = function (_v0) {
 	return $elm$core$Platform$Sub$none;
 };
-var $author$project$Components$Photo$Article = {$: 'Article'};
+var $author$project$Main$Article = {$: 'Article'};
 var $elm$core$Bitwise$and = _Bitwise_and;
 var $elm$core$Bitwise$shiftRightZfBy = _Bitwise_shiftRightZfBy;
 var $elm$core$Array$bitMask = 4294967295 >>> (32 - $elm$core$Array$shiftStep);
@@ -5314,7 +5340,7 @@ var $author$project$Main$update = F2(
 							list: A3(
 								$elm$core$Array$set,
 								index,
-								{photo: photo, photoView: $author$project$Components$Photo$Article},
+								{photo: photo, photoView: $author$project$Main$Article},
 								model.list)
 						}),
 					$elm$core$Platform$Cmd$none);
@@ -5329,7 +5355,7 @@ var $author$project$Main$update = F2(
 							list: A3(
 								$elm$core$Array$set,
 								index,
-								{photo: photo, photoView: $author$project$Components$Photo$Teaser},
+								{photo: photo, photoView: $author$project$Main$Teaser},
 								model.list)
 						}),
 					$elm$core$Platform$Cmd$none);
@@ -5352,21 +5378,10 @@ var $author$project$Main$update = F2(
 				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 		}
 	});
-var $author$project$Main$CloseArticle = F2(
-	function (a, b) {
-		return {$: 'CloseArticle', a: a, b: b};
-	});
 var $author$project$Main$CloseFullscreen = {$: 'CloseFullscreen'};
 var $elm$browser$Browser$Document = F2(
 	function (title, body) {
 		return {body: body, title: title};
-	});
-var $author$project$Main$GoToFullscreen = function (a) {
-	return {$: 'GoToFullscreen', a: a};
-};
-var $author$project$Main$OpenArticle = F2(
-	function (a, b) {
-		return {$: 'OpenArticle', a: a, b: b};
 	});
 var $rtfeldman$elm_css$Css$Preprocess$AppendProperty = function (a) {
 	return {$: 'AppendProperty', a: a};
@@ -8302,778 +8317,6 @@ var $elm$core$Array$indexedMap = F2(
 			true,
 			A3($elm$core$Elm$JsArray$foldl, helper, initialBuilder, tree));
 	});
-var $rtfeldman$elm_css$Css$Transitions$Ease = {$: 'Ease'};
-var $rtfeldman$elm_css$Css$Transitions$ease = $rtfeldman$elm_css$Css$Transitions$Ease;
-var $rtfeldman$elm_css$Css$Transitions$Height = {$: 'Height'};
-var $rtfeldman$elm_css$Css$Transitions$Transition = function (a) {
-	return {$: 'Transition', a: a};
-};
-var $rtfeldman$elm_css$Css$Transitions$fullTransition = F4(
-	function (animation, duration, delay, timing) {
-		return $rtfeldman$elm_css$Css$Transitions$Transition(
-			{
-				animation: animation,
-				delay: $elm$core$Maybe$Just(delay),
-				duration: duration,
-				timing: $elm$core$Maybe$Just(timing)
-			});
-	});
-var $rtfeldman$elm_css$Css$Transitions$height3 = $rtfeldman$elm_css$Css$Transitions$fullTransition($rtfeldman$elm_css$Css$Transitions$Height);
-var $author$project$Utils$easeHeight = F2(
-	function (duration, delay) {
-		return A3($rtfeldman$elm_css$Css$Transitions$height3, duration, delay, $rtfeldman$elm_css$Css$Transitions$ease);
-	});
-var $rtfeldman$elm_css$Css$Transitions$Width = {$: 'Width'};
-var $rtfeldman$elm_css$Css$Transitions$width3 = $rtfeldman$elm_css$Css$Transitions$fullTransition($rtfeldman$elm_css$Css$Transitions$Width);
-var $author$project$Utils$easeWidth = F2(
-	function (duration, delay) {
-		return A3($rtfeldman$elm_css$Css$Transitions$width3, duration, delay, $rtfeldman$elm_css$Css$Transitions$ease);
-	});
-var $rtfeldman$elm_css$Css$Transitions$Border = {$: 'Border'};
-var $rtfeldman$elm_css$Css$Transitions$border3 = $rtfeldman$elm_css$Css$Transitions$fullTransition($rtfeldman$elm_css$Css$Transitions$Border);
-var $author$project$Utils$easeBorder = F2(
-	function (duration, delay) {
-		return A3($rtfeldman$elm_css$Css$Transitions$border3, duration, delay, $rtfeldman$elm_css$Css$Transitions$ease);
-	});
-var $rtfeldman$elm_css$Css$Transitions$Filter = {$: 'Filter'};
-var $rtfeldman$elm_css$Css$Transitions$filter3 = $rtfeldman$elm_css$Css$Transitions$fullTransition($rtfeldman$elm_css$Css$Transitions$Filter);
-var $author$project$Utils$easeFilter = F2(
-	function (duration, delay) {
-		return A3($rtfeldman$elm_css$Css$Transitions$filter3, duration, delay, $rtfeldman$elm_css$Css$Transitions$ease);
-	});
-var $rtfeldman$elm_css$Css$Transitions$Margin = {$: 'Margin'};
-var $rtfeldman$elm_css$Css$Transitions$margin3 = $rtfeldman$elm_css$Css$Transitions$fullTransition($rtfeldman$elm_css$Css$Transitions$Margin);
-var $author$project$Utils$easeMargin = F2(
-	function (duration, delay) {
-		return A3($rtfeldman$elm_css$Css$Transitions$margin3, duration, delay, $rtfeldman$elm_css$Css$Transitions$ease);
-	});
-var $author$project$Utils$gray = A3($rtfeldman$elm_css$Css$rgb, 127, 127, 127);
-var $rtfeldman$elm_css$Css$margin4 = $rtfeldman$elm_css$Css$prop4('margin');
-var $rtfeldman$elm_css$Css$marginTop = $rtfeldman$elm_css$Css$prop1('margin-top');
-var $rtfeldman$elm_css$Css$Transitions$propToString = function (prop) {
-	switch (prop.$) {
-		case 'Background':
-			return 'background';
-		case 'BackgroundColor':
-			return 'background-color';
-		case 'BackgroundPosition':
-			return 'background-position';
-		case 'BackgroundSize':
-			return 'background-size';
-		case 'Border':
-			return 'border';
-		case 'BorderBottom':
-			return 'border-bottom';
-		case 'BorderBottomColor':
-			return 'border-bottom-color';
-		case 'BorderBottomLeftRadius':
-			return 'border-bottom-left-radius';
-		case 'BorderBottomRightRadius':
-			return 'border-bottom-right-radius';
-		case 'BorderBottomWidth':
-			return 'border-bottom-width';
-		case 'BorderColor':
-			return 'border-color';
-		case 'BorderLeft':
-			return 'border-left';
-		case 'BorderLeftColor':
-			return 'border-left-color';
-		case 'BorderLeftWidth':
-			return 'border-left-width';
-		case 'BorderRadius':
-			return 'border-radius';
-		case 'BorderRight':
-			return 'border-right';
-		case 'BorderRightColor':
-			return 'border-right-color';
-		case 'BorderRightWidth':
-			return 'border-right-width';
-		case 'BorderTop':
-			return 'border-top';
-		case 'BorderTopColor':
-			return 'border-top-color';
-		case 'BorderTopLeftRadius':
-			return 'border-top-left-radius';
-		case 'BorderTopRightRadius':
-			return 'border-top-right-radius';
-		case 'BorderTopWidth':
-			return 'border-top-width';
-		case 'BorderWidth':
-			return 'border-width';
-		case 'Bottom':
-			return 'bottom';
-		case 'BoxShadow':
-			return 'box-shadow';
-		case 'CaretColor':
-			return 'caret-color';
-		case 'Clip':
-			return 'clip';
-		case 'ClipPath':
-			return 'clip-path';
-		case 'Color':
-			return 'color';
-		case 'ColumnCount':
-			return 'column-count';
-		case 'ColumnGap':
-			return 'column-gap';
-		case 'ColumnRule':
-			return 'column-rule';
-		case 'ColumnRuleColor':
-			return 'column-rule-color';
-		case 'ColumnRuleWidth':
-			return 'column-rule-width';
-		case 'ColumnWidth':
-			return 'column-width';
-		case 'Columns':
-			return 'columns';
-		case 'Filter':
-			return 'filter';
-		case 'Flex':
-			return 'flex';
-		case 'FlexBasis':
-			return 'flex-basis';
-		case 'FlexGrow':
-			return 'flex-grow';
-		case 'FlexShrink':
-			return 'flex-shrink';
-		case 'Font':
-			return 'font';
-		case 'FontSize':
-			return 'font-size';
-		case 'FontSizeAdjust':
-			return 'font-size-adjust';
-		case 'FontStretch':
-			return 'font-stretch';
-		case 'FontVariationSettings':
-			return 'font-variation-settings';
-		case 'FontWeight':
-			return 'font-weight';
-		case 'GridColumnGap':
-			return 'grid-column-gap';
-		case 'GridGap':
-			return 'grid-gap';
-		case 'GridRowGap':
-			return 'grid-row-gap';
-		case 'Height':
-			return 'height';
-		case 'Left':
-			return 'left';
-		case 'LetterSpacing':
-			return 'letter-spacing';
-		case 'LineHeight':
-			return 'line-height';
-		case 'Margin':
-			return 'margin';
-		case 'MarginBottom':
-			return 'margin-bottom';
-		case 'MarginLeft':
-			return 'margin-left';
-		case 'MarginRight':
-			return 'margin-right';
-		case 'MarginTop':
-			return 'margin-top';
-		case 'Mask':
-			return 'mask';
-		case 'MaskPosition':
-			return 'mask-position';
-		case 'MaskSize':
-			return 'mask-size';
-		case 'MaxHeight':
-			return 'max-height';
-		case 'MaxWidth':
-			return 'max-width';
-		case 'MinHeight':
-			return 'min-height';
-		case 'MinWidth':
-			return 'min-width';
-		case 'ObjectPosition':
-			return 'object-position';
-		case 'Offset':
-			return 'offset';
-		case 'OffsetAnchor':
-			return 'offset-anchor';
-		case 'OffsetDistance':
-			return 'offset-distance';
-		case 'OffsetPath':
-			return 'offset-path';
-		case 'OffsetRotate':
-			return 'offset-rotate';
-		case 'Opacity':
-			return 'opacity';
-		case 'Order':
-			return 'order';
-		case 'Outline':
-			return 'outline';
-		case 'OutlineColor':
-			return 'outline-color';
-		case 'OutlineOffset':
-			return 'outline-offset';
-		case 'OutlineWidth':
-			return 'outline-width';
-		case 'Padding':
-			return 'padding';
-		case 'PaddingBottom':
-			return 'padding-bottom';
-		case 'PaddingLeft':
-			return 'padding-left';
-		case 'PaddingRight':
-			return 'padding-right';
-		case 'PaddingTop':
-			return 'padding-top';
-		case 'Right':
-			return 'right';
-		case 'TabSize':
-			return 'tab-size';
-		case 'TextIndent':
-			return 'text-indent';
-		case 'TextShadow':
-			return 'text-shadow';
-		case 'Top':
-			return 'top';
-		case 'Transform':
-			return 'transform';
-		case 'TransformOrigin':
-			return 'transform-origin';
-		case 'VerticalAlign':
-			return 'vertical-align';
-		case 'Visibility':
-			return 'visibility';
-		case 'Width':
-			return 'width';
-		case 'WordSpacing':
-			return 'word-spacing';
-		default:
-			return 'z-index';
-	}
-};
-var $rtfeldman$elm_css$Css$Transitions$timeToString = function (time) {
-	return $elm$core$String$fromFloat(time) + 'ms';
-};
-var $rtfeldman$elm_css$Css$Transitions$timingFunctionToString = function (tf) {
-	switch (tf.$) {
-		case 'Ease':
-			return 'ease';
-		case 'Linear':
-			return 'linear';
-		case 'EaseIn':
-			return 'ease-in';
-		case 'EaseOut':
-			return 'ease-out';
-		case 'EaseInOut':
-			return 'ease-in-out';
-		case 'StepStart':
-			return 'step-start';
-		case 'StepEnd':
-			return 'step-end';
-		default:
-			var _float = tf.a;
-			var float2 = tf.b;
-			var float3 = tf.c;
-			var float4 = tf.d;
-			return 'cubic-bezier(' + ($elm$core$String$fromFloat(_float) + (' , ' + ($elm$core$String$fromFloat(float2) + (' , ' + ($elm$core$String$fromFloat(float3) + (' , ' + ($elm$core$String$fromFloat(float4) + ')')))))));
-	}
-};
-var $rtfeldman$elm_css$Css$Transitions$transition = function (options) {
-	var v = A3(
-		$elm$core$String$slice,
-		0,
-		-1,
-		A3(
-			$elm$core$List$foldl,
-			F2(
-				function (_v0, s) {
-					var animation = _v0.a.animation;
-					var duration = _v0.a.duration;
-					var delay = _v0.a.delay;
-					var timing = _v0.a.timing;
-					return s + (A2(
-						$elm$core$String$join,
-						' ',
-						_List_fromArray(
-							[
-								$rtfeldman$elm_css$Css$Transitions$propToString(animation),
-								$rtfeldman$elm_css$Css$Transitions$timeToString(duration),
-								A2(
-								$elm$core$Maybe$withDefault,
-								'',
-								A2($elm$core$Maybe$map, $rtfeldman$elm_css$Css$Transitions$timeToString, delay)),
-								A2(
-								$elm$core$Maybe$withDefault,
-								'',
-								A2($elm$core$Maybe$map, $rtfeldman$elm_css$Css$Transitions$timingFunctionToString, timing))
-							])) + ',');
-				}),
-			'',
-			options));
-	return A2($rtfeldman$elm_css$Css$property, 'transition', v);
-};
-var $author$project$Utils$transitions = F3(
-	function (tfs, duration, delay) {
-		return $rtfeldman$elm_css$Css$Transitions$transition(
-			A2(
-				$elm$core$List$map,
-				function (f) {
-					return A2(f, duration, delay);
-				},
-				tfs));
-	});
-var $author$project$Components$Photo$image = F4(
-	function (view, imgSrc, duration, delay) {
-		var style = function () {
-			if (view.$ === 'Article') {
-				return _List_fromArray(
-					[
-						$rtfeldman$elm_css$Css$width(
-						$rtfeldman$elm_css$Css$pct(88)),
-						A4(
-						$rtfeldman$elm_css$Css$margin4,
-						$rtfeldman$elm_css$Css$pct(4),
-						$rtfeldman$elm_css$Css$zero,
-						$rtfeldman$elm_css$Css$pct(2),
-						$rtfeldman$elm_css$Css$pct(6)),
-						A3(
-						$rtfeldman$elm_css$Css$border3,
-						$rtfeldman$elm_css$Css$px(1),
-						$rtfeldman$elm_css$Css$solid,
-						$author$project$Utils$gray),
-						A2($rtfeldman$elm_css$Css$property, 'filter', 'grayscale(0%)'),
-						A3(
-						$author$project$Utils$transitions,
-						_List_fromArray(
-							[$author$project$Utils$easeBorder, $author$project$Utils$easeFilter, $author$project$Utils$easeMargin, $author$project$Utils$easeWidth]),
-						duration,
-						0)
-					]);
-			} else {
-				return _List_fromArray(
-					[
-						$rtfeldman$elm_css$Css$width(
-						$rtfeldman$elm_css$Css$pct(100)),
-						$rtfeldman$elm_css$Css$marginTop(
-						$rtfeldman$elm_css$Css$pct(-25)),
-						A3(
-						$rtfeldman$elm_css$Css$border3,
-						$rtfeldman$elm_css$Css$px(0),
-						$rtfeldman$elm_css$Css$solid,
-						$author$project$Utils$black),
-						A2($rtfeldman$elm_css$Css$property, 'filter', 'grayscale(80%)'),
-						A3(
-						$author$project$Utils$transitions,
-						_List_fromArray(
-							[$author$project$Utils$easeBorder, $author$project$Utils$easeFilter, $author$project$Utils$easeMargin, $author$project$Utils$easeWidth]),
-						duration,
-						delay)
-					]);
-			}
-		}();
-		return A2(
-			$rtfeldman$elm_css$Html$Styled$img,
-			_List_fromArray(
-				[
-					$rtfeldman$elm_css$Html$Styled$Attributes$css(style),
-					$rtfeldman$elm_css$Html$Styled$Attributes$src(imgSrc)
-				]),
-			_List_Nil);
-	});
-var $author$project$Components$Photo$container = F4(
-	function (view, imgSrc, duration, delay) {
-		var style = function () {
-			if (view.$ === 'Article') {
-				return _List_fromArray(
-					[
-						$rtfeldman$elm_css$Css$overflow($rtfeldman$elm_css$Css$hidden),
-						$rtfeldman$elm_css$Css$width(
-						$rtfeldman$elm_css$Css$vw(50)),
-						$rtfeldman$elm_css$Css$height(
-						$rtfeldman$elm_css$Css$vw(37.5)),
-						A3(
-						$author$project$Utils$transitions,
-						_List_fromArray(
-							[$author$project$Utils$easeHeight, $author$project$Utils$easeWidth]),
-						duration,
-						0)
-					]);
-			} else {
-				return _List_fromArray(
-					[
-						$rtfeldman$elm_css$Css$overflow($rtfeldman$elm_css$Css$hidden),
-						$rtfeldman$elm_css$Css$width(
-						$rtfeldman$elm_css$Css$pct(100)),
-						$rtfeldman$elm_css$Css$height(
-						$rtfeldman$elm_css$Css$vw(18.75)),
-						A3(
-						$author$project$Utils$transitions,
-						_List_fromArray(
-							[$author$project$Utils$easeHeight, $author$project$Utils$easeWidth]),
-						duration,
-						delay)
-					]);
-			}
-		}();
-		return A2(
-			$rtfeldman$elm_css$Html$Styled$div,
-			_List_fromArray(
-				[
-					$rtfeldman$elm_css$Html$Styled$Attributes$css(style)
-				]),
-			_List_fromArray(
-				[
-					A4($author$project$Components$Photo$image, view, imgSrc, duration, delay)
-				]));
-	});
-var $rtfeldman$elm_css$Css$animationDelay = function (arg) {
-	return A2($rtfeldman$elm_css$Css$prop1, 'animation-delay', arg);
-};
-var $rtfeldman$elm_css$Css$animationDuration = function (arg) {
-	return A2($rtfeldman$elm_css$Css$prop1, 'animation-duration', arg);
-};
-var $rtfeldman$elm_css$Css$Preprocess$WithKeyframes = function (a) {
-	return {$: 'WithKeyframes', a: a};
-};
-var $rtfeldman$elm_css$Css$animationName = function (arg) {
-	return ((arg.value === 'none') || ((arg.value === 'inherit') || ((arg.value === 'unset') || (arg.value === 'initial')))) ? A2($rtfeldman$elm_css$Css$prop1, 'animation-name', arg) : $rtfeldman$elm_css$Css$Preprocess$WithKeyframes(arg.value);
-};
-var $rtfeldman$elm_css$Css$Internal$printKeyframeSelector = function (_v0) {
-	var percentage = _v0.a;
-	var properties = _v0.b;
-	var propertiesStr = A2(
-		$elm$core$String$join,
-		'',
-		A2(
-			$elm$core$List$map,
-			function (_v1) {
-				var prop = _v1.a;
-				return prop + ';';
-			},
-			properties));
-	var percentageStr = $elm$core$String$fromInt(percentage) + '%';
-	return percentageStr + (' {' + (propertiesStr + '}'));
-};
-var $rtfeldman$elm_css$Css$Internal$compileKeyframes = function (tuples) {
-	return A2(
-		$elm$core$String$join,
-		'\n\n',
-		A2($elm$core$List$map, $rtfeldman$elm_css$Css$Internal$printKeyframeSelector, tuples));
-};
-var $rtfeldman$elm_css$Css$Animations$keyframes = function (tuples) {
-	return $elm$core$List$isEmpty(tuples) ? {keyframes: $rtfeldman$elm_css$Css$Structure$Compatible, none: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'none'} : {
-		keyframes: $rtfeldman$elm_css$Css$Structure$Compatible,
-		none: $rtfeldman$elm_css$Css$Structure$Compatible,
-		value: $rtfeldman$elm_css$Css$Internal$compileKeyframes(tuples)
-	};
-};
-var $rtfeldman$elm_css$Css$UnitlessFloat = {$: 'UnitlessFloat'};
-var $rtfeldman$elm_css$Css$num = function (val) {
-	return {
-		lengthOrNumber: $rtfeldman$elm_css$Css$Structure$Compatible,
-		lengthOrNumberOrAutoOrNoneOrContent: $rtfeldman$elm_css$Css$Structure$Compatible,
-		number: $rtfeldman$elm_css$Css$Structure$Compatible,
-		numberOrInfinite: $rtfeldman$elm_css$Css$Structure$Compatible,
-		numericValue: val,
-		unitLabel: '',
-		units: $rtfeldman$elm_css$Css$UnitlessFloat,
-		value: $elm$core$String$fromFloat(val)
-	};
-};
-var $rtfeldman$elm_css$Css$Internal$Property = function (a) {
-	return {$: 'Property', a: a};
-};
-var $rtfeldman$elm_css$Css$Animations$opacity = function (_v0) {
-	var value = _v0.value;
-	return $rtfeldman$elm_css$Css$Internal$Property('opacity:' + value);
-};
-var $author$project$Utils$fadeKeyframes = F2(
-	function (from, to) {
-		return $rtfeldman$elm_css$Css$Animations$keyframes(
-			_List_fromArray(
-				[
-					_Utils_Tuple2(
-					0,
-					_List_fromArray(
-						[
-							$rtfeldman$elm_css$Css$Animations$opacity(
-							$rtfeldman$elm_css$Css$num(from))
-						])),
-					_Utils_Tuple2(
-					100,
-					_List_fromArray(
-						[
-							$rtfeldman$elm_css$Css$Animations$opacity(
-							$rtfeldman$elm_css$Css$num(to))
-						]))
-				]));
-	});
-var $rtfeldman$elm_css$Css$opacity = $rtfeldman$elm_css$Css$prop1('opacity');
-var $rtfeldman$elm_css$Css$sec = function (amount) {
-	return {
-		duration: $rtfeldman$elm_css$Css$Structure$Compatible,
-		value: $elm$core$String$fromFloat(amount) + 's'
-	};
-};
-var $author$project$Utils$fade = F4(
-	function (from, to, duration, delay) {
-		return $rtfeldman$elm_css$Css$batch(
-			_List_fromArray(
-				[
-					$rtfeldman$elm_css$Css$opacity(
-					$rtfeldman$elm_css$Css$num(from)),
-					$rtfeldman$elm_css$Css$animationName(
-					A2($author$project$Utils$fadeKeyframes, from, to)),
-					A2($rtfeldman$elm_css$Css$property, 'animation-fill-mode', 'forwards'),
-					$rtfeldman$elm_css$Css$animationDuration(
-					$rtfeldman$elm_css$Css$sec(duration / 1000)),
-					$rtfeldman$elm_css$Css$animationDelay(
-					$rtfeldman$elm_css$Css$sec(delay / 1000))
-				]));
-	});
-var $author$project$Utils$fadeIn = F2(
-	function (duration, delay) {
-		return A4($author$project$Utils$fade, 0, 100, duration, delay);
-	});
-var $author$project$Utils$fadeOut = F2(
-	function (duration, delay) {
-		return A4($author$project$Utils$fade, 100, 0, duration, delay);
-	});
-var $rtfeldman$elm_css$Css$bottom = $rtfeldman$elm_css$Css$prop1('bottom');
-var $rtfeldman$elm_css$Css$Transitions$Bottom = {$: 'Bottom'};
-var $rtfeldman$elm_css$Css$Transitions$bottom3 = $rtfeldman$elm_css$Css$Transitions$fullTransition($rtfeldman$elm_css$Css$Transitions$Bottom);
-var $author$project$Utils$easeBottom = F2(
-	function (duration, delay) {
-		return A3($rtfeldman$elm_css$Css$Transitions$bottom3, duration, delay, $rtfeldman$elm_css$Css$Transitions$ease);
-	});
-var $rtfeldman$elm_css$Html$Styled$h2 = $rtfeldman$elm_css$Html$Styled$node('h2');
-var $author$project$Components$Photo$headline = F5(
-	function (view, headlineText, duration, delay, headlineClick) {
-		var _v0 = function () {
-			if (view.$ === 'Article') {
-				return _Utils_Tuple2(8, 0);
-			} else {
-				return _Utils_Tuple2(0, delay);
-			}
-		}();
-		var bottomPercent = _v0.a;
-		var transitionDelay = _v0.b;
-		return A2(
-			$rtfeldman$elm_css$Html$Styled$h2,
-			_List_fromArray(
-				[
-					$rtfeldman$elm_css$Html$Styled$Events$onClick(headlineClick),
-					$rtfeldman$elm_css$Html$Styled$Attributes$css(
-					_List_fromArray(
-						[
-							$rtfeldman$elm_css$Css$fontSize(
-							$rtfeldman$elm_css$Css$em(1.5)),
-							$rtfeldman$elm_css$Css$color($author$project$Utils$white),
-							$rtfeldman$elm_css$Css$backgroundColor(
-							A2($author$project$Utils$setAlpha, $author$project$Utils$blue, 0.75)),
-							$rtfeldman$elm_css$Css$padding(
-							$rtfeldman$elm_css$Css$em(0.5)),
-							$rtfeldman$elm_css$Css$cursor($rtfeldman$elm_css$Css$pointer),
-							A4(
-							$rtfeldman$elm_css$Css$margin4,
-							$rtfeldman$elm_css$Css$zero,
-							$rtfeldman$elm_css$Css$zero,
-							$rtfeldman$elm_css$Css$em(1),
-							$rtfeldman$elm_css$Css$pct(5)),
-							$rtfeldman$elm_css$Css$position($rtfeldman$elm_css$Css$absolute),
-							$rtfeldman$elm_css$Css$bottom(
-							$rtfeldman$elm_css$Css$pct(bottomPercent)),
-							A3(
-							$author$project$Utils$transitions,
-							_List_fromArray(
-								[$author$project$Utils$easeBottom]),
-							duration,
-							transitionDelay),
-							$rtfeldman$elm_css$Css$hover(
-							_List_fromArray(
-								[
-									$rtfeldman$elm_css$Css$backgroundColor($author$project$Utils$blue)
-								]))
-						]))
-				]),
-			_List_fromArray(
-				[
-					A2(
-					$rtfeldman$elm_css$Html$Styled$span,
-					_List_Nil,
-					_List_fromArray(
-						[
-							$rtfeldman$elm_css$Html$Styled$text(headlineText)
-						]))
-				]));
-	});
-var $rtfeldman$elm_css$Css$relative = {position: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'relative'};
-var $rtfeldman$elm_css$Css$Transitions$Opacity = {$: 'Opacity'};
-var $rtfeldman$elm_css$Css$Transitions$opacity3 = $rtfeldman$elm_css$Css$Transitions$fullTransition($rtfeldman$elm_css$Css$Transitions$Opacity);
-var $author$project$Utils$easeOpacity = F2(
-	function (duration, delay) {
-		return A3($rtfeldman$elm_css$Css$Transitions$opacity3, duration, delay, $rtfeldman$elm_css$Css$Transitions$ease);
-	});
-var $rtfeldman$elm_css$Css$float = function (fn) {
-	return A3(
-		$rtfeldman$elm_css$Css$Internal$getOverloadedProperty,
-		'float',
-		'float',
-		fn($rtfeldman$elm_css$Css$Internal$lengthForOverloadedProperty));
-};
-var $author$project$Components$Photo$text = F4(
-	function (view, articleText, duration, delay) {
-		return A2(
-			$rtfeldman$elm_css$Html$Styled$div,
-			_List_fromArray(
-				[
-					function () {
-					if (view.$ === 'Article') {
-						return $rtfeldman$elm_css$Html$Styled$Attributes$css(
-							_List_fromArray(
-								[
-									$rtfeldman$elm_css$Css$float($rtfeldman$elm_css$Css$right),
-									$rtfeldman$elm_css$Css$overflow($rtfeldman$elm_css$Css$hidden),
-									$rtfeldman$elm_css$Css$width(
-									$rtfeldman$elm_css$Css$pct(50)),
-									$rtfeldman$elm_css$Css$opacity(
-									$rtfeldman$elm_css$Css$num(100)),
-									$rtfeldman$elm_css$Css$height(
-									$rtfeldman$elm_css$Css$pct(100)),
-									$rtfeldman$elm_css$Css$Transitions$transition(
-									_List_fromArray(
-										[
-											A2($author$project$Utils$easeOpacity, duration, delay),
-											A2($author$project$Utils$easeWidth, duration, 0)
-										]))
-								]));
-					} else {
-						return $rtfeldman$elm_css$Html$Styled$Attributes$css(
-							_List_fromArray(
-								[
-									$rtfeldman$elm_css$Css$float($rtfeldman$elm_css$Css$right),
-									$rtfeldman$elm_css$Css$overflow($rtfeldman$elm_css$Css$hidden),
-									$rtfeldman$elm_css$Css$width($rtfeldman$elm_css$Css$zero),
-									$rtfeldman$elm_css$Css$opacity($rtfeldman$elm_css$Css$zero),
-									$rtfeldman$elm_css$Css$height($rtfeldman$elm_css$Css$zero),
-									$rtfeldman$elm_css$Css$Transitions$transition(
-									_List_fromArray(
-										[
-											A2($author$project$Utils$easeOpacity, duration, 0),
-											A2($author$project$Utils$easeWidth, duration, delay),
-											A2($author$project$Utils$easeHeight, duration, delay)
-										]))
-								]));
-					}
-				}()
-				]),
-			_List_fromArray(
-				[
-					A2(
-					$rtfeldman$elm_css$Html$Styled$span,
-					_List_fromArray(
-						[
-							$rtfeldman$elm_css$Html$Styled$Attributes$css(
-							_List_fromArray(
-								[
-									A4(
-									$rtfeldman$elm_css$Css$padding4,
-									$rtfeldman$elm_css$Css$pct(4),
-									$rtfeldman$elm_css$Css$pct(8),
-									$rtfeldman$elm_css$Css$zero,
-									$rtfeldman$elm_css$Css$zero),
-									$rtfeldman$elm_css$Css$display($rtfeldman$elm_css$Css$block),
-									$rtfeldman$elm_css$Css$color($author$project$Utils$white)
-								]))
-						]),
-					_List_fromArray(
-						[
-							$rtfeldman$elm_css$Html$Styled$text(articleText)
-						]))
-				]));
-	});
-var $author$project$Utils$topLeft = F2(
-	function (topPos, leftPos) {
-		return $rtfeldman$elm_css$Css$batch(
-			_List_fromArray(
-				[
-					$rtfeldman$elm_css$Css$position($rtfeldman$elm_css$Css$absolute),
-					$rtfeldman$elm_css$Css$top(topPos),
-					$rtfeldman$elm_css$Css$left(leftPos)
-				]));
-	});
-var $author$project$Components$Photo$pht = F6(
-	function (view, photo, headlineClick, fullscreenClick, duration, delay) {
-		return A2(
-			$rtfeldman$elm_css$Html$Styled$div,
-			_List_fromArray(
-				[
-					$rtfeldman$elm_css$Html$Styled$Attributes$css(
-					_Utils_ap(
-						_List_fromArray(
-							[
-								$rtfeldman$elm_css$Css$width(
-								$rtfeldman$elm_css$Css$vw(100)),
-								$rtfeldman$elm_css$Css$backgroundColor($author$project$Utils$black),
-								$rtfeldman$elm_css$Css$position($rtfeldman$elm_css$Css$relative)
-							]),
-						function () {
-							if (view.$ === 'Article') {
-								return _List_fromArray(
-									[
-										$rtfeldman$elm_css$Css$height(
-										$rtfeldman$elm_css$Css$vw(37.5)),
-										A3(
-										$author$project$Utils$transitions,
-										_List_fromArray(
-											[$author$project$Utils$easeHeight]),
-										duration,
-										0)
-									]);
-							} else {
-								return _List_fromArray(
-									[
-										$rtfeldman$elm_css$Css$height(
-										$rtfeldman$elm_css$Css$vw(18.75)),
-										A3(
-										$author$project$Utils$transitions,
-										_List_fromArray(
-											[$author$project$Utils$easeHeight]),
-										duration,
-										delay)
-									]);
-							}
-						}()))
-				]),
-			_List_fromArray(
-				[
-					A4($author$project$Components$Photo$text, view, photo.text, duration, delay),
-					A4($author$project$Components$Photo$container, view, photo.image, duration, delay),
-					A5($author$project$Components$Photo$headline, view, photo.headline, duration, delay, headlineClick),
-					function () {
-					if (view.$ === 'Article') {
-						return A2(
-							$author$project$Components$fullscreenButton,
-							fullscreenClick,
-							_List_fromArray(
-								[
-									A2($author$project$Utils$fadeIn, duration, delay),
-									A2(
-									$author$project$Utils$topLeft,
-									$rtfeldman$elm_css$Css$pct(10),
-									$rtfeldman$elm_css$Css$pct(5))
-								]));
-					} else {
-						return A2(
-							$author$project$Components$fullscreenButton,
-							fullscreenClick,
-							_List_fromArray(
-								[
-									A2($author$project$Utils$fadeOut, duration, 0),
-									A2(
-									$author$project$Utils$topLeft,
-									$rtfeldman$elm_css$Css$pct(10),
-									$rtfeldman$elm_css$Css$pct(5))
-								]));
-					}
-				}()
-				]));
-	});
 var $rtfeldman$elm_css$VirtualDom$Styled$accumulateStyles = F2(
 	function (_v0, styles) {
 		var newStyles = _v0.b;
@@ -9551,31 +8794,814 @@ var $rtfeldman$elm_css$VirtualDom$Styled$toUnstyled = function (vdom) {
 	}
 };
 var $rtfeldman$elm_css$Html$Styled$toUnstyled = $rtfeldman$elm_css$VirtualDom$Styled$toUnstyled;
+var $author$project$Main$CloseArticle = F2(
+	function (a, b) {
+		return {$: 'CloseArticle', a: a, b: b};
+	});
+var $author$project$Main$GoToFullscreen = function (a) {
+	return {$: 'GoToFullscreen', a: a};
+};
+var $author$project$Main$OpenArticle = F2(
+	function (a, b) {
+		return {$: 'OpenArticle', a: a, b: b};
+	});
+var $author$project$Components$Photo$Article = {$: 'Article'};
+var $rtfeldman$elm_css$Css$Transitions$Border = {$: 'Border'};
+var $rtfeldman$elm_css$Css$Transitions$Transition = function (a) {
+	return {$: 'Transition', a: a};
+};
+var $rtfeldman$elm_css$Css$Transitions$fullTransition = F4(
+	function (animation, duration, delay, timing) {
+		return $rtfeldman$elm_css$Css$Transitions$Transition(
+			{
+				animation: animation,
+				delay: $elm$core$Maybe$Just(delay),
+				duration: duration,
+				timing: $elm$core$Maybe$Just(timing)
+			});
+	});
+var $rtfeldman$elm_css$Css$Transitions$border3 = $rtfeldman$elm_css$Css$Transitions$fullTransition($rtfeldman$elm_css$Css$Transitions$Border);
+var $rtfeldman$elm_css$Css$Transitions$Ease = {$: 'Ease'};
+var $rtfeldman$elm_css$Css$Transitions$ease = $rtfeldman$elm_css$Css$Transitions$Ease;
+var $author$project$Utils$easeBorder = F2(
+	function (duration, delay) {
+		return A3($rtfeldman$elm_css$Css$Transitions$border3, duration, delay, $rtfeldman$elm_css$Css$Transitions$ease);
+	});
+var $rtfeldman$elm_css$Css$Transitions$Filter = {$: 'Filter'};
+var $rtfeldman$elm_css$Css$Transitions$filter3 = $rtfeldman$elm_css$Css$Transitions$fullTransition($rtfeldman$elm_css$Css$Transitions$Filter);
+var $author$project$Utils$easeFilter = F2(
+	function (duration, delay) {
+		return A3($rtfeldman$elm_css$Css$Transitions$filter3, duration, delay, $rtfeldman$elm_css$Css$Transitions$ease);
+	});
+var $rtfeldman$elm_css$Css$Transitions$Height = {$: 'Height'};
+var $rtfeldman$elm_css$Css$Transitions$height3 = $rtfeldman$elm_css$Css$Transitions$fullTransition($rtfeldman$elm_css$Css$Transitions$Height);
+var $author$project$Utils$easeHeight = F2(
+	function (duration, delay) {
+		return A3($rtfeldman$elm_css$Css$Transitions$height3, duration, delay, $rtfeldman$elm_css$Css$Transitions$ease);
+	});
+var $rtfeldman$elm_css$Css$Transitions$Margin = {$: 'Margin'};
+var $rtfeldman$elm_css$Css$Transitions$margin3 = $rtfeldman$elm_css$Css$Transitions$fullTransition($rtfeldman$elm_css$Css$Transitions$Margin);
+var $author$project$Utils$easeMargin = F2(
+	function (duration, delay) {
+		return A3($rtfeldman$elm_css$Css$Transitions$margin3, duration, delay, $rtfeldman$elm_css$Css$Transitions$ease);
+	});
+var $rtfeldman$elm_css$Css$Transitions$Width = {$: 'Width'};
+var $rtfeldman$elm_css$Css$Transitions$width3 = $rtfeldman$elm_css$Css$Transitions$fullTransition($rtfeldman$elm_css$Css$Transitions$Width);
+var $author$project$Utils$easeWidth = F2(
+	function (duration, delay) {
+		return A3($rtfeldman$elm_css$Css$Transitions$width3, duration, delay, $rtfeldman$elm_css$Css$Transitions$ease);
+	});
+var $author$project$Utils$gray = A3($rtfeldman$elm_css$Css$rgb, 127, 127, 127);
+var $rtfeldman$elm_css$Css$margin4 = $rtfeldman$elm_css$Css$prop4('margin');
+var $rtfeldman$elm_css$Css$marginTop = $rtfeldman$elm_css$Css$prop1('margin-top');
+var $rtfeldman$elm_css$Css$Transitions$propToString = function (prop) {
+	switch (prop.$) {
+		case 'Background':
+			return 'background';
+		case 'BackgroundColor':
+			return 'background-color';
+		case 'BackgroundPosition':
+			return 'background-position';
+		case 'BackgroundSize':
+			return 'background-size';
+		case 'Border':
+			return 'border';
+		case 'BorderBottom':
+			return 'border-bottom';
+		case 'BorderBottomColor':
+			return 'border-bottom-color';
+		case 'BorderBottomLeftRadius':
+			return 'border-bottom-left-radius';
+		case 'BorderBottomRightRadius':
+			return 'border-bottom-right-radius';
+		case 'BorderBottomWidth':
+			return 'border-bottom-width';
+		case 'BorderColor':
+			return 'border-color';
+		case 'BorderLeft':
+			return 'border-left';
+		case 'BorderLeftColor':
+			return 'border-left-color';
+		case 'BorderLeftWidth':
+			return 'border-left-width';
+		case 'BorderRadius':
+			return 'border-radius';
+		case 'BorderRight':
+			return 'border-right';
+		case 'BorderRightColor':
+			return 'border-right-color';
+		case 'BorderRightWidth':
+			return 'border-right-width';
+		case 'BorderTop':
+			return 'border-top';
+		case 'BorderTopColor':
+			return 'border-top-color';
+		case 'BorderTopLeftRadius':
+			return 'border-top-left-radius';
+		case 'BorderTopRightRadius':
+			return 'border-top-right-radius';
+		case 'BorderTopWidth':
+			return 'border-top-width';
+		case 'BorderWidth':
+			return 'border-width';
+		case 'Bottom':
+			return 'bottom';
+		case 'BoxShadow':
+			return 'box-shadow';
+		case 'CaretColor':
+			return 'caret-color';
+		case 'Clip':
+			return 'clip';
+		case 'ClipPath':
+			return 'clip-path';
+		case 'Color':
+			return 'color';
+		case 'ColumnCount':
+			return 'column-count';
+		case 'ColumnGap':
+			return 'column-gap';
+		case 'ColumnRule':
+			return 'column-rule';
+		case 'ColumnRuleColor':
+			return 'column-rule-color';
+		case 'ColumnRuleWidth':
+			return 'column-rule-width';
+		case 'ColumnWidth':
+			return 'column-width';
+		case 'Columns':
+			return 'columns';
+		case 'Filter':
+			return 'filter';
+		case 'Flex':
+			return 'flex';
+		case 'FlexBasis':
+			return 'flex-basis';
+		case 'FlexGrow':
+			return 'flex-grow';
+		case 'FlexShrink':
+			return 'flex-shrink';
+		case 'Font':
+			return 'font';
+		case 'FontSize':
+			return 'font-size';
+		case 'FontSizeAdjust':
+			return 'font-size-adjust';
+		case 'FontStretch':
+			return 'font-stretch';
+		case 'FontVariationSettings':
+			return 'font-variation-settings';
+		case 'FontWeight':
+			return 'font-weight';
+		case 'GridColumnGap':
+			return 'grid-column-gap';
+		case 'GridGap':
+			return 'grid-gap';
+		case 'GridRowGap':
+			return 'grid-row-gap';
+		case 'Height':
+			return 'height';
+		case 'Left':
+			return 'left';
+		case 'LetterSpacing':
+			return 'letter-spacing';
+		case 'LineHeight':
+			return 'line-height';
+		case 'Margin':
+			return 'margin';
+		case 'MarginBottom':
+			return 'margin-bottom';
+		case 'MarginLeft':
+			return 'margin-left';
+		case 'MarginRight':
+			return 'margin-right';
+		case 'MarginTop':
+			return 'margin-top';
+		case 'Mask':
+			return 'mask';
+		case 'MaskPosition':
+			return 'mask-position';
+		case 'MaskSize':
+			return 'mask-size';
+		case 'MaxHeight':
+			return 'max-height';
+		case 'MaxWidth':
+			return 'max-width';
+		case 'MinHeight':
+			return 'min-height';
+		case 'MinWidth':
+			return 'min-width';
+		case 'ObjectPosition':
+			return 'object-position';
+		case 'Offset':
+			return 'offset';
+		case 'OffsetAnchor':
+			return 'offset-anchor';
+		case 'OffsetDistance':
+			return 'offset-distance';
+		case 'OffsetPath':
+			return 'offset-path';
+		case 'OffsetRotate':
+			return 'offset-rotate';
+		case 'Opacity':
+			return 'opacity';
+		case 'Order':
+			return 'order';
+		case 'Outline':
+			return 'outline';
+		case 'OutlineColor':
+			return 'outline-color';
+		case 'OutlineOffset':
+			return 'outline-offset';
+		case 'OutlineWidth':
+			return 'outline-width';
+		case 'Padding':
+			return 'padding';
+		case 'PaddingBottom':
+			return 'padding-bottom';
+		case 'PaddingLeft':
+			return 'padding-left';
+		case 'PaddingRight':
+			return 'padding-right';
+		case 'PaddingTop':
+			return 'padding-top';
+		case 'Right':
+			return 'right';
+		case 'TabSize':
+			return 'tab-size';
+		case 'TextIndent':
+			return 'text-indent';
+		case 'TextShadow':
+			return 'text-shadow';
+		case 'Top':
+			return 'top';
+		case 'Transform':
+			return 'transform';
+		case 'TransformOrigin':
+			return 'transform-origin';
+		case 'VerticalAlign':
+			return 'vertical-align';
+		case 'Visibility':
+			return 'visibility';
+		case 'Width':
+			return 'width';
+		case 'WordSpacing':
+			return 'word-spacing';
+		default:
+			return 'z-index';
+	}
+};
+var $rtfeldman$elm_css$Css$Transitions$timeToString = function (time) {
+	return $elm$core$String$fromFloat(time) + 'ms';
+};
+var $rtfeldman$elm_css$Css$Transitions$timingFunctionToString = function (tf) {
+	switch (tf.$) {
+		case 'Ease':
+			return 'ease';
+		case 'Linear':
+			return 'linear';
+		case 'EaseIn':
+			return 'ease-in';
+		case 'EaseOut':
+			return 'ease-out';
+		case 'EaseInOut':
+			return 'ease-in-out';
+		case 'StepStart':
+			return 'step-start';
+		case 'StepEnd':
+			return 'step-end';
+		default:
+			var _float = tf.a;
+			var float2 = tf.b;
+			var float3 = tf.c;
+			var float4 = tf.d;
+			return 'cubic-bezier(' + ($elm$core$String$fromFloat(_float) + (' , ' + ($elm$core$String$fromFloat(float2) + (' , ' + ($elm$core$String$fromFloat(float3) + (' , ' + ($elm$core$String$fromFloat(float4) + ')')))))));
+	}
+};
+var $rtfeldman$elm_css$Css$Transitions$transition = function (options) {
+	var v = A3(
+		$elm$core$String$slice,
+		0,
+		-1,
+		A3(
+			$elm$core$List$foldl,
+			F2(
+				function (_v0, s) {
+					var animation = _v0.a.animation;
+					var duration = _v0.a.duration;
+					var delay = _v0.a.delay;
+					var timing = _v0.a.timing;
+					return s + (A2(
+						$elm$core$String$join,
+						' ',
+						_List_fromArray(
+							[
+								$rtfeldman$elm_css$Css$Transitions$propToString(animation),
+								$rtfeldman$elm_css$Css$Transitions$timeToString(duration),
+								A2(
+								$elm$core$Maybe$withDefault,
+								'',
+								A2($elm$core$Maybe$map, $rtfeldman$elm_css$Css$Transitions$timeToString, delay)),
+								A2(
+								$elm$core$Maybe$withDefault,
+								'',
+								A2($elm$core$Maybe$map, $rtfeldman$elm_css$Css$Transitions$timingFunctionToString, timing))
+							])) + ',');
+				}),
+			'',
+			options));
+	return A2($rtfeldman$elm_css$Css$property, 'transition', v);
+};
+var $author$project$Utils$transitions = F3(
+	function (tfs, duration, delay) {
+		return $rtfeldman$elm_css$Css$Transitions$transition(
+			A2(
+				$elm$core$List$map,
+				function (f) {
+					return A2(f, duration, delay);
+				},
+				tfs));
+	});
+var $author$project$Components$Photo$container = F4(
+	function (view, imgSrc, duration, delay) {
+		if (view.$ === 'Article') {
+			return A2(
+				$rtfeldman$elm_css$Html$Styled$div,
+				_List_fromArray(
+					[
+						$rtfeldman$elm_css$Html$Styled$Attributes$css(
+						_List_fromArray(
+							[
+								$rtfeldman$elm_css$Css$overflow($rtfeldman$elm_css$Css$hidden),
+								$rtfeldman$elm_css$Css$width(
+								$rtfeldman$elm_css$Css$vw(50)),
+								$rtfeldman$elm_css$Css$height(
+								$rtfeldman$elm_css$Css$vw(37.5)),
+								A3(
+								$author$project$Utils$transitions,
+								_List_fromArray(
+									[$author$project$Utils$easeHeight, $author$project$Utils$easeWidth]),
+								duration,
+								0)
+							]))
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$rtfeldman$elm_css$Html$Styled$img,
+						_List_fromArray(
+							[
+								$rtfeldman$elm_css$Html$Styled$Attributes$css(
+								_List_fromArray(
+									[
+										$rtfeldman$elm_css$Css$width(
+										$rtfeldman$elm_css$Css$pct(88)),
+										A4(
+										$rtfeldman$elm_css$Css$margin4,
+										$rtfeldman$elm_css$Css$pct(4),
+										$rtfeldman$elm_css$Css$zero,
+										$rtfeldman$elm_css$Css$pct(2),
+										$rtfeldman$elm_css$Css$pct(6)),
+										A3(
+										$rtfeldman$elm_css$Css$border3,
+										$rtfeldman$elm_css$Css$px(1),
+										$rtfeldman$elm_css$Css$solid,
+										$author$project$Utils$gray),
+										A2($rtfeldman$elm_css$Css$property, 'filter', 'grayscale(0%)'),
+										A3(
+										$author$project$Utils$transitions,
+										_List_fromArray(
+											[$author$project$Utils$easeBorder, $author$project$Utils$easeFilter, $author$project$Utils$easeMargin, $author$project$Utils$easeWidth]),
+										duration,
+										0)
+									])),
+								$rtfeldman$elm_css$Html$Styled$Attributes$src(imgSrc)
+							]),
+						_List_Nil)
+					]));
+		} else {
+			return A2(
+				$rtfeldman$elm_css$Html$Styled$div,
+				_List_fromArray(
+					[
+						$rtfeldman$elm_css$Html$Styled$Attributes$css(
+						_List_fromArray(
+							[
+								$rtfeldman$elm_css$Css$overflow($rtfeldman$elm_css$Css$hidden),
+								$rtfeldman$elm_css$Css$width(
+								$rtfeldman$elm_css$Css$pct(100)),
+								$rtfeldman$elm_css$Css$height(
+								$rtfeldman$elm_css$Css$vw(18.75)),
+								A3(
+								$author$project$Utils$transitions,
+								_List_fromArray(
+									[$author$project$Utils$easeHeight, $author$project$Utils$easeWidth]),
+								duration,
+								delay)
+							]))
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$rtfeldman$elm_css$Html$Styled$img,
+						_List_fromArray(
+							[
+								$rtfeldman$elm_css$Html$Styled$Attributes$css(
+								_List_fromArray(
+									[
+										$rtfeldman$elm_css$Css$width(
+										$rtfeldman$elm_css$Css$pct(100)),
+										$rtfeldman$elm_css$Css$marginTop(
+										$rtfeldman$elm_css$Css$pct(-25)),
+										A3(
+										$rtfeldman$elm_css$Css$border3,
+										$rtfeldman$elm_css$Css$px(0),
+										$rtfeldman$elm_css$Css$solid,
+										$author$project$Utils$black),
+										A2($rtfeldman$elm_css$Css$property, 'filter', 'grayscale(80%)'),
+										A3(
+										$author$project$Utils$transitions,
+										_List_fromArray(
+											[$author$project$Utils$easeBorder, $author$project$Utils$easeFilter, $author$project$Utils$easeMargin, $author$project$Utils$easeWidth]),
+										duration,
+										delay)
+									])),
+								$rtfeldman$elm_css$Html$Styled$Attributes$src(imgSrc)
+							]),
+						_List_Nil)
+					]));
+		}
+	});
+var $rtfeldman$elm_css$Css$animationDelay = function (arg) {
+	return A2($rtfeldman$elm_css$Css$prop1, 'animation-delay', arg);
+};
+var $rtfeldman$elm_css$Css$animationDuration = function (arg) {
+	return A2($rtfeldman$elm_css$Css$prop1, 'animation-duration', arg);
+};
+var $rtfeldman$elm_css$Css$Preprocess$WithKeyframes = function (a) {
+	return {$: 'WithKeyframes', a: a};
+};
+var $rtfeldman$elm_css$Css$animationName = function (arg) {
+	return ((arg.value === 'none') || ((arg.value === 'inherit') || ((arg.value === 'unset') || (arg.value === 'initial')))) ? A2($rtfeldman$elm_css$Css$prop1, 'animation-name', arg) : $rtfeldman$elm_css$Css$Preprocess$WithKeyframes(arg.value);
+};
+var $rtfeldman$elm_css$Css$Internal$printKeyframeSelector = function (_v0) {
+	var percentage = _v0.a;
+	var properties = _v0.b;
+	var propertiesStr = A2(
+		$elm$core$String$join,
+		'',
+		A2(
+			$elm$core$List$map,
+			function (_v1) {
+				var prop = _v1.a;
+				return prop + ';';
+			},
+			properties));
+	var percentageStr = $elm$core$String$fromInt(percentage) + '%';
+	return percentageStr + (' {' + (propertiesStr + '}'));
+};
+var $rtfeldman$elm_css$Css$Internal$compileKeyframes = function (tuples) {
+	return A2(
+		$elm$core$String$join,
+		'\n\n',
+		A2($elm$core$List$map, $rtfeldman$elm_css$Css$Internal$printKeyframeSelector, tuples));
+};
+var $rtfeldman$elm_css$Css$Animations$keyframes = function (tuples) {
+	return $elm$core$List$isEmpty(tuples) ? {keyframes: $rtfeldman$elm_css$Css$Structure$Compatible, none: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'none'} : {
+		keyframes: $rtfeldman$elm_css$Css$Structure$Compatible,
+		none: $rtfeldman$elm_css$Css$Structure$Compatible,
+		value: $rtfeldman$elm_css$Css$Internal$compileKeyframes(tuples)
+	};
+};
+var $rtfeldman$elm_css$Css$UnitlessFloat = {$: 'UnitlessFloat'};
+var $rtfeldman$elm_css$Css$num = function (val) {
+	return {
+		lengthOrNumber: $rtfeldman$elm_css$Css$Structure$Compatible,
+		lengthOrNumberOrAutoOrNoneOrContent: $rtfeldman$elm_css$Css$Structure$Compatible,
+		number: $rtfeldman$elm_css$Css$Structure$Compatible,
+		numberOrInfinite: $rtfeldman$elm_css$Css$Structure$Compatible,
+		numericValue: val,
+		unitLabel: '',
+		units: $rtfeldman$elm_css$Css$UnitlessFloat,
+		value: $elm$core$String$fromFloat(val)
+	};
+};
+var $rtfeldman$elm_css$Css$Internal$Property = function (a) {
+	return {$: 'Property', a: a};
+};
+var $rtfeldman$elm_css$Css$Animations$opacity = function (_v0) {
+	var value = _v0.value;
+	return $rtfeldman$elm_css$Css$Internal$Property('opacity:' + value);
+};
+var $author$project$Utils$fadeKeyframes = F2(
+	function (from, to) {
+		return $rtfeldman$elm_css$Css$Animations$keyframes(
+			_List_fromArray(
+				[
+					_Utils_Tuple2(
+					0,
+					_List_fromArray(
+						[
+							$rtfeldman$elm_css$Css$Animations$opacity(
+							$rtfeldman$elm_css$Css$num(from))
+						])),
+					_Utils_Tuple2(
+					100,
+					_List_fromArray(
+						[
+							$rtfeldman$elm_css$Css$Animations$opacity(
+							$rtfeldman$elm_css$Css$num(to))
+						]))
+				]));
+	});
+var $rtfeldman$elm_css$Css$opacity = $rtfeldman$elm_css$Css$prop1('opacity');
+var $rtfeldman$elm_css$Css$sec = function (amount) {
+	return {
+		duration: $rtfeldman$elm_css$Css$Structure$Compatible,
+		value: $elm$core$String$fromFloat(amount) + 's'
+	};
+};
+var $author$project$Utils$fade = F4(
+	function (from, to, duration, delay) {
+		return $rtfeldman$elm_css$Css$batch(
+			_List_fromArray(
+				[
+					$rtfeldman$elm_css$Css$opacity(
+					$rtfeldman$elm_css$Css$num(from)),
+					$rtfeldman$elm_css$Css$animationName(
+					A2($author$project$Utils$fadeKeyframes, from, to)),
+					A2($rtfeldman$elm_css$Css$property, 'animation-fill-mode', 'forwards'),
+					$rtfeldman$elm_css$Css$animationDuration(
+					$rtfeldman$elm_css$Css$sec(duration / 1000)),
+					$rtfeldman$elm_css$Css$animationDelay(
+					$rtfeldman$elm_css$Css$sec(delay / 1000))
+				]));
+	});
+var $author$project$Utils$fadeIn = F2(
+	function (duration, delay) {
+		return A4($author$project$Utils$fade, 0, 100, duration, delay);
+	});
+var $rtfeldman$elm_css$Css$bottom = $rtfeldman$elm_css$Css$prop1('bottom');
+var $rtfeldman$elm_css$Css$Transitions$Bottom = {$: 'Bottom'};
+var $rtfeldman$elm_css$Css$Transitions$bottom3 = $rtfeldman$elm_css$Css$Transitions$fullTransition($rtfeldman$elm_css$Css$Transitions$Bottom);
+var $author$project$Utils$easeBottom = F2(
+	function (duration, delay) {
+		return A3($rtfeldman$elm_css$Css$Transitions$bottom3, duration, delay, $rtfeldman$elm_css$Css$Transitions$ease);
+	});
+var $rtfeldman$elm_css$Html$Styled$h2 = $rtfeldman$elm_css$Html$Styled$node('h2');
+var $author$project$Components$Photo$headline = F5(
+	function (bottomPercent, transitionDelay, headlineText, duration, headlineClick) {
+		return A2(
+			$rtfeldman$elm_css$Html$Styled$h2,
+			_List_fromArray(
+				[
+					$rtfeldman$elm_css$Html$Styled$Events$onClick(headlineClick),
+					$rtfeldman$elm_css$Html$Styled$Attributes$css(
+					_List_fromArray(
+						[
+							$rtfeldman$elm_css$Css$fontSize(
+							$rtfeldman$elm_css$Css$em(1.5)),
+							$rtfeldman$elm_css$Css$color($author$project$Utils$white),
+							$rtfeldman$elm_css$Css$backgroundColor(
+							A2($author$project$Utils$setAlpha, $author$project$Utils$blue, 0.75)),
+							$rtfeldman$elm_css$Css$padding(
+							$rtfeldman$elm_css$Css$em(0.5)),
+							$rtfeldman$elm_css$Css$cursor($rtfeldman$elm_css$Css$pointer),
+							A4(
+							$rtfeldman$elm_css$Css$margin4,
+							$rtfeldman$elm_css$Css$zero,
+							$rtfeldman$elm_css$Css$zero,
+							$rtfeldman$elm_css$Css$em(1),
+							$rtfeldman$elm_css$Css$pct(5)),
+							$rtfeldman$elm_css$Css$position($rtfeldman$elm_css$Css$absolute),
+							$rtfeldman$elm_css$Css$bottom(
+							$rtfeldman$elm_css$Css$pct(bottomPercent)),
+							A3(
+							$author$project$Utils$transitions,
+							_List_fromArray(
+								[$author$project$Utils$easeBottom]),
+							duration,
+							transitionDelay),
+							$rtfeldman$elm_css$Css$hover(
+							_List_fromArray(
+								[
+									$rtfeldman$elm_css$Css$backgroundColor($author$project$Utils$blue)
+								]))
+						]))
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$rtfeldman$elm_css$Html$Styled$span,
+					_List_Nil,
+					_List_fromArray(
+						[
+							$rtfeldman$elm_css$Html$Styled$text(headlineText)
+						]))
+				]));
+	});
+var $rtfeldman$elm_css$Css$relative = {position: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'relative'};
+var $rtfeldman$elm_css$Css$Transitions$Opacity = {$: 'Opacity'};
+var $rtfeldman$elm_css$Css$Transitions$opacity3 = $rtfeldman$elm_css$Css$Transitions$fullTransition($rtfeldman$elm_css$Css$Transitions$Opacity);
+var $author$project$Utils$easeOpacity = F2(
+	function (duration, delay) {
+		return A3($rtfeldman$elm_css$Css$Transitions$opacity3, duration, delay, $rtfeldman$elm_css$Css$Transitions$ease);
+	});
+var $rtfeldman$elm_css$Css$float = function (fn) {
+	return A3(
+		$rtfeldman$elm_css$Css$Internal$getOverloadedProperty,
+		'float',
+		'float',
+		fn($rtfeldman$elm_css$Css$Internal$lengthForOverloadedProperty));
+};
+var $author$project$Components$Photo$text = F4(
+	function (view, articleText, duration, delay) {
+		return A2(
+			$rtfeldman$elm_css$Html$Styled$div,
+			_List_fromArray(
+				[
+					function () {
+					if (view.$ === 'Article') {
+						return $rtfeldman$elm_css$Html$Styled$Attributes$css(
+							_List_fromArray(
+								[
+									$rtfeldman$elm_css$Css$float($rtfeldman$elm_css$Css$right),
+									$rtfeldman$elm_css$Css$overflow($rtfeldman$elm_css$Css$hidden),
+									$rtfeldman$elm_css$Css$width(
+									$rtfeldman$elm_css$Css$pct(50)),
+									$rtfeldman$elm_css$Css$opacity(
+									$rtfeldman$elm_css$Css$num(100)),
+									$rtfeldman$elm_css$Css$height(
+									$rtfeldman$elm_css$Css$pct(100)),
+									$rtfeldman$elm_css$Css$Transitions$transition(
+									_List_fromArray(
+										[
+											A2($author$project$Utils$easeOpacity, duration, delay),
+											A2($author$project$Utils$easeWidth, duration, 0)
+										]))
+								]));
+					} else {
+						return $rtfeldman$elm_css$Html$Styled$Attributes$css(
+							_List_fromArray(
+								[
+									$rtfeldman$elm_css$Css$float($rtfeldman$elm_css$Css$right),
+									$rtfeldman$elm_css$Css$overflow($rtfeldman$elm_css$Css$hidden),
+									$rtfeldman$elm_css$Css$width($rtfeldman$elm_css$Css$zero),
+									$rtfeldman$elm_css$Css$opacity($rtfeldman$elm_css$Css$zero),
+									$rtfeldman$elm_css$Css$height($rtfeldman$elm_css$Css$zero),
+									$rtfeldman$elm_css$Css$Transitions$transition(
+									_List_fromArray(
+										[
+											A2($author$project$Utils$easeOpacity, duration, 0),
+											A2($author$project$Utils$easeWidth, duration, delay),
+											A2($author$project$Utils$easeHeight, duration, delay)
+										]))
+								]));
+					}
+				}()
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$rtfeldman$elm_css$Html$Styled$span,
+					_List_fromArray(
+						[
+							$rtfeldman$elm_css$Html$Styled$Attributes$css(
+							_List_fromArray(
+								[
+									A4(
+									$rtfeldman$elm_css$Css$padding4,
+									$rtfeldman$elm_css$Css$pct(4),
+									$rtfeldman$elm_css$Css$pct(8),
+									$rtfeldman$elm_css$Css$zero,
+									$rtfeldman$elm_css$Css$zero),
+									$rtfeldman$elm_css$Css$display($rtfeldman$elm_css$Css$block),
+									$rtfeldman$elm_css$Css$color($author$project$Utils$white)
+								]))
+						]),
+					_List_fromArray(
+						[
+							$rtfeldman$elm_css$Html$Styled$text(articleText)
+						]))
+				]));
+	});
+var $author$project$Utils$topLeft = F2(
+	function (topPos, leftPos) {
+		return $rtfeldman$elm_css$Css$batch(
+			_List_fromArray(
+				[
+					$rtfeldman$elm_css$Css$position($rtfeldman$elm_css$Css$absolute),
+					$rtfeldman$elm_css$Css$top(topPos),
+					$rtfeldman$elm_css$Css$left(leftPos)
+				]));
+	});
+var $author$project$Components$Photo$article = F4(
+	function (duration, photo, headlineClick, fullscreenClick) {
+		return A2(
+			$rtfeldman$elm_css$Html$Styled$div,
+			_List_fromArray(
+				[
+					$rtfeldman$elm_css$Html$Styled$Attributes$css(
+					_List_fromArray(
+						[
+							$rtfeldman$elm_css$Css$width(
+							$rtfeldman$elm_css$Css$vw(100)),
+							$rtfeldman$elm_css$Css$backgroundColor($author$project$Utils$black),
+							$rtfeldman$elm_css$Css$position($rtfeldman$elm_css$Css$relative),
+							$rtfeldman$elm_css$Css$height(
+							$rtfeldman$elm_css$Css$vw(37.5)),
+							A3(
+							$author$project$Utils$transitions,
+							_List_fromArray(
+								[$author$project$Utils$easeHeight]),
+							duration,
+							0)
+						]))
+				]),
+			_List_fromArray(
+				[
+					A4($author$project$Components$Photo$text, $author$project$Components$Photo$Article, photo.text, duration, duration),
+					A4($author$project$Components$Photo$container, $author$project$Components$Photo$Article, photo.image, duration, duration),
+					A5($author$project$Components$Photo$headline, 8, 0, photo.headline, duration, headlineClick),
+					A2(
+					$author$project$Components$fullscreenButton,
+					fullscreenClick,
+					_List_fromArray(
+						[
+							A2($author$project$Utils$fadeIn, duration, duration),
+							A2(
+							$author$project$Utils$topLeft,
+							$rtfeldman$elm_css$Css$pct(10),
+							$rtfeldman$elm_css$Css$pct(5))
+						]))
+				]));
+	});
+var $author$project$Components$Photo$Teaser = {$: 'Teaser'};
+var $author$project$Utils$fadeOut = F2(
+	function (duration, delay) {
+		return A4($author$project$Utils$fade, 100, 0, duration, delay);
+	});
+var $author$project$Components$Photo$teaser = F4(
+	function (duration, photo, headlineClick, fullscreenClick) {
+		return A2(
+			$rtfeldman$elm_css$Html$Styled$div,
+			_List_fromArray(
+				[
+					$rtfeldman$elm_css$Html$Styled$Attributes$css(
+					_List_fromArray(
+						[
+							$rtfeldman$elm_css$Css$width(
+							$rtfeldman$elm_css$Css$vw(100)),
+							$rtfeldman$elm_css$Css$backgroundColor($author$project$Utils$black),
+							$rtfeldman$elm_css$Css$position($rtfeldman$elm_css$Css$relative),
+							$rtfeldman$elm_css$Css$height(
+							$rtfeldman$elm_css$Css$vw(18.75)),
+							A3(
+							$author$project$Utils$transitions,
+							_List_fromArray(
+								[$author$project$Utils$easeHeight]),
+							duration,
+							duration)
+						]))
+				]),
+			_List_fromArray(
+				[
+					A4($author$project$Components$Photo$text, $author$project$Components$Photo$Teaser, photo.text, duration, duration),
+					A4($author$project$Components$Photo$container, $author$project$Components$Photo$Teaser, photo.image, duration, duration),
+					A5($author$project$Components$Photo$headline, 0, duration, photo.headline, duration, headlineClick),
+					A2(
+					$author$project$Components$fullscreenButton,
+					fullscreenClick,
+					_List_fromArray(
+						[
+							A2($author$project$Utils$fadeOut, duration, 0),
+							A2(
+							$author$project$Utils$topLeft,
+							$rtfeldman$elm_css$Css$pct(10),
+							$rtfeldman$elm_css$Css$pct(5))
+						]))
+				]));
+	});
+var $author$project$Main$viewPhoto = F3(
+	function (animationDuration, index, _v0) {
+		var photo = _v0.photo;
+		var photoView = _v0.photoView;
+		if (photoView.$ === 'Article') {
+			return A4(
+				$author$project$Components$Photo$article,
+				animationDuration,
+				photo,
+				A2($author$project$Main$CloseArticle, index, photo),
+				$author$project$Main$GoToFullscreen(photo));
+		} else {
+			return A4(
+				$author$project$Components$Photo$teaser,
+				animationDuration,
+				photo,
+				A2($author$project$Main$OpenArticle, index, photo),
+				$author$project$Main$None);
+		}
+	});
 var $author$project$Main$view = function (model) {
-	var pv = F2(
-		function (index, _v1) {
-			var photo = _v1.photo;
-			var photoView = _v1.photoView;
-			if (photoView.$ === 'Article') {
-				return A6(
-					$author$project$Components$Photo$pht,
-					photoView,
-					photo,
-					A2($author$project$Main$CloseArticle, index, photo),
-					$author$project$Main$GoToFullscreen(photo),
-					500,
-					500);
-			} else {
-				return A6(
-					$author$project$Components$Photo$pht,
-					photoView,
-					photo,
-					A2($author$project$Main$OpenArticle, index, photo),
-					$author$project$Main$None,
-					500,
-					500);
-			}
-		});
 	return A2(
 		$elm$browser$Browser$Document,
 		$author$project$Assets$document,
@@ -9590,7 +9616,10 @@ var $author$project$Main$view = function (model) {
 					A2($author$project$Components$header, $author$project$Assets$headline, $author$project$Assets$description),
 					_Utils_ap(
 						$elm$core$Array$toList(
-							A2($elm$core$Array$indexedMap, pv, model.list)),
+							A2(
+								$elm$core$Array$indexedMap,
+								$author$project$Main$viewPhoto(500),
+								model.list)),
 						_Utils_ap(
 							A2(
 								$elm$core$Maybe$withDefault,

@@ -1,4 +1,4 @@
-module Components.Photo exposing (View(..), pht)
+module Components.Photo exposing (Photo, article, teaser)
 
 import Components exposing (fullscreenButton)
 import Css exposing (absolute, backgroundColor, block, border3, bottom, color, cursor, display, em, float, fontSize, height, hidden, hover, margin4, marginTop, num, opacity, overflow, padding, padding4, pct, pointer, position, property, px, relative, right, solid, vw, width, zero)
@@ -49,17 +49,8 @@ text view articleText duration delay =
         ]
 
 
-headline : View -> String -> Float -> Float -> msg -> Html msg
-headline view headlineText duration delay headlineClick =
-    let
-        ( bottomPercent, transitionDelay ) =
-            case view of
-                Article ->
-                    ( 8, 0 )
-
-                Teaser ->
-                    ( 0, delay )
-    in
+headline : Float -> Float -> String -> Float -> msg -> Html msg
+headline bottomPercent transitionDelay headlineText duration headlineClick =
     h2
         [ onClick headlineClick
         , css <|
@@ -78,52 +69,54 @@ headline view headlineText duration delay headlineClick =
         [ span [] [ Html.Styled.text headlineText ] ]
 
 
-image : View -> String -> Float -> Float -> Html msg
-image view imgSrc duration delay =
-    let
-        style =
-            case view of
-                Article ->
-                    [ width (pct 88)
-                    , margin4 (pct 4) zero (pct 2) (pct 6)
-                    , border3 (px 1) solid gray
-                    , property "filter" "grayscale(0%)"
-                    , transitions [ easeBorder, easeFilter, easeMargin, easeWidth ] duration 0
-                    ]
-
-                Teaser ->
-                    [ width (pct 100)
-                    , marginTop (pct -25)
-                    , border3 (px 0) solid black
-                    , property "filter" "grayscale(80%)"
-                    , transitions [ easeBorder, easeFilter, easeMargin, easeWidth ] duration delay
-                    ]
-    in
-    img [ css style, src imgSrc ] []
-
-
 container : View -> String -> Float -> Float -> Html msg
 container view imgSrc duration delay =
-    let
-        style =
-            case view of
-                -- calc(50vw / 4 * 3); Images ratio is 4:3, whole image is displayed
-                Article ->
+    case view of
+        -- calc(50vw / 4 * 3); Images ratio is 4:3, whole image is displayed
+        Article ->
+            div
+                [ css
                     [ overflow hidden
                     , width (vw 50)
                     , height (vw 37.5)
                     , transitions [ easeHeight, easeWidth ] duration 0
                     ]
+                ]
+                [ img
+                    [ css
+                        [ width (pct 88)
+                        , margin4 (pct 4) zero (pct 2) (pct 6)
+                        , border3 (px 1) solid gray
+                        , property "filter" "grayscale(0%)"
+                        , transitions [ easeBorder, easeFilter, easeMargin, easeWidth ] duration 0
+                        ]
+                    , src imgSrc
+                    ]
+                    []
+                ]
 
-                -- calc(100vw / 16 * 3); Images ratio is 4:3, 1/4 of image is displayed
-                Teaser ->
+        -- calc(100vw / 16 * 3); Images ratio is 4:3, 1/4 of image is displayed
+        Teaser ->
+            div
+                [ css
                     [ overflow hidden
                     , width (pct 100)
                     , height (vw 18.75)
                     , transitions [ easeHeight, easeWidth ] duration delay
                     ]
-    in
-    div [ css style ] [ image view imgSrc duration delay ]
+                ]
+                [ img
+                    [ css
+                        [ width (pct 100)
+                        , marginTop (pct -25)
+                        , border3 (px 0) solid black
+                        , property "filter" "grayscale(80%)"
+                        , transitions [ easeBorder, easeFilter, easeMargin, easeWidth ] duration delay
+                        ]
+                    , src imgSrc
+                    ]
+                    []
+                ]
 
 
 
@@ -138,31 +131,41 @@ type alias Photo a =
     }
 
 
-pht : View -> Photo a -> msg -> msg -> Float -> Float -> Html msg
-pht view photo headlineClick fullscreenClick duration delay =
+article : Float -> Photo a -> msg -> msg -> Html msg
+article duration photo headlineClick fullscreenClick =
     div
         [ css <|
             [ width (vw 100)
             , backgroundColor black
             , position relative
+
+            -- displaying whole image (reduced to 50%): (50/4)*3vw
+            , height (vw 37.5)
+            , transitions [ easeHeight ] duration 0
             ]
-                ++ (case view of
-                        Article ->
-                            -- displaying whole image (reduced to 50%): (50/4)*3vw
-                            [ height (vw 37.5), transitions [ easeHeight ] duration 0 ]
-
-                        Teaser ->
-                            -- displaying 25% of an image: (25/4)*3vw
-                            [ height (vw 18.75), transitions [ easeHeight ] duration delay ]
-                   )
         ]
-        [ text view photo.text duration delay
-        , container view photo.image duration delay
-        , headline view photo.headline duration delay headlineClick
-        , case view of
-            Article ->
-                fullscreenButton fullscreenClick [ Utils.fadeIn duration delay, Utils.topLeft (pct 10) (pct 5) ]
+        [ text Article photo.text duration duration
+        , container Article photo.image duration duration
+        , headline 8 0 photo.headline duration headlineClick
+        , fullscreenButton fullscreenClick [ Utils.fadeIn duration duration, Utils.topLeft (pct 10) (pct 5) ]
+        ]
 
-            Teaser ->
-                fullscreenButton fullscreenClick [ Utils.fadeOut duration 0, Utils.topLeft (pct 10) (pct 5) ]
+
+teaser : Float -> Photo a -> msg -> msg -> Html msg
+teaser duration photo headlineClick fullscreenClick =
+    div
+        [ css <|
+            [ width (vw 100)
+            , backgroundColor black
+            , position relative
+
+            -- displaying 25% of an image: (25/4)*3vw
+            , height (vw 18.75)
+            , transitions [ easeHeight ] duration duration
+            ]
+        ]
+        [ text Teaser photo.text duration duration
+        , container Teaser photo.image duration duration
+        , headline 0 duration photo.headline duration headlineClick
+        , fullscreenButton fullscreenClick [ Utils.fadeOut duration 0, Utils.topLeft (pct 10) (pct 5) ]
         ]

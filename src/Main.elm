@@ -24,6 +24,11 @@ type alias Model =
     }
 
 
+type PhotoView
+    = Article
+    | Teaser
+
+
 type Msg
     = None
     | OpenArticle Int Photo
@@ -34,18 +39,17 @@ type Msg
 
 type alias PhotoInList =
     { photo : Photo
-    , photoView : Components.Photo.View
+    , photoView : PhotoView
     }
-
-
-teaser : Int -> Photo -> PhotoInList
-teaser _ photo =
-    { photo = photo, photoView = Components.Photo.Teaser }
 
 
 init : flags -> Url -> Browser.Navigation.Key -> ( Model, Cmd msg )
 init _ _ _ =
-    ( { list = Array.fromList <| List.indexedMap teaser Assets.photos, fullscreen = Nothing }, Cmd.none )
+    let
+        teaser =
+            \photo -> { photo = photo, photoView = Teaser }
+    in
+    ( { list = Array.map teaser <| Array.fromList Assets.photos, fullscreen = Nothing }, Cmd.none )
 
 
 bodyStyle : Html msg
@@ -60,23 +64,23 @@ bodyStyle =
         ]
 
 
+viewPhoto : Float -> Int -> PhotoInList -> Html Msg
+viewPhoto animationDuration index { photo, photoView } =
+    case photoView of
+        Article ->
+            Components.Photo.article animationDuration photo (CloseArticle index photo) (GoToFullscreen photo)
+
+        Teaser ->
+            Components.Photo.teaser animationDuration photo (OpenArticle index photo) None
+
+
 view : Model -> Document Msg
 view model =
-    let
-        pv =
-            \index { photo, photoView } ->
-                case photoView of
-                    Components.Photo.Article ->
-                        Components.Photo.pht photoView photo (CloseArticle index photo) (GoToFullscreen photo) 500 500
-
-                    Components.Photo.Teaser ->
-                        Components.Photo.pht photoView photo (OpenArticle index photo) None 500 500
-    in
     Document Assets.document <|
         List.map toUnstyled <|
             bodyStyle
                 :: Components.header Assets.headline Assets.description
-                :: Array.toList (Array.indexedMap pv model.list)
+                :: Array.toList (Array.indexedMap (viewPhoto 500) model.list)
                 ++ Maybe.withDefault [] (Maybe.map (\{ image } -> [ Components.fullscreen CloseFullscreen image ]) model.fullscreen)
                 ++ [ Components.footer ]
 
@@ -85,10 +89,10 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         OpenArticle index photo ->
-            ( { model | list = Array.set index { photoView = Components.Photo.Article, photo = photo } model.list, fullscreen = Nothing }, Cmd.none )
+            ( { model | list = Array.set index { photoView = Article, photo = photo } model.list, fullscreen = Nothing }, Cmd.none )
 
         CloseArticle index photo ->
-            ( { model | list = Array.set index { photoView = Components.Photo.Teaser, photo = photo } model.list, fullscreen = Nothing }, Cmd.none )
+            ( { model | list = Array.set index { photoView = Teaser, photo = photo } model.list, fullscreen = Nothing }, Cmd.none )
 
         GoToFullscreen photo ->
             ( { model | fullscreen = Just photo }, Cmd.none )
