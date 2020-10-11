@@ -109,8 +109,8 @@ photoHeadline headline bottomPercent duration delay headlineClick =
 -- image ratio is 4:3
 
 
-photo : View -> Photo -> msg -> msg -> Html msg
-photo view { headline, text, image } headlineClick fullscreenClick =
+photo : View -> Photo -> msg -> msg -> Float -> Float -> Html msg
+photo view { headline, text, image } headlineClick fullscreenClick duration delay =
     div
         [ css <|
             [ width (vw 100)
@@ -120,11 +120,11 @@ photo view { headline, text, image } headlineClick fullscreenClick =
                 ++ (case view of
                         Article ->
                             -- displaying whole image (reduced to 50%): (50/4)*3vw
-                            [ height (vw 37.5), transitions [ easeHeight ] 500 0 ]
+                            [ height (vw 37.5), transitions [ easeHeight ] duration 0 ]
 
                         Teaser ->
                             -- displaying 25% of an image: (25/4)*3vw
-                            [ height (vw 18.75), transitions [ easeHeight ] 500 500 ]
+                            [ height (vw 18.75), transitions [ easeHeight ] duration delay ]
                    )
         ]
         [ div
@@ -136,7 +136,7 @@ photo view { headline, text, image } headlineClick fullscreenClick =
                         , width (pct 50)
                         , opacity (num 100)
                         , height (pct 100)
-                        , transition [ easeOpacity 500 500, easeWidth 500 0 ]
+                        , transition [ easeOpacity duration delay, easeWidth duration 0 ]
                         ]
 
                 Teaser ->
@@ -146,7 +146,7 @@ photo view { headline, text, image } headlineClick fullscreenClick =
                         , width zero
                         , opacity zero
                         , height zero
-                        , transition [ easeOpacity 500 0, easeWidth 500 500, easeHeight 500 500 ]
+                        , transition [ easeOpacity duration 0, easeWidth duration delay, easeHeight duration delay ]
                         ]
             ]
             [ span
@@ -158,48 +158,13 @@ photo view { headline, text, image } headlineClick fullscreenClick =
                 ]
                 [ Html.Styled.text text ]
             ]
-        , let
-            duration =
-                500
-
-            delay =
-                case view of
-                    Article ->
-                        0
-
-                    Teaser ->
-                        500
-          in
-          case view of
-            Article ->
-                div
-                    -- calc(50vw / 4 * 3); Images ratio is 4:3, whole image is displayed
-                    [ css
-                        [ overflow hidden
-                        , width (vw 50)
-                        , height (vw 37.5)
-                        , transitions [ easeHeight, easeWidth ] duration delay
-                        ]
-                    ]
-                    [ Components.Photo.image Article image duration delay ]
-
-            Teaser ->
-                div
-                    -- calc(100vw / 16 * 3); Images ratio is 4:3, 1/4 of image is displayed
-                    [ css
-                        [ overflow hidden
-                        , width (pct 100)
-                        , height (vw 18.75)
-                        , transitions [ easeHeight, easeWidth ] duration delay
-                        ]
-                    ]
-                    [ Components.Photo.image Teaser image duration delay ]
+        , Components.Photo.container view image duration delay
         , case view of
             Article ->
-                photoHeadline headline 8 500 0 headlineClick
+                photoHeadline headline 8 duration 0 headlineClick
 
             Teaser ->
-                photoHeadline headline 0 500 500 headlineClick
+                photoHeadline headline 0 duration delay headlineClick
         , case view of
             Article ->
                 fullscreenButton fullscreenClick [ fadeIn 0.5 0.5, topLeft (pct 10) (pct 5) ]

@@ -8323,138 +8323,12 @@ var $author$project$Utils$easeHeight = F2(
 	function (duration, delay) {
 		return A3($rtfeldman$elm_css$Css$Transitions$height3, duration, delay, $rtfeldman$elm_css$Css$Transitions$ease);
 	});
-var $rtfeldman$elm_css$Css$Transitions$Opacity = {$: 'Opacity'};
-var $rtfeldman$elm_css$Css$Transitions$opacity3 = $rtfeldman$elm_css$Css$Transitions$fullTransition($rtfeldman$elm_css$Css$Transitions$Opacity);
-var $author$project$Utils$easeOpacity = F2(
-	function (duration, delay) {
-		return A3($rtfeldman$elm_css$Css$Transitions$opacity3, duration, delay, $rtfeldman$elm_css$Css$Transitions$ease);
-	});
 var $rtfeldman$elm_css$Css$Transitions$Width = {$: 'Width'};
 var $rtfeldman$elm_css$Css$Transitions$width3 = $rtfeldman$elm_css$Css$Transitions$fullTransition($rtfeldman$elm_css$Css$Transitions$Width);
 var $author$project$Utils$easeWidth = F2(
 	function (duration, delay) {
 		return A3($rtfeldman$elm_css$Css$Transitions$width3, duration, delay, $rtfeldman$elm_css$Css$Transitions$ease);
 	});
-var $rtfeldman$elm_css$Css$animationDelay = function (arg) {
-	return A2($rtfeldman$elm_css$Css$prop1, 'animation-delay', arg);
-};
-var $rtfeldman$elm_css$Css$animationDuration = function (arg) {
-	return A2($rtfeldman$elm_css$Css$prop1, 'animation-duration', arg);
-};
-var $rtfeldman$elm_css$Css$Preprocess$WithKeyframes = function (a) {
-	return {$: 'WithKeyframes', a: a};
-};
-var $rtfeldman$elm_css$Css$animationName = function (arg) {
-	return ((arg.value === 'none') || ((arg.value === 'inherit') || ((arg.value === 'unset') || (arg.value === 'initial')))) ? A2($rtfeldman$elm_css$Css$prop1, 'animation-name', arg) : $rtfeldman$elm_css$Css$Preprocess$WithKeyframes(arg.value);
-};
-var $rtfeldman$elm_css$Css$Internal$printKeyframeSelector = function (_v0) {
-	var percentage = _v0.a;
-	var properties = _v0.b;
-	var propertiesStr = A2(
-		$elm$core$String$join,
-		'',
-		A2(
-			$elm$core$List$map,
-			function (_v1) {
-				var prop = _v1.a;
-				return prop + ';';
-			},
-			properties));
-	var percentageStr = $elm$core$String$fromInt(percentage) + '%';
-	return percentageStr + (' {' + (propertiesStr + '}'));
-};
-var $rtfeldman$elm_css$Css$Internal$compileKeyframes = function (tuples) {
-	return A2(
-		$elm$core$String$join,
-		'\n\n',
-		A2($elm$core$List$map, $rtfeldman$elm_css$Css$Internal$printKeyframeSelector, tuples));
-};
-var $rtfeldman$elm_css$Css$Animations$keyframes = function (tuples) {
-	return $elm$core$List$isEmpty(tuples) ? {keyframes: $rtfeldman$elm_css$Css$Structure$Compatible, none: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'none'} : {
-		keyframes: $rtfeldman$elm_css$Css$Structure$Compatible,
-		none: $rtfeldman$elm_css$Css$Structure$Compatible,
-		value: $rtfeldman$elm_css$Css$Internal$compileKeyframes(tuples)
-	};
-};
-var $rtfeldman$elm_css$Css$UnitlessFloat = {$: 'UnitlessFloat'};
-var $rtfeldman$elm_css$Css$num = function (val) {
-	return {
-		lengthOrNumber: $rtfeldman$elm_css$Css$Structure$Compatible,
-		lengthOrNumberOrAutoOrNoneOrContent: $rtfeldman$elm_css$Css$Structure$Compatible,
-		number: $rtfeldman$elm_css$Css$Structure$Compatible,
-		numberOrInfinite: $rtfeldman$elm_css$Css$Structure$Compatible,
-		numericValue: val,
-		unitLabel: '',
-		units: $rtfeldman$elm_css$Css$UnitlessFloat,
-		value: $elm$core$String$fromFloat(val)
-	};
-};
-var $rtfeldman$elm_css$Css$Internal$Property = function (a) {
-	return {$: 'Property', a: a};
-};
-var $rtfeldman$elm_css$Css$Animations$opacity = function (_v0) {
-	var value = _v0.value;
-	return $rtfeldman$elm_css$Css$Internal$Property('opacity:' + value);
-};
-var $author$project$Components$fadeKeyframes = F2(
-	function (from, to) {
-		return $rtfeldman$elm_css$Css$Animations$keyframes(
-			_List_fromArray(
-				[
-					_Utils_Tuple2(
-					0,
-					_List_fromArray(
-						[
-							$rtfeldman$elm_css$Css$Animations$opacity(
-							$rtfeldman$elm_css$Css$num(from))
-						])),
-					_Utils_Tuple2(
-					100,
-					_List_fromArray(
-						[
-							$rtfeldman$elm_css$Css$Animations$opacity(
-							$rtfeldman$elm_css$Css$num(to))
-						]))
-				]));
-	});
-var $rtfeldman$elm_css$Css$opacity = $rtfeldman$elm_css$Css$prop1('opacity');
-var $rtfeldman$elm_css$Css$sec = function (amount) {
-	return {
-		duration: $rtfeldman$elm_css$Css$Structure$Compatible,
-		value: $elm$core$String$fromFloat(amount) + 's'
-	};
-};
-var $author$project$Components$fade = F4(
-	function (from, to, duration, delay) {
-		return $rtfeldman$elm_css$Css$batch(
-			_List_fromArray(
-				[
-					$rtfeldman$elm_css$Css$opacity(
-					$rtfeldman$elm_css$Css$num(from)),
-					$rtfeldman$elm_css$Css$animationName(
-					A2($author$project$Components$fadeKeyframes, from, to)),
-					A2($rtfeldman$elm_css$Css$property, 'animation-fill-mode', 'forwards'),
-					$rtfeldman$elm_css$Css$animationDuration(
-					$rtfeldman$elm_css$Css$sec(duration)),
-					$rtfeldman$elm_css$Css$animationDelay(
-					$rtfeldman$elm_css$Css$sec(delay))
-				]));
-	});
-var $author$project$Components$fadeIn = F2(
-	function (duration, delay) {
-		return A4($author$project$Components$fade, 0, 100, duration, delay);
-	});
-var $author$project$Components$fadeOut = F2(
-	function (duration, delay) {
-		return A4($author$project$Components$fade, 100, 0, duration, delay);
-	});
-var $rtfeldman$elm_css$Css$float = function (fn) {
-	return A3(
-		$rtfeldman$elm_css$Css$Internal$getOverloadedProperty,
-		'float',
-		'float',
-		fn($rtfeldman$elm_css$Css$Internal$lengthForOverloadedProperty));
-};
 var $rtfeldman$elm_css$Css$Transitions$Border = {$: 'Border'};
 var $rtfeldman$elm_css$Css$Transitions$border3 = $rtfeldman$elm_css$Css$Transitions$fullTransition($rtfeldman$elm_css$Css$Transitions$Border);
 var $author$project$Utils$easeBorder = F2(
@@ -8768,7 +8642,7 @@ var $author$project$Components$Photo$image = F4(
 						_List_fromArray(
 							[$author$project$Utils$easeBorder, $author$project$Utils$easeFilter, $author$project$Utils$easeMargin, $author$project$Utils$easeWidth]),
 						duration,
-						delay)
+						0)
 					]);
 			} else {
 				return _List_fromArray(
@@ -8801,6 +8675,178 @@ var $author$project$Components$Photo$image = F4(
 				]),
 			_List_Nil);
 	});
+var $author$project$Components$Photo$container = F4(
+	function (view, imgSrc, duration, delay) {
+		var style = function () {
+			if (view.$ === 'Article') {
+				return _List_fromArray(
+					[
+						$rtfeldman$elm_css$Css$overflow($rtfeldman$elm_css$Css$hidden),
+						$rtfeldman$elm_css$Css$width(
+						$rtfeldman$elm_css$Css$vw(50)),
+						$rtfeldman$elm_css$Css$height(
+						$rtfeldman$elm_css$Css$vw(37.5)),
+						A3(
+						$author$project$Utils$transitions,
+						_List_fromArray(
+							[$author$project$Utils$easeHeight, $author$project$Utils$easeWidth]),
+						duration,
+						0)
+					]);
+			} else {
+				return _List_fromArray(
+					[
+						$rtfeldman$elm_css$Css$overflow($rtfeldman$elm_css$Css$hidden),
+						$rtfeldman$elm_css$Css$width(
+						$rtfeldman$elm_css$Css$pct(100)),
+						$rtfeldman$elm_css$Css$height(
+						$rtfeldman$elm_css$Css$vw(18.75)),
+						A3(
+						$author$project$Utils$transitions,
+						_List_fromArray(
+							[$author$project$Utils$easeHeight, $author$project$Utils$easeWidth]),
+						duration,
+						delay)
+					]);
+			}
+		}();
+		return A2(
+			$rtfeldman$elm_css$Html$Styled$div,
+			_List_fromArray(
+				[
+					$rtfeldman$elm_css$Html$Styled$Attributes$css(style)
+				]),
+			_List_fromArray(
+				[
+					A4($author$project$Components$Photo$image, view, imgSrc, duration, delay)
+				]));
+	});
+var $rtfeldman$elm_css$Css$Transitions$Opacity = {$: 'Opacity'};
+var $rtfeldman$elm_css$Css$Transitions$opacity3 = $rtfeldman$elm_css$Css$Transitions$fullTransition($rtfeldman$elm_css$Css$Transitions$Opacity);
+var $author$project$Utils$easeOpacity = F2(
+	function (duration, delay) {
+		return A3($rtfeldman$elm_css$Css$Transitions$opacity3, duration, delay, $rtfeldman$elm_css$Css$Transitions$ease);
+	});
+var $rtfeldman$elm_css$Css$animationDelay = function (arg) {
+	return A2($rtfeldman$elm_css$Css$prop1, 'animation-delay', arg);
+};
+var $rtfeldman$elm_css$Css$animationDuration = function (arg) {
+	return A2($rtfeldman$elm_css$Css$prop1, 'animation-duration', arg);
+};
+var $rtfeldman$elm_css$Css$Preprocess$WithKeyframes = function (a) {
+	return {$: 'WithKeyframes', a: a};
+};
+var $rtfeldman$elm_css$Css$animationName = function (arg) {
+	return ((arg.value === 'none') || ((arg.value === 'inherit') || ((arg.value === 'unset') || (arg.value === 'initial')))) ? A2($rtfeldman$elm_css$Css$prop1, 'animation-name', arg) : $rtfeldman$elm_css$Css$Preprocess$WithKeyframes(arg.value);
+};
+var $rtfeldman$elm_css$Css$Internal$printKeyframeSelector = function (_v0) {
+	var percentage = _v0.a;
+	var properties = _v0.b;
+	var propertiesStr = A2(
+		$elm$core$String$join,
+		'',
+		A2(
+			$elm$core$List$map,
+			function (_v1) {
+				var prop = _v1.a;
+				return prop + ';';
+			},
+			properties));
+	var percentageStr = $elm$core$String$fromInt(percentage) + '%';
+	return percentageStr + (' {' + (propertiesStr + '}'));
+};
+var $rtfeldman$elm_css$Css$Internal$compileKeyframes = function (tuples) {
+	return A2(
+		$elm$core$String$join,
+		'\n\n',
+		A2($elm$core$List$map, $rtfeldman$elm_css$Css$Internal$printKeyframeSelector, tuples));
+};
+var $rtfeldman$elm_css$Css$Animations$keyframes = function (tuples) {
+	return $elm$core$List$isEmpty(tuples) ? {keyframes: $rtfeldman$elm_css$Css$Structure$Compatible, none: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'none'} : {
+		keyframes: $rtfeldman$elm_css$Css$Structure$Compatible,
+		none: $rtfeldman$elm_css$Css$Structure$Compatible,
+		value: $rtfeldman$elm_css$Css$Internal$compileKeyframes(tuples)
+	};
+};
+var $rtfeldman$elm_css$Css$UnitlessFloat = {$: 'UnitlessFloat'};
+var $rtfeldman$elm_css$Css$num = function (val) {
+	return {
+		lengthOrNumber: $rtfeldman$elm_css$Css$Structure$Compatible,
+		lengthOrNumberOrAutoOrNoneOrContent: $rtfeldman$elm_css$Css$Structure$Compatible,
+		number: $rtfeldman$elm_css$Css$Structure$Compatible,
+		numberOrInfinite: $rtfeldman$elm_css$Css$Structure$Compatible,
+		numericValue: val,
+		unitLabel: '',
+		units: $rtfeldman$elm_css$Css$UnitlessFloat,
+		value: $elm$core$String$fromFloat(val)
+	};
+};
+var $rtfeldman$elm_css$Css$Internal$Property = function (a) {
+	return {$: 'Property', a: a};
+};
+var $rtfeldman$elm_css$Css$Animations$opacity = function (_v0) {
+	var value = _v0.value;
+	return $rtfeldman$elm_css$Css$Internal$Property('opacity:' + value);
+};
+var $author$project$Components$fadeKeyframes = F2(
+	function (from, to) {
+		return $rtfeldman$elm_css$Css$Animations$keyframes(
+			_List_fromArray(
+				[
+					_Utils_Tuple2(
+					0,
+					_List_fromArray(
+						[
+							$rtfeldman$elm_css$Css$Animations$opacity(
+							$rtfeldman$elm_css$Css$num(from))
+						])),
+					_Utils_Tuple2(
+					100,
+					_List_fromArray(
+						[
+							$rtfeldman$elm_css$Css$Animations$opacity(
+							$rtfeldman$elm_css$Css$num(to))
+						]))
+				]));
+	});
+var $rtfeldman$elm_css$Css$opacity = $rtfeldman$elm_css$Css$prop1('opacity');
+var $rtfeldman$elm_css$Css$sec = function (amount) {
+	return {
+		duration: $rtfeldman$elm_css$Css$Structure$Compatible,
+		value: $elm$core$String$fromFloat(amount) + 's'
+	};
+};
+var $author$project$Components$fade = F4(
+	function (from, to, duration, delay) {
+		return $rtfeldman$elm_css$Css$batch(
+			_List_fromArray(
+				[
+					$rtfeldman$elm_css$Css$opacity(
+					$rtfeldman$elm_css$Css$num(from)),
+					$rtfeldman$elm_css$Css$animationName(
+					A2($author$project$Components$fadeKeyframes, from, to)),
+					A2($rtfeldman$elm_css$Css$property, 'animation-fill-mode', 'forwards'),
+					$rtfeldman$elm_css$Css$animationDuration(
+					$rtfeldman$elm_css$Css$sec(duration)),
+					$rtfeldman$elm_css$Css$animationDelay(
+					$rtfeldman$elm_css$Css$sec(delay))
+				]));
+	});
+var $author$project$Components$fadeIn = F2(
+	function (duration, delay) {
+		return A4($author$project$Components$fade, 0, 100, duration, delay);
+	});
+var $author$project$Components$fadeOut = F2(
+	function (duration, delay) {
+		return A4($author$project$Components$fade, 100, 0, duration, delay);
+	});
+var $rtfeldman$elm_css$Css$float = function (fn) {
+	return A3(
+		$rtfeldman$elm_css$Css$Internal$getOverloadedProperty,
+		'float',
+		'float',
+		fn($rtfeldman$elm_css$Css$Internal$lengthForOverloadedProperty));
+};
 var $rtfeldman$elm_css$Css$bottom = $rtfeldman$elm_css$Css$prop1('bottom');
 var $rtfeldman$elm_css$Css$Transitions$Bottom = {$: 'Bottom'};
 var $rtfeldman$elm_css$Css$Transitions$bottom3 = $rtfeldman$elm_css$Css$Transitions$fullTransition($rtfeldman$elm_css$Css$Transitions$Bottom);
@@ -8871,8 +8917,8 @@ var $author$project$Components$topLeft = F2(
 					$rtfeldman$elm_css$Css$left(leftPos)
 				]));
 	});
-var $author$project$Components$photo = F4(
-	function (view, _v0, headlineClick, fullscreenClick) {
+var $author$project$Components$photo = F6(
+	function (view, _v0, headlineClick, fullscreenClick, duration, delay) {
 		var headline = _v0.headline;
 		var text = _v0.text;
 		var image = _v0.image;
@@ -8899,7 +8945,7 @@ var $author$project$Components$photo = F4(
 										$author$project$Utils$transitions,
 										_List_fromArray(
 											[$author$project$Utils$easeHeight]),
-										500,
+										duration,
 										0)
 									]);
 							} else {
@@ -8911,8 +8957,8 @@ var $author$project$Components$photo = F4(
 										$author$project$Utils$transitions,
 										_List_fromArray(
 											[$author$project$Utils$easeHeight]),
-										500,
-										500)
+										duration,
+										delay)
 									]);
 							}
 						}()))
@@ -8939,8 +8985,8 @@ var $author$project$Components$photo = F4(
 											$rtfeldman$elm_css$Css$Transitions$transition(
 											_List_fromArray(
 												[
-													A2($author$project$Utils$easeOpacity, 500, 500),
-													A2($author$project$Utils$easeWidth, 500, 0)
+													A2($author$project$Utils$easeOpacity, duration, delay),
+													A2($author$project$Utils$easeWidth, duration, 0)
 												]))
 										]));
 							} else {
@@ -8955,9 +9001,9 @@ var $author$project$Components$photo = F4(
 											$rtfeldman$elm_css$Css$Transitions$transition(
 											_List_fromArray(
 												[
-													A2($author$project$Utils$easeOpacity, 500, 0),
-													A2($author$project$Utils$easeWidth, 500, 500),
-													A2($author$project$Utils$easeHeight, 500, 500)
+													A2($author$project$Utils$easeOpacity, duration, 0),
+													A2($author$project$Utils$easeWidth, duration, delay),
+													A2($author$project$Utils$easeHeight, duration, delay)
 												]))
 										]));
 							}
@@ -8987,72 +9033,12 @@ var $author$project$Components$photo = F4(
 									$rtfeldman$elm_css$Html$Styled$text(text)
 								]))
 						])),
-					function () {
-					var duration = 500;
-					var delay = function () {
-						if (view.$ === 'Article') {
-							return 0;
-						} else {
-							return 500;
-						}
-					}();
-					if (view.$ === 'Article') {
-						return A2(
-							$rtfeldman$elm_css$Html$Styled$div,
-							_List_fromArray(
-								[
-									$rtfeldman$elm_css$Html$Styled$Attributes$css(
-									_List_fromArray(
-										[
-											$rtfeldman$elm_css$Css$overflow($rtfeldman$elm_css$Css$hidden),
-											$rtfeldman$elm_css$Css$width(
-											$rtfeldman$elm_css$Css$vw(50)),
-											$rtfeldman$elm_css$Css$height(
-											$rtfeldman$elm_css$Css$vw(37.5)),
-											A3(
-											$author$project$Utils$transitions,
-											_List_fromArray(
-												[$author$project$Utils$easeHeight, $author$project$Utils$easeWidth]),
-											duration,
-											delay)
-										]))
-								]),
-							_List_fromArray(
-								[
-									A4($author$project$Components$Photo$image, $author$project$Components$Photo$Article, image, duration, delay)
-								]));
-					} else {
-						return A2(
-							$rtfeldman$elm_css$Html$Styled$div,
-							_List_fromArray(
-								[
-									$rtfeldman$elm_css$Html$Styled$Attributes$css(
-									_List_fromArray(
-										[
-											$rtfeldman$elm_css$Css$overflow($rtfeldman$elm_css$Css$hidden),
-											$rtfeldman$elm_css$Css$width(
-											$rtfeldman$elm_css$Css$pct(100)),
-											$rtfeldman$elm_css$Css$height(
-											$rtfeldman$elm_css$Css$vw(18.75)),
-											A3(
-											$author$project$Utils$transitions,
-											_List_fromArray(
-												[$author$project$Utils$easeHeight, $author$project$Utils$easeWidth]),
-											duration,
-											delay)
-										]))
-								]),
-							_List_fromArray(
-								[
-									A4($author$project$Components$Photo$image, $author$project$Components$Photo$Teaser, image, duration, delay)
-								]));
-					}
-				}(),
+					A4($author$project$Components$Photo$container, view, image, duration, delay),
 					function () {
 					if (view.$ === 'Article') {
-						return A5($author$project$Components$photoHeadline, headline, 8, 500, 0, headlineClick);
+						return A5($author$project$Components$photoHeadline, headline, 8, duration, 0, headlineClick);
 					} else {
-						return A5($author$project$Components$photoHeadline, headline, 0, 500, 500, headlineClick);
+						return A5($author$project$Components$photoHeadline, headline, 0, duration, delay, headlineClick);
 					}
 				}(),
 					function () {
@@ -9567,19 +9553,23 @@ var $author$project$Main$view = function (model) {
 			var photo = _v1.photo;
 			var photoView = _v1.photoView;
 			if (photoView.$ === 'Article') {
-				return A4(
+				return A6(
 					$author$project$Components$photo,
 					$author$project$Components$Photo$Article,
 					photo,
 					A2($author$project$Main$CloseArticle, index, photo),
-					$author$project$Main$GoToFullscreen(photo));
+					$author$project$Main$GoToFullscreen(photo),
+					500,
+					500);
 			} else {
-				return A4(
+				return A6(
 					$author$project$Components$photo,
 					$author$project$Components$Photo$Teaser,
 					photo,
 					A2($author$project$Main$OpenArticle, index, photo),
-					$author$project$Main$None);
+					$author$project$Main$None,
+					500,
+					500);
 			}
 		});
 	return A2(
