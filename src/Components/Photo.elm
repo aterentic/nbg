@@ -1,4 +1,4 @@
-module Components.Photo exposing (Photo, article, teaser)
+module Components.Photo exposing (article, teaser)
 
 import Components exposing (fullscreenButton)
 import Css exposing (absolute, backgroundColor, block, border3, bottom, color, cursor, display, em, float, fontSize, height, hidden, hover, margin4, marginTop, num, opacity, overflow, padding, padding4, pct, pointer, position, property, px, relative, right, solid, vw, width, zero)
@@ -55,8 +55,8 @@ teaserText value duration =
         ]
 
 
-headline : Float -> Float -> String -> Float -> msg -> Html msg
-headline bottomPercent transitionDelay headlineText duration headlineClick =
+photoHeadline : Float -> Float -> String -> Float -> msg -> Html msg
+photoHeadline bottomPercent transitionDelay headlineText duration headlineClick =
     h2
         [ onClick headlineClick
         , css <|
@@ -129,16 +129,8 @@ teaserImage imgSrc duration =
 -- image ratio is 4:3
 
 
-type alias Photo a =
-    { a
-        | headline : String
-        , text : String
-        , image : String
-    }
-
-
-article : Float -> Photo a -> msg -> msg -> Html msg
-article duration photo headlineClick fullscreenClick =
+article : Float -> { a | headline : String, text : String, image : String } -> msg -> msg -> Html msg
+article duration { headline, text, image } headlineClick fullscreenClick =
     div
         [ css <|
             [ width (vw 100)
@@ -150,15 +142,15 @@ article duration photo headlineClick fullscreenClick =
             , transitions [ easeHeight ] duration 0
             ]
         ]
-        [ articleText photo.text duration
-        , articleImage photo.image duration
-        , headline 8 0 photo.headline duration headlineClick
+        [ articleText text duration
+        , articleImage image duration
+        , photoHeadline 8 0 headline duration headlineClick
         , fullscreenButton fullscreenClick [ Utils.fadeIn duration duration, Utils.topLeft (pct 10) (pct 5) ]
         ]
 
 
-teaser : Float -> Photo a -> msg -> msg -> Html msg
-teaser duration photo headlineClick fullscreenClick =
+teaser : Float -> { a | headline : String, text : String, image : String } -> msg -> msg -> Html msg
+teaser duration { headline, text, image } headlineClick fullscreenClick =
     div
         [ css <|
             [ width (vw 100)
@@ -170,8 +162,8 @@ teaser duration photo headlineClick fullscreenClick =
             , transitions [ easeHeight ] duration duration
             ]
         ]
-        [ teaserText photo.text duration
-        , teaserImage photo.image duration
-        , headline 0 duration photo.headline duration headlineClick
+        [ teaserText text duration
+        , teaserImage image duration
+        , photoHeadline 0 duration headline duration headlineClick
         , fullscreenButton fullscreenClick [ Utils.fadeOut duration 0, Utils.topLeft (pct 10) (pct 5) ]
         ]
