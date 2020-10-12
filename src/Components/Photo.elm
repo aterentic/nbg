@@ -3,7 +3,7 @@ module Components.Photo exposing (Photo, article, teaser)
 import Components exposing (fullscreenButton)
 import Css exposing (absolute, backgroundColor, block, border3, bottom, color, cursor, display, em, float, fontSize, height, hidden, hover, margin4, marginTop, num, opacity, overflow, padding, padding4, pct, pointer, position, property, px, relative, right, solid, vw, width, zero)
 import Css.Transitions exposing (transition)
-import Html.Styled exposing (Html, div, h2, img, span)
+import Html.Styled exposing (Html, div, h2, img, span, text)
 import Html.Styled.Attributes exposing (css, src)
 import Html.Styled.Events exposing (onClick)
 import Utils exposing (black, blue, easeBorder, easeBottom, easeFilter, easeHeight, easeMargin, easeOpacity, easeWidth, gray, setAlpha, transitions, white)
@@ -14,29 +14,17 @@ type View
     | Teaser
 
 
-text : View -> String -> Float -> Float -> Html msg
-text view articleText duration delay =
+articleText : String -> Float -> Html msg
+articleText value duration =
     div
-        [ case view of
-            Article ->
-                css
-                    [ float right
-                    , overflow hidden
-                    , width (pct 50)
-                    , opacity (num 100)
-                    , height (pct 100)
-                    , transition [ easeOpacity duration delay, easeWidth duration 0 ]
-                    ]
-
-            Teaser ->
-                css
-                    [ float right
-                    , overflow hidden
-                    , width zero
-                    , opacity zero
-                    , height zero
-                    , transition [ easeOpacity duration 0, easeWidth duration delay, easeHeight duration delay ]
-                    ]
+        [ css
+            [ float right
+            , overflow hidden
+            , width (pct 50)
+            , opacity (num 100)
+            , height (pct 100)
+            , transition [ easeOpacity duration duration, easeWidth duration 0 ]
+            ]
         ]
         [ span
             [ css
@@ -45,7 +33,30 @@ text view articleText duration delay =
                 , color white
                 ]
             ]
-            [ Html.Styled.text articleText ]
+            [ text value ]
+        ]
+
+
+teaserText : String -> Float -> Html msg
+teaserText value duration =
+    div
+        [ css
+            [ float right
+            , overflow hidden
+            , width zero
+            , opacity zero
+            , height zero
+            , transition [ easeOpacity duration 0, easeWidth duration duration, easeHeight duration duration ]
+            ]
+        ]
+        [ span
+            [ css
+                [ padding4 (pct 4) (pct 8) zero zero
+                , display block
+                , color white
+                ]
+            ]
+            [ text value ]
         ]
 
 
@@ -144,7 +155,7 @@ article duration photo headlineClick fullscreenClick =
             , transitions [ easeHeight ] duration 0
             ]
         ]
-        [ text Article photo.text duration duration
+        [ articleText photo.text duration
         , container Article photo.image duration duration
         , headline 8 0 photo.headline duration headlineClick
         , fullscreenButton fullscreenClick [ Utils.fadeIn duration duration, Utils.topLeft (pct 10) (pct 5) ]
@@ -164,7 +175,7 @@ teaser duration photo headlineClick fullscreenClick =
             , transitions [ easeHeight ] duration duration
             ]
         ]
-        [ text Teaser photo.text duration duration
+        [ teaserText photo.text duration
         , container Teaser photo.image duration duration
         , headline 0 duration photo.headline duration headlineClick
         , fullscreenButton fullscreenClick [ Utils.fadeOut duration 0, Utils.topLeft (pct 10) (pct 5) ]
