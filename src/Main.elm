@@ -4,14 +4,14 @@ import Array exposing (Array)
 import Assets
 import Browser exposing (Document)
 import Browser.Navigation
-import Components
+import Components.Common as Common
 import Components.Photo
+import Components.Utils exposing (blue)
 import Css exposing (backgroundColor, fontFamilies, hidden, margin, overflowX, px)
 import Css.Global exposing (global, selector)
 import Data exposing (Photo)
 import Html.Styled exposing (Html, header, toUnstyled)
 import Url exposing (Url)
-import Utils
 
 
 type alias Flags =
@@ -58,7 +58,7 @@ bodyStyle =
         [ selector "body"
             [ overflowX hidden
             , margin (px 0)
-            , backgroundColor Utils.blue
+            , backgroundColor blue
             , fontFamilies [ "Roboto Condensed" ]
             ]
         ]
@@ -74,15 +74,25 @@ viewPhoto animationDuration index { photo, photoView } =
             Components.Photo.teaser animationDuration photo (OpenArticle index photo) None
 
 
+viewFullscreen : Maybe Photo -> List (Html Msg)
+viewFullscreen fullscreen =
+    case fullscreen of
+        Nothing ->
+            []
+
+        Just { image } ->
+            [ Common.fullscreen CloseFullscreen image ]
+
+
 view : Model -> Document Msg
 view model =
     Document Assets.document <|
         List.map toUnstyled <|
             bodyStyle
-                :: Components.header Assets.headline Assets.description
-                :: Array.toList (Array.indexedMap (viewPhoto 500) model.list)
-                ++ Maybe.withDefault [] (Maybe.map (\{ image } -> [ Components.fullscreen CloseFullscreen image ]) model.fullscreen)
-                ++ [ Components.footer ]
+                :: Common.header Assets.headline Assets.description
+                :: Array.toList (Array.indexedMap (viewPhoto 333) model.list)
+                ++ viewFullscreen model.fullscreen
+                ++ [ Common.footer ]
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

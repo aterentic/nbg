@@ -1,12 +1,10 @@
-module Components exposing (footer, fullscreen, fullscreenButton, header)
+module Components.Common exposing (footer, fullscreen, fullscreenButton, header)
 
-import Css exposing (LengthOrAuto, Style, absolute, animationDelay, animationDuration, animationName, auto, backgroundColor, batch, block, border3, borderBottom3, borderTop3, bottom, calc, center, color, cursor, display, em, fixed, float, fontSize, fontWeight, height, hidden, hover, int, left, letterSpacing, lighter, margin, margin2, margin4, maxHeight, maxWidth, minus, num, opacity, overflow, padding, padding4, pct, pointer, position, property, px, relative, right, sec, solid, textAlign, top, vh, vw, width, zIndex, zero)
-import Css.Animations exposing (Keyframes, keyframes)
-import Css.Transitions exposing (transition)
-import Html.Styled exposing (Html, div, h1, h2, h3, img, span, text)
+import Components.Utils exposing (black, blue, setAlpha, topRight, white, zeroMarginAndPadding)
+import Css exposing (Style, auto, backgroundColor, batch, block, border3, borderBottom3, borderTop3, calc, center, color, cursor, display, em, fixed, fontSize, fontWeight, height, hidden, hover, int, left, letterSpacing, lighter, margin2, maxHeight, maxWidth, minus, overflow, padding4, pct, pointer, position, px, solid, textAlign, top, vh, vw, width, zIndex, zero)
+import Html.Styled exposing (Html, div, h1, h3, img, span, text)
 import Html.Styled.Attributes exposing (css, src)
 import Html.Styled.Events exposing (onClick)
-import Utils exposing (..)
 
 
 
@@ -28,11 +26,6 @@ fullscreenButton onButtonClick moreStyles =
             ]
     in
     span [ css <| moreStyles ++ style, onClick onButtonClick ] [ text "⛶" ]
-
-
-zeroMarginAndPadding : Style
-zeroMarginAndPadding =
-    batch [ margin zero, padding zero ]
 
 
 header : String -> String -> Html msg

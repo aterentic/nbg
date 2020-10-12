@@ -1,8 +1,13 @@
-module Utils exposing (black, blue, easeBorder, easeBottom, easeFilter, easeHeight, easeMargin, easeOpacity, easeWidth, fadeIn, fadeOut, gray, setAlpha, topLeft, topRight, transitions, white)
+module Components.Utils exposing (black, blue, easeBorder, easeBottom, easeFilter, easeHeight, easeMargin, easeOpacity, easeWidth, fadeIn, fadeOut, gray, setAlpha, topLeft, topRight, transitions, white, zeroMarginAndPadding)
 
-import Css exposing (Color, LengthOrAuto, Style, absolute, animationDelay, animationDuration, animationName, batch, hex, left, num, opacity, position, property, rgb, rgba, right, sec, top)
+import Css exposing (Color, LengthOrAuto, Style, absolute, animationDelay, animationDuration, animationName, batch, hex, left, margin, num, opacity, padding, position, property, rgb, rgba, right, sec, top, zero)
 import Css.Animations exposing (Keyframes, keyframes)
 import Css.Transitions exposing (Transition, ease, transition)
+
+
+zeroMarginAndPadding : Style
+zeroMarginAndPadding =
+    batch [ margin zero, padding zero ]
 
 
 

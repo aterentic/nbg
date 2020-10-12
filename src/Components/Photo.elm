@@ -1,12 +1,12 @@
 module Components.Photo exposing (article, teaser)
 
-import Components exposing (fullscreenButton)
+import Components.Common exposing (fullscreenButton)
+import Components.Utils exposing (black, blue, easeBorder, easeBottom, easeFilter, easeHeight, easeMargin, easeOpacity, easeWidth, fadeIn, fadeOut, gray, setAlpha, topLeft, transitions, white)
 import Css exposing (absolute, backgroundColor, block, border3, bottom, color, cursor, display, em, float, fontSize, height, hidden, hover, margin4, marginTop, num, opacity, overflow, padding, padding4, pct, pointer, position, property, px, relative, right, solid, vw, width, zero)
 import Css.Transitions exposing (transition)
 import Html.Styled exposing (Html, div, h2, img, span, text)
 import Html.Styled.Attributes exposing (css, src)
 import Html.Styled.Events exposing (onClick)
-import Utils exposing (black, blue, easeBorder, easeBottom, easeFilter, easeHeight, easeMargin, easeOpacity, easeWidth, gray, setAlpha, transitions, white)
 
 
 articleText : String -> Float -> Html msg
@@ -145,7 +145,7 @@ article duration { headline, text, image } headlineClick fullscreenClick =
         [ articleText text duration
         , articleImage image duration
         , photoHeadline 8 0 headline duration headlineClick
-        , fullscreenButton fullscreenClick [ Utils.fadeIn duration duration, Utils.topLeft (pct 10) (pct 5) ]
+        , fullscreenButton fullscreenClick [ fadeIn duration duration, topLeft (pct 10) (pct 5) ]
         ]
 
 
@@ -165,5 +165,5 @@ teaser duration { headline, text, image } headlineClick fullscreenClick =
         [ teaserText text duration
         , teaserImage image duration
         , photoHeadline 0 duration headline duration headlineClick
-        , fullscreenButton fullscreenClick [ Utils.fadeOut duration 0, Utils.topLeft (pct 10) (pct 5) ]
+        , fullscreenButton fullscreenClick [ fadeOut duration 0, topLeft (pct 10) (pct 5) ]
         ]
