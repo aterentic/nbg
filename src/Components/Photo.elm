@@ -9,11 +9,6 @@ import Html.Styled.Events exposing (onClick)
 import Utils exposing (black, blue, easeBorder, easeBottom, easeFilter, easeHeight, easeMargin, easeOpacity, easeWidth, gray, setAlpha, transitions, white)
 
 
-type View
-    = Article
-    | Teaser
-
-
 articleText : String -> Float -> Html msg
 articleText value duration =
     div
@@ -80,54 +75,54 @@ headline bottomPercent transitionDelay headlineText duration headlineClick =
         [ span [] [ Html.Styled.text headlineText ] ]
 
 
-container : View -> String -> Float -> Float -> Html msg
-container view imgSrc duration delay =
-    case view of
-        -- calc(50vw / 4 * 3); Images ratio is 4:3, whole image is displayed
-        Article ->
-            div
-                [ css
-                    [ overflow hidden
-                    , width (vw 50)
-                    , height (vw 37.5)
-                    , transitions [ easeHeight, easeWidth ] duration 0
-                    ]
+articleImage : String -> Float -> Html msg
+articleImage imgSrc duration =
+    -- calc(50vw / 4 * 3); Images ratio is 4:3, whole image is displayed
+    div
+        [ css
+            [ overflow hidden
+            , width (vw 50)
+            , height (vw 37.5)
+            , transitions [ easeHeight, easeWidth ] duration 0
+            ]
+        ]
+        [ img
+            [ css
+                [ width (pct 88)
+                , margin4 (pct 4) zero (pct 2) (pct 6)
+                , border3 (px 1) solid gray
+                , property "filter" "grayscale(0%)"
+                , transitions [ easeBorder, easeFilter, easeMargin, easeWidth ] duration 0
                 ]
-                [ img
-                    [ css
-                        [ width (pct 88)
-                        , margin4 (pct 4) zero (pct 2) (pct 6)
-                        , border3 (px 1) solid gray
-                        , property "filter" "grayscale(0%)"
-                        , transitions [ easeBorder, easeFilter, easeMargin, easeWidth ] duration 0
-                        ]
-                    , src imgSrc
-                    ]
-                    []
-                ]
+            , src imgSrc
+            ]
+            []
+        ]
 
-        -- calc(100vw / 16 * 3); Images ratio is 4:3, 1/4 of image is displayed
-        Teaser ->
-            div
-                [ css
-                    [ overflow hidden
-                    , width (pct 100)
-                    , height (vw 18.75)
-                    , transitions [ easeHeight, easeWidth ] duration delay
-                    ]
+
+teaserImage : String -> Float -> Html msg
+teaserImage imgSrc duration =
+    -- calc(100vw / 16 * 3); Images ratio is 4:3, 1/4 of image is displayed
+    div
+        [ css
+            [ overflow hidden
+            , width (pct 100)
+            , height (vw 18.75)
+            , transitions [ easeHeight, easeWidth ] duration duration
+            ]
+        ]
+        [ img
+            [ css
+                [ width (pct 100)
+                , marginTop (pct -25)
+                , border3 (px 0) solid black
+                , property "filter" "grayscale(80%)"
+                , transitions [ easeBorder, easeFilter, easeMargin, easeWidth ] duration duration
                 ]
-                [ img
-                    [ css
-                        [ width (pct 100)
-                        , marginTop (pct -25)
-                        , border3 (px 0) solid black
-                        , property "filter" "grayscale(80%)"
-                        , transitions [ easeBorder, easeFilter, easeMargin, easeWidth ] duration delay
-                        ]
-                    , src imgSrc
-                    ]
-                    []
-                ]
+            , src imgSrc
+            ]
+            []
+        ]
 
 
 
@@ -156,7 +151,7 @@ article duration photo headlineClick fullscreenClick =
             ]
         ]
         [ articleText photo.text duration
-        , container Article photo.image duration duration
+        , articleImage photo.image duration
         , headline 8 0 photo.headline duration headlineClick
         , fullscreenButton fullscreenClick [ Utils.fadeIn duration duration, Utils.topLeft (pct 10) (pct 5) ]
         ]
@@ -176,7 +171,7 @@ teaser duration photo headlineClick fullscreenClick =
             ]
         ]
         [ teaserText photo.text duration
-        , container Teaser photo.image duration duration
+        , teaserImage photo.image duration
         , headline 0 duration photo.headline duration headlineClick
         , fullscreenButton fullscreenClick [ Utils.fadeOut duration 0, Utils.topLeft (pct 10) (pct 5) ]
         ]
