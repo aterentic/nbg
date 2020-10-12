@@ -7929,44 +7929,6 @@ var $author$project$Components$Common$header = F2(
 				]));
 	});
 var $author$project$Assets$headline = 'NBG KOLAŽ';
-var $elm$core$Elm$JsArray$foldl = _JsArray_foldl;
-var $elm$core$Elm$JsArray$indexedMap = _JsArray_indexedMap;
-var $elm$core$Array$indexedMap = F2(
-	function (func, _v0) {
-		var len = _v0.a;
-		var tree = _v0.c;
-		var tail = _v0.d;
-		var initialBuilder = {
-			nodeList: _List_Nil,
-			nodeListSize: 0,
-			tail: A3(
-				$elm$core$Elm$JsArray$indexedMap,
-				func,
-				$elm$core$Array$tailIndex(len),
-				tail)
-		};
-		var helper = F2(
-			function (node, builder) {
-				if (node.$ === 'SubTree') {
-					var subTree = node.a;
-					return A3($elm$core$Elm$JsArray$foldl, helper, builder, subTree);
-				} else {
-					var leaf = node.a;
-					var offset = builder.nodeListSize * $elm$core$Array$branchFactor;
-					var mappedLeaf = $elm$core$Array$Leaf(
-						A3($elm$core$Elm$JsArray$indexedMap, func, offset, leaf));
-					return {
-						nodeList: A2($elm$core$List$cons, mappedLeaf, builder.nodeList),
-						nodeListSize: builder.nodeListSize + 1,
-						tail: builder.tail
-					};
-				}
-			});
-		return A2(
-			$elm$core$Array$builderToArray,
-			true,
-			A3($elm$core$Elm$JsArray$foldl, helper, initialBuilder, tree));
-	});
 var $rtfeldman$elm_css$VirtualDom$Styled$accumulateStyles = F2(
 	function (_v0, styles) {
 		var newStyles = _v0.b;
@@ -8805,6 +8767,44 @@ var $author$project$Main$viewFullscreen = function (fullscreen) {
 			]);
 	}
 };
+var $elm$core$Elm$JsArray$foldl = _JsArray_foldl;
+var $elm$core$Elm$JsArray$indexedMap = _JsArray_indexedMap;
+var $elm$core$Array$indexedMap = F2(
+	function (func, _v0) {
+		var len = _v0.a;
+		var tree = _v0.c;
+		var tail = _v0.d;
+		var initialBuilder = {
+			nodeList: _List_Nil,
+			nodeListSize: 0,
+			tail: A3(
+				$elm$core$Elm$JsArray$indexedMap,
+				func,
+				$elm$core$Array$tailIndex(len),
+				tail)
+		};
+		var helper = F2(
+			function (node, builder) {
+				if (node.$ === 'SubTree') {
+					var subTree = node.a;
+					return A3($elm$core$Elm$JsArray$foldl, helper, builder, subTree);
+				} else {
+					var leaf = node.a;
+					var offset = builder.nodeListSize * $elm$core$Array$branchFactor;
+					var mappedLeaf = $elm$core$Array$Leaf(
+						A3($elm$core$Elm$JsArray$indexedMap, func, offset, leaf));
+					return {
+						nodeList: A2($elm$core$List$cons, mappedLeaf, builder.nodeList),
+						nodeListSize: builder.nodeListSize + 1,
+						tail: builder.tail
+					};
+				}
+			});
+		return A2(
+			$elm$core$Array$builderToArray,
+			true,
+			A3($elm$core$Elm$JsArray$foldl, helper, initialBuilder, tree));
+	});
 var $author$project$Main$CloseArticle = F2(
 	function (a, b) {
 		return {$: 'CloseArticle', a: a, b: b};
@@ -9643,6 +9643,16 @@ var $author$project$Main$viewPhoto = F3(
 				$author$project$Main$None);
 		}
 	});
+var $author$project$Main$viewPhotos = function (list) {
+	return A2(
+		$rtfeldman$elm_css$Html$Styled$div,
+		_List_Nil,
+		$elm$core$Array$toList(
+			A2(
+				$elm$core$Array$indexedMap,
+				$author$project$Main$viewPhoto(333),
+				list)));
+};
 var $author$project$Main$view = function (model) {
 	return A2(
 		$elm$browser$Browser$Document,
@@ -9656,16 +9666,13 @@ var $author$project$Main$view = function (model) {
 				A2(
 					$elm$core$List$cons,
 					A2($author$project$Components$Common$header, $author$project$Assets$headline, $author$project$Assets$description),
-					_Utils_ap(
-						$elm$core$Array$toList(
-							A2(
-								$elm$core$Array$indexedMap,
-								$author$project$Main$viewPhoto(333),
-								model.list)),
-						_Utils_ap(
-							$author$project$Main$viewFullscreen(model.fullscreen),
-							_List_fromArray(
-								[$author$project$Components$Common$footer])))))));
+					A2(
+						$elm$core$List$cons,
+						$author$project$Main$viewPhotos(model.list),
+						A2(
+							$elm$core$List$cons,
+							$author$project$Components$Common$footer,
+							$author$project$Main$viewFullscreen(model.fullscreen)))))));
 };
 var $author$project$Main$main = $elm$browser$Browser$application(
 	{

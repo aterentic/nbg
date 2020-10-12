@@ -10,7 +10,7 @@ import Components.Utils exposing (blue)
 import Css exposing (backgroundColor, fontFamilies, hidden, margin, overflowX, px)
 import Css.Global exposing (global, selector)
 import Data exposing (Photo)
-import Html.Styled exposing (Html, header, toUnstyled)
+import Html.Styled exposing (Html, div, header, toUnstyled)
 import Url exposing (Url)
 
 
@@ -74,6 +74,11 @@ viewPhoto animationDuration index { photo, photoView } =
             Components.Photo.teaser animationDuration photo (OpenArticle index photo) None
 
 
+viewPhotos : Array PhotoInList -> Html Msg
+viewPhotos list =
+    div [] <| Array.toList <| Array.indexedMap (viewPhoto 333) list
+
+
 viewFullscreen : Maybe Photo -> List (Html Msg)
 viewFullscreen fullscreen =
     case fullscreen of
@@ -90,9 +95,9 @@ view model =
         List.map toUnstyled <|
             bodyStyle
                 :: Common.header Assets.headline Assets.description
-                :: Array.toList (Array.indexedMap (viewPhoto 333) model.list)
-                ++ viewFullscreen model.fullscreen
-                ++ [ Common.footer ]
+                :: viewPhotos model.list
+                :: Common.footer
+                :: viewFullscreen model.fullscreen
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
