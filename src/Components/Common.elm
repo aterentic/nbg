@@ -1,7 +1,7 @@
 module Components.Common exposing (footer, fullscreen, fullscreenButton, header)
 
 import Components.Utils exposing (black, blue, setAlpha, topRight, white, zeroMarginAndPadding)
-import Css exposing (Style, auto, backgroundColor, batch, block, border3, borderBottom3, borderTop3, calc, center, color, cursor, display, em, fixed, fontSize, fontWeight, height, hidden, hover, int, left, letterSpacing, lighter, margin2, maxHeight, maxWidth, minus, overflow, padding4, pct, pointer, position, px, solid, textAlign, top, vh, vw, width, zIndex, zero)
+import Css exposing (Style, auto, backgroundColor, batch, block, border3, borderBottom3, borderTop3, calc, center, color, cursor, display, em, fixed, fontSize, fontWeight, height, hidden, hover, int, left, letterSpacing, lighter, margin2, marginLeft, marginTop, maxHeight, maxWidth, minus, overflow, padding4, pct, pointer, position, px, solid, textAlign, top, vh, vw, width, zIndex, zero)
 import Html.Styled exposing (Html, div, h1, h3, img, span, text)
 import Html.Styled.Attributes exposing (css, src)
 import Html.Styled.Events exposing (onClick)
@@ -41,10 +41,18 @@ header headline description =
             ]
         ]
         [ h1
-            [ css [ default, fontSize (em 2), letterSpacing (em 0.2) ] ]
+            [ css [ default, fontSize (em 6), letterSpacing (em 0.25) ] ]
             [ text headline ]
         , h3
-            [ css [ default, fontSize (em 1), fontWeight lighter ] ]
+            [ css
+                [ default
+                , fontSize (em 1)
+                , letterSpacing (em 0.1)
+                , marginTop (em -1)
+                , marginLeft (em 0.4)
+                , fontWeight lighter
+                ]
+            ]
             [ text description ]
         ]
 

@@ -10,7 +10,7 @@ document =
 
 headline : String
 headline =
-    "NBG KOLAŽ"
+    "NBG"
 
 
 description : String

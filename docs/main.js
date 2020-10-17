@@ -7833,6 +7833,8 @@ var $rtfeldman$elm_css$Html$Styled$h3 = $rtfeldman$elm_css$Html$Styled$node('h3'
 var $rtfeldman$elm_css$Html$Styled$header = $rtfeldman$elm_css$Html$Styled$node('header');
 var $rtfeldman$elm_css$Css$letterSpacing = $rtfeldman$elm_css$Css$prop1('letter-spacing');
 var $rtfeldman$elm_css$Css$lighter = {fontWeight: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'lighter'};
+var $rtfeldman$elm_css$Css$marginLeft = $rtfeldman$elm_css$Css$prop1('margin-left');
+var $rtfeldman$elm_css$Css$marginTop = $rtfeldman$elm_css$Css$prop1('margin-top');
 var $rtfeldman$elm_css$Css$prop4 = F5(
 	function (key, argA, argB, argC, argD) {
 		return A2(
@@ -7900,9 +7902,9 @@ var $author$project$Components$Common$header = F2(
 								[
 									_default,
 									$rtfeldman$elm_css$Css$fontSize(
-									$rtfeldman$elm_css$Css$em(2)),
+									$rtfeldman$elm_css$Css$em(6)),
 									$rtfeldman$elm_css$Css$letterSpacing(
-									$rtfeldman$elm_css$Css$em(0.2))
+									$rtfeldman$elm_css$Css$em(0.25))
 								]))
 						]),
 					_List_fromArray(
@@ -7919,6 +7921,12 @@ var $author$project$Components$Common$header = F2(
 									_default,
 									$rtfeldman$elm_css$Css$fontSize(
 									$rtfeldman$elm_css$Css$em(1)),
+									$rtfeldman$elm_css$Css$letterSpacing(
+									$rtfeldman$elm_css$Css$em(0.1)),
+									$rtfeldman$elm_css$Css$marginTop(
+									$rtfeldman$elm_css$Css$em(-1)),
+									$rtfeldman$elm_css$Css$marginLeft(
+									$rtfeldman$elm_css$Css$em(0.4)),
 									$rtfeldman$elm_css$Css$fontWeight($rtfeldman$elm_css$Css$lighter)
 								]))
 						]),
@@ -7928,7 +7936,7 @@ var $author$project$Components$Common$header = F2(
 						]))
 				]));
 	});
-var $author$project$Assets$headline = 'NBG KOLAŽ';
+var $author$project$Assets$headline = 'NBG';
 var $rtfeldman$elm_css$VirtualDom$Styled$accumulateStyles = F2(
 	function (_v0, styles) {
 		var newStyles = _v0.b;
@@ -9379,6 +9387,7 @@ var $author$project$Components$Photo$photoHeadline = F5(
 						[
 							$rtfeldman$elm_css$Css$fontSize(
 							$rtfeldman$elm_css$Css$em(1.5)),
+							$rtfeldman$elm_css$Css$fontWeight($rtfeldman$elm_css$Css$lighter),
 							$rtfeldman$elm_css$Css$color($author$project$Components$Utils$white),
 							$rtfeldman$elm_css$Css$backgroundColor(
 							A2($author$project$Components$Utils$setAlpha, $author$project$Components$Utils$blue, 0.75)),
@@ -9477,7 +9486,6 @@ var $author$project$Components$Utils$fadeOut = F2(
 	function (duration, delay) {
 		return A4($author$project$Components$Utils$fade, 100, 0, duration, delay);
 	});
-var $rtfeldman$elm_css$Css$marginTop = $rtfeldman$elm_css$Css$prop1('margin-top');
 var $author$project$Components$Photo$teaserImage = F2(
 	function (imgSrc, duration) {
 		return A2(

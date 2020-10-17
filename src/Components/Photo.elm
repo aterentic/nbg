@@ -2,7 +2,7 @@ module Components.Photo exposing (article, teaser)
 
 import Components.Common exposing (fullscreenButton)
 import Components.Utils exposing (black, blue, easeBorder, easeBottom, easeFilter, easeHeight, easeMargin, easeOpacity, easeWidth, fadeIn, fadeOut, gray, setAlpha, topLeft, transitions, white)
-import Css exposing (absolute, backgroundColor, block, border3, bottom, color, cursor, display, em, float, fontSize, height, hidden, hover, margin4, marginTop, num, opacity, overflow, padding, padding4, pct, pointer, position, property, px, relative, right, solid, vw, width, zero)
+import Css exposing (absolute, backgroundColor, block, border3, bottom, color, cursor, display, em, float, fontSize, fontWeight, height, hidden, hover, lighter, margin4, marginTop, num, opacity, overflow, padding, padding4, pct, pointer, position, property, px, relative, right, solid, vw, width, zero)
 import Css.Transitions exposing (transition)
 import Html.Styled exposing (Html, div, h2, img, span, text)
 import Html.Styled.Attributes exposing (css, src)
@@ -61,6 +61,7 @@ photoHeadline bottomPercent transitionDelay headlineText duration headlineClick 
         [ onClick headlineClick
         , css <|
             [ fontSize (em 1.5)
+            , fontWeight lighter
             , color white
             , backgroundColor <| setAlpha blue 0.75
             , padding (em 0.5)
