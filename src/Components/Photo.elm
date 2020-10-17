@@ -2,53 +2,42 @@ module Components.Photo exposing (article, teaser)
 
 import Components.Common exposing (blueButton, fullscreenIcon)
 import Components.Utils exposing (black, blue, easeBorder, easeBottom, easeFilter, easeHeight, easeMargin, easeOpacity, easeWidth, fadeIn, fadeOut, gray, setAlpha, topLeft, transitions, white)
-import Css exposing (absolute, backgroundColor, block, border3, bottom, color, cursor, display, em, float, fontSize, fontWeight, height, hidden, hover, lighter, margin4, marginTop, num, opacity, overflow, padding, padding4, pct, pointer, position, property, px, relative, right, solid, vw, width, zero)
+import Css exposing (Style, absolute, backgroundColor, block, border3, bottom, color, cursor, display, em, float, fontSize, fontWeight, height, hidden, hover, lighter, margin4, marginTop, num, opacity, overflow, padding, padding4, pct, pointer, position, property, px, relative, right, solid, vw, width, zero)
 import Css.Transitions exposing (transition)
 import Html.Styled exposing (Html, div, h2, img, span, text)
 import Html.Styled.Attributes exposing (css, src)
 import Html.Styled.Events exposing (onClick)
 
 
-articleText : String -> Float -> Html msg
-articleText value duration =
+articleStyle : Float -> List Style
+articleStyle duration =
+    [ width (pct 50)
+    , opacity (num 100)
+    , height (pct 100)
+    , transition [ easeOpacity duration duration, easeWidth duration 0 ]
+    ]
+
+
+teaserStyle : Float -> List Style
+teaserStyle duration =
+    [ width zero
+    , opacity zero
+    , height zero
+    , transition [ easeOpacity duration 0, easeWidth duration duration, easeHeight duration duration ]
+    ]
+
+
+photoText : List Style -> String -> Html msg
+photoText styles value =
     div
-        [ css
-            [ float right
-            , overflow hidden
-            , width (pct 50)
-            , opacity (num 100)
-            , height (pct 100)
-            , transition [ easeOpacity duration duration, easeWidth duration 0 ]
-            ]
-        ]
+        [ css <| [ float right, overflow hidden ] ++ styles ]
         [ span
             [ css
                 [ padding4 (pct 4) (pct 8) zero zero
                 , display block
                 , color white
-                ]
-            ]
-            [ text value ]
-        ]
-
-
-teaserText : String -> Float -> Html msg
-teaserText value duration =
-    div
-        [ css
-            [ float right
-            , overflow hidden
-            , width zero
-            , opacity zero
-            , height zero
-            , transition [ easeOpacity duration 0, easeWidth duration duration, easeHeight duration duration ]
-            ]
-        ]
-        [ span
-            [ css
-                [ padding4 (pct 4) (pct 8) zero zero
-                , display block
-                , color white
+                , fontSize (em 1.33)
+                , fontWeight lighter
                 ]
             ]
             [ text value ]
@@ -60,7 +49,7 @@ photoHeadline bottomPercent transitionDelay headlineText duration headlineClick 
     h2
         [ onClick headlineClick
         , css <|
-            [ fontSize (em 1.5)
+            [ fontSize (em 1.75)
             , fontWeight lighter
             , color white
             , backgroundColor <| setAlpha blue 0.75
@@ -143,7 +132,7 @@ article duration { headline, text, image } headlineClick fullscreenClick =
             , transitions [ easeHeight ] duration 0
             ]
         ]
-        [ articleText text duration
+        [ photoText (articleStyle duration) text
         , articleImage image duration
         , photoHeadline 8 0 headline duration headlineClick
         , blueButton
@@ -167,7 +156,7 @@ teaser duration { headline, text, image } headlineClick fullscreenClick =
             , transitions [ easeHeight ] duration duration
             ]
         ]
-        [ teaserText text duration
+        [ photoText (teaserStyle duration) text
         , teaserImage image duration
         , photoHeadline 0 duration headline duration headlineClick
         , blueButton

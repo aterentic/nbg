@@ -9211,13 +9211,6 @@ var $author$project$Components$Utils$easeOpacity = F2(
 	function (duration, delay) {
 		return A3($rtfeldman$elm_css$Css$Transitions$opacity3, duration, delay, $rtfeldman$elm_css$Css$Transitions$ease);
 	});
-var $rtfeldman$elm_css$Css$float = function (fn) {
-	return A3(
-		$rtfeldman$elm_css$Css$Internal$getOverloadedProperty,
-		'float',
-		'float',
-		fn($rtfeldman$elm_css$Css$Internal$lengthForOverloadedProperty));
-};
 var $rtfeldman$elm_css$Css$UnitlessFloat = {$: 'UnitlessFloat'};
 var $rtfeldman$elm_css$Css$num = function (val) {
 	return {
@@ -9232,56 +9225,23 @@ var $rtfeldman$elm_css$Css$num = function (val) {
 	};
 };
 var $rtfeldman$elm_css$Css$opacity = $rtfeldman$elm_css$Css$prop1('opacity');
-var $author$project$Components$Photo$articleText = F2(
-	function (value, duration) {
-		return A2(
-			$rtfeldman$elm_css$Html$Styled$div,
+var $author$project$Components$Photo$articleStyle = function (duration) {
+	return _List_fromArray(
+		[
+			$rtfeldman$elm_css$Css$width(
+			$rtfeldman$elm_css$Css$pct(50)),
+			$rtfeldman$elm_css$Css$opacity(
+			$rtfeldman$elm_css$Css$num(100)),
+			$rtfeldman$elm_css$Css$height(
+			$rtfeldman$elm_css$Css$pct(100)),
+			$rtfeldman$elm_css$Css$Transitions$transition(
 			_List_fromArray(
 				[
-					$rtfeldman$elm_css$Html$Styled$Attributes$css(
-					_List_fromArray(
-						[
-							$rtfeldman$elm_css$Css$float($rtfeldman$elm_css$Css$right),
-							$rtfeldman$elm_css$Css$overflow($rtfeldman$elm_css$Css$hidden),
-							$rtfeldman$elm_css$Css$width(
-							$rtfeldman$elm_css$Css$pct(50)),
-							$rtfeldman$elm_css$Css$opacity(
-							$rtfeldman$elm_css$Css$num(100)),
-							$rtfeldman$elm_css$Css$height(
-							$rtfeldman$elm_css$Css$pct(100)),
-							$rtfeldman$elm_css$Css$Transitions$transition(
-							_List_fromArray(
-								[
-									A2($author$project$Components$Utils$easeOpacity, duration, duration),
-									A2($author$project$Components$Utils$easeWidth, duration, 0)
-								]))
-						]))
-				]),
-			_List_fromArray(
-				[
-					A2(
-					$rtfeldman$elm_css$Html$Styled$span,
-					_List_fromArray(
-						[
-							$rtfeldman$elm_css$Html$Styled$Attributes$css(
-							_List_fromArray(
-								[
-									A4(
-									$rtfeldman$elm_css$Css$padding4,
-									$rtfeldman$elm_css$Css$pct(4),
-									$rtfeldman$elm_css$Css$pct(8),
-									$rtfeldman$elm_css$Css$zero,
-									$rtfeldman$elm_css$Css$zero),
-									$rtfeldman$elm_css$Css$display($rtfeldman$elm_css$Css$block),
-									$rtfeldman$elm_css$Css$color($author$project$Components$Utils$white)
-								]))
-						]),
-					_List_fromArray(
-						[
-							$rtfeldman$elm_css$Html$Styled$text(value)
-						]))
-				]));
-	});
+					A2($author$project$Components$Utils$easeOpacity, duration, duration),
+					A2($author$project$Components$Utils$easeWidth, duration, 0)
+				]))
+		]);
+};
 var $rtfeldman$elm_css$Css$animationDelay = function (arg) {
 	return A2($rtfeldman$elm_css$Css$prop1, 'animation-delay', arg);
 };
@@ -9396,7 +9356,7 @@ var $author$project$Components$Photo$photoHeadline = F5(
 					_List_fromArray(
 						[
 							$rtfeldman$elm_css$Css$fontSize(
-							$rtfeldman$elm_css$Css$em(1.5)),
+							$rtfeldman$elm_css$Css$em(1.75)),
 							$rtfeldman$elm_css$Css$fontWeight($rtfeldman$elm_css$Css$lighter),
 							$rtfeldman$elm_css$Css$color($author$project$Components$Utils$white),
 							$rtfeldman$elm_css$Css$backgroundColor(
@@ -9434,6 +9394,56 @@ var $author$project$Components$Photo$photoHeadline = F5(
 					_List_fromArray(
 						[
 							$rtfeldman$elm_css$Html$Styled$text(headlineText)
+						]))
+				]));
+	});
+var $rtfeldman$elm_css$Css$float = function (fn) {
+	return A3(
+		$rtfeldman$elm_css$Css$Internal$getOverloadedProperty,
+		'float',
+		'float',
+		fn($rtfeldman$elm_css$Css$Internal$lengthForOverloadedProperty));
+};
+var $author$project$Components$Photo$photoText = F2(
+	function (styles, value) {
+		return A2(
+			$rtfeldman$elm_css$Html$Styled$div,
+			_List_fromArray(
+				[
+					$rtfeldman$elm_css$Html$Styled$Attributes$css(
+					_Utils_ap(
+						_List_fromArray(
+							[
+								$rtfeldman$elm_css$Css$float($rtfeldman$elm_css$Css$right),
+								$rtfeldman$elm_css$Css$overflow($rtfeldman$elm_css$Css$hidden)
+							]),
+						styles))
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$rtfeldman$elm_css$Html$Styled$span,
+					_List_fromArray(
+						[
+							$rtfeldman$elm_css$Html$Styled$Attributes$css(
+							_List_fromArray(
+								[
+									A4(
+									$rtfeldman$elm_css$Css$padding4,
+									$rtfeldman$elm_css$Css$pct(4),
+									$rtfeldman$elm_css$Css$pct(8),
+									$rtfeldman$elm_css$Css$zero,
+									$rtfeldman$elm_css$Css$zero),
+									$rtfeldman$elm_css$Css$display($rtfeldman$elm_css$Css$block),
+									$rtfeldman$elm_css$Css$color($author$project$Components$Utils$white),
+									$rtfeldman$elm_css$Css$fontSize(
+									$rtfeldman$elm_css$Css$em(1.33)),
+									$rtfeldman$elm_css$Css$fontWeight($rtfeldman$elm_css$Css$lighter)
+								]))
+						]),
+					_List_fromArray(
+						[
+							$rtfeldman$elm_css$Html$Styled$text(value)
 						]))
 				]));
 	});
@@ -9476,7 +9486,10 @@ var $author$project$Components$Photo$article = F4(
 				]),
 			_List_fromArray(
 				[
-					A2($author$project$Components$Photo$articleText, text, duration),
+					A2(
+					$author$project$Components$Photo$photoText,
+					$author$project$Components$Photo$articleStyle(duration),
+					text),
 					A2($author$project$Components$Photo$articleImage, image, duration),
 					A5($author$project$Components$Photo$photoHeadline, 8, 0, headline, duration, headlineClick),
 					A2(
@@ -9555,54 +9568,21 @@ var $author$project$Components$Photo$teaserImage = F2(
 					_List_Nil)
 				]));
 	});
-var $author$project$Components$Photo$teaserText = F2(
-	function (value, duration) {
-		return A2(
-			$rtfeldman$elm_css$Html$Styled$div,
+var $author$project$Components$Photo$teaserStyle = function (duration) {
+	return _List_fromArray(
+		[
+			$rtfeldman$elm_css$Css$width($rtfeldman$elm_css$Css$zero),
+			$rtfeldman$elm_css$Css$opacity($rtfeldman$elm_css$Css$zero),
+			$rtfeldman$elm_css$Css$height($rtfeldman$elm_css$Css$zero),
+			$rtfeldman$elm_css$Css$Transitions$transition(
 			_List_fromArray(
 				[
-					$rtfeldman$elm_css$Html$Styled$Attributes$css(
-					_List_fromArray(
-						[
-							$rtfeldman$elm_css$Css$float($rtfeldman$elm_css$Css$right),
-							$rtfeldman$elm_css$Css$overflow($rtfeldman$elm_css$Css$hidden),
-							$rtfeldman$elm_css$Css$width($rtfeldman$elm_css$Css$zero),
-							$rtfeldman$elm_css$Css$opacity($rtfeldman$elm_css$Css$zero),
-							$rtfeldman$elm_css$Css$height($rtfeldman$elm_css$Css$zero),
-							$rtfeldman$elm_css$Css$Transitions$transition(
-							_List_fromArray(
-								[
-									A2($author$project$Components$Utils$easeOpacity, duration, 0),
-									A2($author$project$Components$Utils$easeWidth, duration, duration),
-									A2($author$project$Components$Utils$easeHeight, duration, duration)
-								]))
-						]))
-				]),
-			_List_fromArray(
-				[
-					A2(
-					$rtfeldman$elm_css$Html$Styled$span,
-					_List_fromArray(
-						[
-							$rtfeldman$elm_css$Html$Styled$Attributes$css(
-							_List_fromArray(
-								[
-									A4(
-									$rtfeldman$elm_css$Css$padding4,
-									$rtfeldman$elm_css$Css$pct(4),
-									$rtfeldman$elm_css$Css$pct(8),
-									$rtfeldman$elm_css$Css$zero,
-									$rtfeldman$elm_css$Css$zero),
-									$rtfeldman$elm_css$Css$display($rtfeldman$elm_css$Css$block),
-									$rtfeldman$elm_css$Css$color($author$project$Components$Utils$white)
-								]))
-						]),
-					_List_fromArray(
-						[
-							$rtfeldman$elm_css$Html$Styled$text(value)
-						]))
-				]));
-	});
+					A2($author$project$Components$Utils$easeOpacity, duration, 0),
+					A2($author$project$Components$Utils$easeWidth, duration, duration),
+					A2($author$project$Components$Utils$easeHeight, duration, duration)
+				]))
+		]);
+};
 var $author$project$Components$Photo$teaser = F4(
 	function (duration, _v0, headlineClick, fullscreenClick) {
 		var headline = _v0.headline;
@@ -9631,7 +9611,10 @@ var $author$project$Components$Photo$teaser = F4(
 				]),
 			_List_fromArray(
 				[
-					A2($author$project$Components$Photo$teaserText, text, duration),
+					A2(
+					$author$project$Components$Photo$photoText,
+					$author$project$Components$Photo$teaserStyle(duration),
+					text),
 					A2($author$project$Components$Photo$teaserImage, image, duration),
 					A5($author$project$Components$Photo$photoHeadline, 0, duration, headline, duration, headlineClick),
 					A2(
