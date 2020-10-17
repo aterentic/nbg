@@ -8418,37 +8418,6 @@ var $author$project$Main$CloseFullscreen = {$: 'CloseFullscreen'};
 var $rtfeldman$elm_css$Css$auto = {alignItemsOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible, cursor: $rtfeldman$elm_css$Css$Structure$Compatible, flexBasis: $rtfeldman$elm_css$Css$Structure$Compatible, intOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible, justifyContentOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrAutoOrCoverOrContain: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNumberOrAutoOrNoneOrContent: $rtfeldman$elm_css$Css$Structure$Compatible, overflow: $rtfeldman$elm_css$Css$Structure$Compatible, pointerEvents: $rtfeldman$elm_css$Css$Structure$Compatible, tableLayout: $rtfeldman$elm_css$Css$Structure$Compatible, textRendering: $rtfeldman$elm_css$Css$Structure$Compatible, touchAction: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'auto'};
 var $author$project$Components$Utils$black = A3($rtfeldman$elm_css$Css$rgb, 0, 0, 0);
 var $rtfeldman$elm_css$Css$block = {display: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'block'};
-var $rtfeldman$elm_css$Css$border3 = $rtfeldman$elm_css$Css$prop3('border');
-var $rtfeldman$elm_css$Css$calcExpressionToString = function (expression) {
-	if (expression.$ === 'Addition') {
-		return '+';
-	} else {
-		return '-';
-	}
-};
-var $rtfeldman$elm_css$Css$calc = F3(
-	function (firstExpr, expression, secondExpr) {
-		var withoutCalcStr = function (l) {
-			return A2($elm$core$String$startsWith, 'calc(', l.value) ? A2($elm$core$String$dropLeft, 4, l.value) : l.value;
-		};
-		var calcs = A2(
-			$elm$core$String$join,
-			' ',
-			_List_fromArray(
-				[
-					withoutCalcStr(firstExpr),
-					$rtfeldman$elm_css$Css$calcExpressionToString(expression),
-					withoutCalcStr(secondExpr)
-				]));
-		var value = A2(
-			$rtfeldman$elm_css$Css$cssFunction,
-			'calc',
-			_List_fromArray(
-				[calcs]));
-		return {calc: $rtfeldman$elm_css$Css$Structure$Compatible, flexBasis: $rtfeldman$elm_css$Css$Structure$Compatible, fontSize: $rtfeldman$elm_css$Css$Structure$Compatible, length: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrAutoOrCoverOrContain: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrMinMaxDimension: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNone: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNoneOrMinMaxDimension: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNumber: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNumberOrAutoOrNoneOrContent: $rtfeldman$elm_css$Css$Structure$Compatible, textIndent: $rtfeldman$elm_css$Css$Structure$Compatible, value: value};
-	});
-var $rtfeldman$elm_css$Css$display = $rtfeldman$elm_css$Css$prop1('display');
-var $rtfeldman$elm_css$Css$fixed = {backgroundAttachment: $rtfeldman$elm_css$Css$Structure$Compatible, position: $rtfeldman$elm_css$Css$Structure$Compatible, tableLayout: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'fixed'};
 var $rtfeldman$elm_css$Css$center = $rtfeldman$elm_css$Css$prop1('center');
 var $rtfeldman$elm_css$Css$cursor = $rtfeldman$elm_css$Css$prop1('cursor');
 var $rtfeldman$elm_css$Css$Preprocess$ExtendSelector = F2(
@@ -8463,31 +8432,6 @@ var $rtfeldman$elm_css$Css$pseudoClass = function (_class) {
 		$rtfeldman$elm_css$Css$Structure$PseudoClassSelector(_class));
 };
 var $rtfeldman$elm_css$Css$hover = $rtfeldman$elm_css$Css$pseudoClass('hover');
-var $elm$virtual_dom$VirtualDom$Normal = function (a) {
-	return {$: 'Normal', a: a};
-};
-var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
-var $rtfeldman$elm_css$VirtualDom$Styled$on = F2(
-	function (eventName, handler) {
-		return A3(
-			$rtfeldman$elm_css$VirtualDom$Styled$Attribute,
-			A2($elm$virtual_dom$VirtualDom$on, eventName, handler),
-			_List_Nil,
-			'');
-	});
-var $rtfeldman$elm_css$Html$Styled$Events$on = F2(
-	function (event, decoder) {
-		return A2(
-			$rtfeldman$elm_css$VirtualDom$Styled$on,
-			event,
-			$elm$virtual_dom$VirtualDom$Normal(decoder));
-	});
-var $rtfeldman$elm_css$Html$Styled$Events$onClick = function (msg) {
-	return A2(
-		$rtfeldman$elm_css$Html$Styled$Events$on,
-		'click',
-		$elm$json$Json$Decode$succeed(msg));
-};
 var $rtfeldman$elm_css$Css$pointer = {cursor: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'pointer'};
 var $rtfeldman$elm_css$Css$rgba = F4(
 	function (r, g, b, alpha) {
@@ -8517,6 +8461,16 @@ var $author$project$Components$Utils$setAlpha = F2(
 		return A4($rtfeldman$elm_css$Css$rgba, color.red, color.green, color.blue, alpha);
 	});
 var $rtfeldman$elm_css$Html$Styled$span = $rtfeldman$elm_css$Html$Styled$node('span');
+var $rtfeldman$elm_css$Html$Styled$styled = F4(
+	function (fn, styles, attrs, children) {
+		return A2(
+			fn,
+			A2(
+				$elm$core$List$cons,
+				$rtfeldman$elm_css$Html$Styled$Internal$css(styles),
+				attrs),
+			children);
+	});
 var $rtfeldman$elm_css$Css$Internal$property = F2(
 	function (key, value) {
 		return $rtfeldman$elm_css$Css$Preprocess$AppendProperty(key + (':' + value));
@@ -8587,40 +8541,60 @@ var $rtfeldman$elm_css$Css$textAlign = function (fn) {
 		fn($rtfeldman$elm_css$Css$Internal$lengthForOverloadedProperty));
 };
 var $rtfeldman$elm_css$Css$width = $rtfeldman$elm_css$Css$prop1('width');
-var $author$project$Components$Common$fullscreenButton = F2(
-	function (onButtonClick, moreStyles) {
-		var style = _List_fromArray(
-			[
-				$rtfeldman$elm_css$Css$cursor($rtfeldman$elm_css$Css$pointer),
-				$rtfeldman$elm_css$Css$fontSize(
-				$rtfeldman$elm_css$Css$em(2)),
-				$rtfeldman$elm_css$Css$color($author$project$Components$Utils$white),
-				$rtfeldman$elm_css$Css$width(
-				$rtfeldman$elm_css$Css$em(1.5)),
-				$rtfeldman$elm_css$Css$height(
-				$rtfeldman$elm_css$Css$em(1.5)),
-				$rtfeldman$elm_css$Css$textAlign($rtfeldman$elm_css$Css$center),
-				$rtfeldman$elm_css$Css$backgroundColor(
-				A2($author$project$Components$Utils$setAlpha, $author$project$Components$Utils$blue, 0.75)),
-				$rtfeldman$elm_css$Css$hover(
-				_List_fromArray(
-					[
-						$rtfeldman$elm_css$Css$backgroundColor($author$project$Components$Utils$blue)
-					]))
-			]);
-		return A2(
-			$rtfeldman$elm_css$Html$Styled$span,
+var $author$project$Components$Common$blueButton = A2(
+	$rtfeldman$elm_css$Html$Styled$styled,
+	$rtfeldman$elm_css$Html$Styled$span,
+	_List_fromArray(
+		[
+			$rtfeldman$elm_css$Css$cursor($rtfeldman$elm_css$Css$pointer),
+			$rtfeldman$elm_css$Css$fontSize(
+			$rtfeldman$elm_css$Css$em(2)),
+			$rtfeldman$elm_css$Css$color($author$project$Components$Utils$white),
+			$rtfeldman$elm_css$Css$width(
+			$rtfeldman$elm_css$Css$em(1.5)),
+			$rtfeldman$elm_css$Css$height(
+			$rtfeldman$elm_css$Css$em(1.5)),
+			$rtfeldman$elm_css$Css$textAlign($rtfeldman$elm_css$Css$center),
+			$rtfeldman$elm_css$Css$backgroundColor(
+			A2($author$project$Components$Utils$setAlpha, $author$project$Components$Utils$blue, 0.75)),
+			$rtfeldman$elm_css$Css$hover(
 			_List_fromArray(
 				[
-					$rtfeldman$elm_css$Html$Styled$Attributes$css(
-					_Utils_ap(moreStyles, style)),
-					$rtfeldman$elm_css$Html$Styled$Events$onClick(onButtonClick)
-				]),
+					$rtfeldman$elm_css$Css$backgroundColor($author$project$Components$Utils$blue)
+				]))
+		]));
+var $rtfeldman$elm_css$Css$border3 = $rtfeldman$elm_css$Css$prop3('border');
+var $rtfeldman$elm_css$Css$calcExpressionToString = function (expression) {
+	if (expression.$ === 'Addition') {
+		return '+';
+	} else {
+		return '-';
+	}
+};
+var $rtfeldman$elm_css$Css$calc = F3(
+	function (firstExpr, expression, secondExpr) {
+		var withoutCalcStr = function (l) {
+			return A2($elm$core$String$startsWith, 'calc(', l.value) ? A2($elm$core$String$dropLeft, 4, l.value) : l.value;
+		};
+		var calcs = A2(
+			$elm$core$String$join,
+			' ',
 			_List_fromArray(
 				[
-					$rtfeldman$elm_css$Html$Styled$text('⛶')
+					withoutCalcStr(firstExpr),
+					$rtfeldman$elm_css$Css$calcExpressionToString(expression),
+					withoutCalcStr(secondExpr)
 				]));
+		var value = A2(
+			$rtfeldman$elm_css$Css$cssFunction,
+			'calc',
+			_List_fromArray(
+				[calcs]));
+		return {calc: $rtfeldman$elm_css$Css$Structure$Compatible, flexBasis: $rtfeldman$elm_css$Css$Structure$Compatible, fontSize: $rtfeldman$elm_css$Css$Structure$Compatible, length: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrAutoOrCoverOrContain: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrMinMaxDimension: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNone: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNoneOrMinMaxDimension: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNumber: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNumberOrAutoOrNoneOrContent: $rtfeldman$elm_css$Css$Structure$Compatible, textIndent: $rtfeldman$elm_css$Css$Structure$Compatible, value: value};
 	});
+var $rtfeldman$elm_css$Css$display = $rtfeldman$elm_css$Css$prop1('display');
+var $rtfeldman$elm_css$Css$fixed = {backgroundAttachment: $rtfeldman$elm_css$Css$Structure$Compatible, position: $rtfeldman$elm_css$Css$Structure$Compatible, tableLayout: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'fixed'};
+var $author$project$Components$Common$fullscreenIcon = $rtfeldman$elm_css$Html$Styled$text('⛶');
 var $rtfeldman$elm_css$Html$Styled$img = $rtfeldman$elm_css$Html$Styled$node('img');
 var $rtfeldman$elm_css$Css$int = function (val) {
 	return {
@@ -8653,6 +8627,31 @@ var $rtfeldman$elm_css$Css$maxHeight = $rtfeldman$elm_css$Css$prop1('max-height'
 var $rtfeldman$elm_css$Css$maxWidth = $rtfeldman$elm_css$Css$prop1('max-width');
 var $rtfeldman$elm_css$Css$Subtraction = {$: 'Subtraction'};
 var $rtfeldman$elm_css$Css$minus = $rtfeldman$elm_css$Css$Subtraction;
+var $elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 'Normal', a: a};
+};
+var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var $rtfeldman$elm_css$VirtualDom$Styled$on = F2(
+	function (eventName, handler) {
+		return A3(
+			$rtfeldman$elm_css$VirtualDom$Styled$Attribute,
+			A2($elm$virtual_dom$VirtualDom$on, eventName, handler),
+			_List_Nil,
+			'');
+	});
+var $rtfeldman$elm_css$Html$Styled$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			$rtfeldman$elm_css$VirtualDom$Styled$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var $rtfeldman$elm_css$Html$Styled$Events$onClick = function (msg) {
+	return A2(
+		$rtfeldman$elm_css$Html$Styled$Events$on,
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
+};
 var $rtfeldman$elm_css$Css$overflow = $rtfeldman$elm_css$Css$prop1('overflow');
 var $rtfeldman$elm_css$Css$position = $rtfeldman$elm_css$Css$prop1('position');
 var $rtfeldman$elm_css$VirtualDom$Styled$property = F2(
@@ -8753,15 +8752,26 @@ var $author$project$Components$Common$fullscreen = F2(
 						]),
 					_List_Nil),
 					A2(
-					$author$project$Components$Common$fullscreenButton,
-					fullscreenClick,
+					$author$project$Components$Common$blueButton,
 					_List_fromArray(
 						[
-							A2(
-							$author$project$Components$Utils$topRight,
-							$rtfeldman$elm_css$Css$vh(6),
-							$rtfeldman$elm_css$Css$em(1))
-						]))
+							$rtfeldman$elm_css$Html$Styled$Events$onClick(fullscreenClick),
+							$rtfeldman$elm_css$Html$Styled$Attributes$css(
+							_List_fromArray(
+								[
+									A2(
+									$author$project$Components$Utils$topRight,
+									$rtfeldman$elm_css$Css$vh(6),
+									$rtfeldman$elm_css$Css$em(1)),
+									A3(
+									$rtfeldman$elm_css$Css$border3,
+									$rtfeldman$elm_css$Css$px(1),
+									$rtfeldman$elm_css$Css$solid,
+									$author$project$Components$Utils$white)
+								]))
+						]),
+					_List_fromArray(
+						[$author$project$Components$Common$fullscreenIcon]))
 				]));
 	});
 var $author$project$Main$viewFullscreen = function (fullscreen) {
@@ -9470,16 +9480,22 @@ var $author$project$Components$Photo$article = F4(
 					A2($author$project$Components$Photo$articleImage, image, duration),
 					A5($author$project$Components$Photo$photoHeadline, 8, 0, headline, duration, headlineClick),
 					A2(
-					$author$project$Components$Common$fullscreenButton,
-					fullscreenClick,
+					$author$project$Components$Common$blueButton,
 					_List_fromArray(
 						[
-							A2($author$project$Components$Utils$fadeIn, duration, duration),
-							A2(
-							$author$project$Components$Utils$topLeft,
-							$rtfeldman$elm_css$Css$pct(10),
-							$rtfeldman$elm_css$Css$pct(5))
-						]))
+							$rtfeldman$elm_css$Html$Styled$Events$onClick(fullscreenClick),
+							$rtfeldman$elm_css$Html$Styled$Attributes$css(
+							_List_fromArray(
+								[
+									A2($author$project$Components$Utils$fadeIn, duration, duration),
+									A2(
+									$author$project$Components$Utils$topLeft,
+									$rtfeldman$elm_css$Css$pct(10),
+									$rtfeldman$elm_css$Css$pct(5))
+								]))
+						]),
+					_List_fromArray(
+						[$author$project$Components$Common$fullscreenIcon]))
 				]));
 	});
 var $author$project$Components$Utils$fadeOut = F2(
@@ -9619,16 +9635,22 @@ var $author$project$Components$Photo$teaser = F4(
 					A2($author$project$Components$Photo$teaserImage, image, duration),
 					A5($author$project$Components$Photo$photoHeadline, 0, duration, headline, duration, headlineClick),
 					A2(
-					$author$project$Components$Common$fullscreenButton,
-					fullscreenClick,
+					$author$project$Components$Common$blueButton,
 					_List_fromArray(
 						[
-							A2($author$project$Components$Utils$fadeOut, duration, 0),
-							A2(
-							$author$project$Components$Utils$topLeft,
-							$rtfeldman$elm_css$Css$pct(10),
-							$rtfeldman$elm_css$Css$pct(5))
-						]))
+							$rtfeldman$elm_css$Html$Styled$Events$onClick(fullscreenClick),
+							$rtfeldman$elm_css$Html$Styled$Attributes$css(
+							_List_fromArray(
+								[
+									A2($author$project$Components$Utils$fadeOut, duration, 0),
+									A2(
+									$author$project$Components$Utils$topLeft,
+									$rtfeldman$elm_css$Css$pct(10),
+									$rtfeldman$elm_css$Css$pct(5))
+								]))
+						]),
+					_List_fromArray(
+						[$author$project$Components$Common$fullscreenIcon]))
 				]));
 	});
 var $author$project$Main$viewPhoto = F3(

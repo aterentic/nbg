@@ -1,6 +1,6 @@
 module Components.Photo exposing (article, teaser)
 
-import Components.Common exposing (fullscreenButton)
+import Components.Common exposing (blueButton, fullscreenIcon)
 import Components.Utils exposing (black, blue, easeBorder, easeBottom, easeFilter, easeHeight, easeMargin, easeOpacity, easeWidth, fadeIn, fadeOut, gray, setAlpha, topLeft, transitions, white)
 import Css exposing (absolute, backgroundColor, block, border3, bottom, color, cursor, display, em, float, fontSize, fontWeight, height, hidden, hover, lighter, margin4, marginTop, num, opacity, overflow, padding, padding4, pct, pointer, position, property, px, relative, right, solid, vw, width, zero)
 import Css.Transitions exposing (transition)
@@ -146,7 +146,11 @@ article duration { headline, text, image } headlineClick fullscreenClick =
         [ articleText text duration
         , articleImage image duration
         , photoHeadline 8 0 headline duration headlineClick
-        , fullscreenButton fullscreenClick [ fadeIn duration duration, topLeft (pct 10) (pct 5) ]
+        , blueButton
+            [ onClick fullscreenClick
+            , css [ fadeIn duration duration, topLeft (pct 10) (pct 5) ]
+            ]
+            [ fullscreenIcon ]
         ]
 
 
@@ -166,5 +170,9 @@ teaser duration { headline, text, image } headlineClick fullscreenClick =
         [ teaserText text duration
         , teaserImage image duration
         , photoHeadline 0 duration headline duration headlineClick
-        , fullscreenButton fullscreenClick [ fadeOut duration 0, topLeft (pct 10) (pct 5) ]
+        , blueButton
+            [ onClick fullscreenClick
+            , css [ fadeOut duration 0, topLeft (pct 10) (pct 5) ]
+            ]
+            [ fullscreenIcon ]
         ]

@@ -1,8 +1,8 @@
-module Components.Common exposing (footer, fullscreen, fullscreenButton, header)
+module Components.Common exposing (blueButton, footer, fullscreen, fullscreenIcon, header)
 
 import Components.Utils exposing (black, blue, setAlpha, topRight, white, zeroMarginAndPadding)
 import Css exposing (Style, auto, backgroundColor, batch, block, border3, borderBottom3, borderTop3, calc, center, color, cursor, display, em, fixed, fontSize, fontWeight, height, hidden, hover, int, left, letterSpacing, lighter, margin2, marginLeft, marginTop, maxHeight, maxWidth, minus, overflow, padding4, pct, pointer, position, px, solid, textAlign, top, vh, vw, width, zIndex, zero)
-import Html.Styled exposing (Html, div, h1, h3, img, span, text)
+import Html.Styled exposing (Attribute, Html, div, h1, h3, img, span, styled, text)
 import Html.Styled.Attributes exposing (css, src)
 import Html.Styled.Events exposing (onClick)
 
@@ -11,21 +11,23 @@ import Html.Styled.Events exposing (onClick)
 -- Elements
 
 
-fullscreenButton : msg -> List Style -> Html msg
-fullscreenButton onButtonClick moreStyles =
-    let
-        style =
-            [ cursor pointer
-            , fontSize (em 2)
-            , color white
-            , width (em 1.5)
-            , height (em 1.5)
-            , textAlign center
-            , backgroundColor <| setAlpha blue 0.75
-            , hover [ backgroundColor blue ]
-            ]
-    in
-    span [ css <| moreStyles ++ style, onClick onButtonClick ] [ text "⛶" ]
+fullscreenIcon : Html msg
+fullscreenIcon =
+    text "⛶"
+
+
+blueButton : List (Attribute msg) -> List (Html msg) -> Html msg
+blueButton =
+    styled span
+        [ cursor pointer
+        , fontSize (em 2)
+        , color white
+        , width (em 1.5)
+        , height (em 1.5)
+        , textAlign center
+        , backgroundColor <| setAlpha blue 0.75
+        , hover [ backgroundColor blue ]
+        ]
 
 
 header : String -> String -> Html msg
@@ -88,5 +90,9 @@ fullscreen fullscreenClick source =
             , src source
             ]
             []
-        , fullscreenButton fullscreenClick [ topRight (vh 6) (em 1) ]
+        , blueButton
+            [ onClick fullscreenClick
+            , css [ topRight (vh 6) (em 1), border3 (px 1) solid white ]
+            ]
+            [ fullscreenIcon ]
         ]
