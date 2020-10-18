@@ -16,7 +16,7 @@ Run **make build** command to compile project to **/docs** folder. This folder i
 
 ### /src/assets
 
-Contains [Roboto](https://fonts.google.com/specimen/Roboto) font files. 
+Contains [Roboto](https://fonts.google.com/specimen/Roboto) font files, and image sources.
 
 ### /src/Components
 
