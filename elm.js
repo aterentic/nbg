@@ -5326,36 +5326,37 @@ var $elm$core$Array$set = F3(
 var $author$project$Main$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
-			case 'OpenArticle':
+			case 'HeadlineClicked':
 				var index = msg.a;
-				var photo = msg.b;
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{
-							fullscreen: $elm$core$Maybe$Nothing,
-							list: A3(
-								$elm$core$Array$set,
-								index,
-								{photo: photo, photoView: $author$project$Main$Article},
-								model.list)
-						}),
-					$elm$core$Platform$Cmd$none);
-			case 'CloseArticle':
-				var index = msg.a;
-				var photo = msg.b;
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{
-							fullscreen: $elm$core$Maybe$Nothing,
-							list: A3(
-								$elm$core$Array$set,
-								index,
-								{photo: photo, photoView: $author$project$Main$Teaser},
-								model.list)
-						}),
-					$elm$core$Platform$Cmd$none);
+				var photo = msg.b.photo;
+				var photoView = msg.b.photoView;
+				if (photoView.$ === 'Teaser') {
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								fullscreen: $elm$core$Maybe$Nothing,
+								list: A3(
+									$elm$core$Array$set,
+									index,
+									{photo: photo, photoView: $author$project$Main$Article},
+									model.list)
+							}),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								fullscreen: $elm$core$Maybe$Nothing,
+								list: A3(
+									$elm$core$Array$set,
+									index,
+									{photo: photo, photoView: $author$project$Main$Teaser},
+									model.list)
+							}),
+						$elm$core$Platform$Cmd$none);
+				}
 			case 'GoToFullscreen':
 				var photo = msg.a;
 				return _Utils_Tuple2(
@@ -8820,17 +8821,13 @@ var $elm$core$Array$indexedMap = F2(
 			true,
 			A3($elm$core$Elm$JsArray$foldl, helper, initialBuilder, tree));
 	});
-var $author$project$Main$CloseArticle = F2(
+var $author$project$Main$HeadlineClicked = F2(
 	function (a, b) {
-		return {$: 'CloseArticle', a: a, b: b};
+		return {$: 'HeadlineClicked', a: a, b: b};
 	});
 var $author$project$Main$GoToFullscreen = function (a) {
 	return {$: 'GoToFullscreen', a: a};
 };
-var $author$project$Main$OpenArticle = F2(
-	function (a, b) {
-		return {$: 'OpenArticle', a: a, b: b};
-	});
 var $rtfeldman$elm_css$Css$Transitions$Border = {$: 'Border'};
 var $rtfeldman$elm_css$Css$Transitions$Transition = function (a) {
 	return {$: 'Transition', a: a};
@@ -9634,7 +9631,7 @@ var $author$project$Components$Photo$teaser = F4(
 				]));
 	});
 var $author$project$Main$viewPhoto = F3(
-	function (animationDuration, index, _v0) {
+	function (animationDuration, _v0, headlineClick) {
 		var photo = _v0.photo;
 		var photoView = _v0.photoView;
 		if (photoView.$ === 'Article') {
@@ -9642,16 +9639,19 @@ var $author$project$Main$viewPhoto = F3(
 				$author$project$Components$Photo$article,
 				animationDuration,
 				photo,
-				A2($author$project$Main$CloseArticle, index, photo),
+				headlineClick,
 				$author$project$Main$GoToFullscreen(photo));
 		} else {
-			return A4(
-				$author$project$Components$Photo$teaser,
-				animationDuration,
-				photo,
-				A2($author$project$Main$OpenArticle, index, photo),
-				$author$project$Main$None);
+			return A4($author$project$Components$Photo$teaser, animationDuration, photo, headlineClick, $author$project$Main$None);
 		}
+	});
+var $author$project$Main$viewPhotoInList = F3(
+	function (animationDuration, index, photoInList) {
+		return A3(
+			$author$project$Main$viewPhoto,
+			animationDuration,
+			photoInList,
+			A2($author$project$Main$HeadlineClicked, index, photoInList));
 	});
 var $author$project$Main$viewPhotos = function (list) {
 	return A2(
@@ -9660,7 +9660,7 @@ var $author$project$Main$viewPhotos = function (list) {
 		$elm$core$Array$toList(
 			A2(
 				$elm$core$Array$indexedMap,
-				$author$project$Main$viewPhoto(333),
+				$author$project$Main$viewPhotoInList(333),
 				list)));
 };
 var $author$project$Main$view = function (model) {

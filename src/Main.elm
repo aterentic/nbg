@@ -31,8 +31,7 @@ type PhotoView
 
 type Msg
     = None
-    | OpenArticle Int Photo
-    | CloseArticle Int Photo
+    | HeadlineClicked Int PhotoInList
     | GoToFullscreen Photo
     | CloseFullscreen
 
@@ -64,19 +63,24 @@ bodyStyle =
         ]
 
 
-viewPhoto : Float -> Int -> PhotoInList -> Html Msg
-viewPhoto animationDuration index { photo, photoView } =
+viewPhoto : Float -> PhotoInList -> Msg -> Html Msg
+viewPhoto animationDuration { photo, photoView } headlineClick =
     case photoView of
         Article ->
-            Components.Photo.article animationDuration photo (CloseArticle index photo) (GoToFullscreen photo)
+            Components.Photo.article animationDuration photo headlineClick (GoToFullscreen photo)
 
         Teaser ->
-            Components.Photo.teaser animationDuration photo (OpenArticle index photo) None
+            Components.Photo.teaser animationDuration photo headlineClick None
+
+
+viewPhotoInList : Float -> Int -> PhotoInList -> Html Msg
+viewPhotoInList animationDuration index photoInList =
+    viewPhoto animationDuration photoInList (HeadlineClicked index photoInList)
 
 
 viewPhotos : Array PhotoInList -> Html Msg
 viewPhotos list =
-    div [] <| Array.toList <| Array.indexedMap (viewPhoto 333) list
+    div [] <| Array.toList <| Array.indexedMap (viewPhotoInList 333) list
 
 
 viewFullscreen : Maybe Photo -> List (Html Msg)
@@ -100,14 +104,20 @@ view model =
                 :: viewFullscreen model.fullscreen
 
 
+
+-- ( { model | list = Array.set index { photoView = ToArticle, photo = photo } model.list }, Task.perform (\_ -> OpenArticle index photo) (Process.sleep 500) )
+
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        OpenArticle index photo ->
-            ( { model | list = Array.set index { photoView = Article, photo = photo } model.list, fullscreen = Nothing }, Cmd.none )
+        HeadlineClicked index { photo, photoView } ->
+            case photoView of
+                Teaser ->
+                    ( { model | list = Array.set index { photoView = Article, photo = photo } model.list, fullscreen = Nothing }, Cmd.none )
 
-        CloseArticle index photo ->
-            ( { model | list = Array.set index { photoView = Teaser, photo = photo } model.list, fullscreen = Nothing }, Cmd.none )
+                Article ->
+                    ( { model | list = Array.set index { photoView = Teaser, photo = photo } model.list, fullscreen = Nothing }, Cmd.none )
 
         GoToFullscreen photo ->
             ( { model | fullscreen = Just photo }, Cmd.none )
