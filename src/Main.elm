@@ -1,4 +1,4 @@
-module Main exposing (Flags, Model, Msg(..), init, main, subscriptions, update, view)
+module Main exposing (Flags, Model, Msg(..), init, main, update, view)
 
 import Array exposing (Array)
 import Assets
@@ -119,18 +119,13 @@ update msg model =
             ( model, Cmd.none )
 
 
-subscriptions : Model -> Sub Msg
-subscriptions _ =
-    Sub.none
-
-
 main : Platform.Program Flags Model Msg
 main =
     Browser.application
         { init = init
         , view = view
         , update = update
-        , subscriptions = subscriptions
+        , subscriptions = \_ -> Sub.none
         , onUrlRequest = \_ -> None
         , onUrlChange = \_ -> None
         }

@@ -5270,9 +5270,6 @@ var $author$project$Main$init = F3(
 	});
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
-var $author$project$Main$subscriptions = function (_v0) {
-	return $elm$core$Platform$Sub$none;
-};
 var $author$project$Main$Article = {$: 'Article'};
 var $elm$core$Bitwise$and = _Bitwise_and;
 var $elm$core$Bitwise$shiftRightZfBy = _Bitwise_shiftRightZfBy;
@@ -9696,7 +9693,9 @@ var $author$project$Main$main = $elm$browser$Browser$application(
 		onUrlRequest: function (_v1) {
 			return $author$project$Main$None;
 		},
-		subscriptions: $author$project$Main$subscriptions,
+		subscriptions: function (_v2) {
+			return $elm$core$Platform$Sub$none;
+		},
 		update: $author$project$Main$update,
 		view: $author$project$Main$view
 	});
