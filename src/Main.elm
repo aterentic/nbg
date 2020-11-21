@@ -1,54 +1,67 @@
-module Main exposing (Flags, Model, Msg(..), init, main, update, view)
+module Main exposing (Model, Msg(..), init, main, update, view)
 
 import Array exposing (Array)
 import Assets
 import Browser exposing (Document)
 import Browser.Navigation
-import Components.Common as Common
-import Components.Photo
-import Components.Utils exposing (blue)
-import Css exposing (backgroundColor, fontFamilies, hidden, margin, overflowX, px)
+import Components.Common as Common exposing (fullscreenIcon)
+import Components.Photo as Photo exposing (teaserImage)
+import Components.Utils exposing (black, blue, topLeft)
+import Css exposing (absolute, backgroundColor, bottom, em, fontFamilies, height, hidden, int, margin, margin4, overflow, overflowX, pct, position, px, relative, vw, width, zIndex, zero)
 import Css.Global exposing (global, selector)
 import Data exposing (Photo)
-import Html.Styled exposing (Html, div, header, toUnstyled)
+import Html.Styled exposing (Attribute, Html, div, header, span, styled, toUnstyled)
+import Html.Styled.Attributes exposing (css)
+import Html.Styled.Events exposing (onClick)
 import Url exposing (Url)
 
 
-type alias Flags =
-    {}
-
-
 type alias Model =
-    { list : Array PhotoInList
-    , fullscreen : Maybe Photo
+    { list : Array ListPhoto
+    , fullscreen : Maybe String
     }
-
-
-type PhotoView
-    = Article
-    | Teaser
 
 
 type Msg
     = None
-    | HeadlineClicked Int PhotoInList
-    | GoToFullscreen Photo
+    | TeaserHeadlineClicked Int Photo
+    | ArticleHeadlineClicked Int Photo
+    | OpenFullscreen String
     | CloseFullscreen
 
 
-type alias PhotoInList =
-    { photo : Photo
-    , photoView : PhotoView
-    }
+type ListPhoto
+    = Teaser
+        { photo : Photo
+        , headlineClicked : Msg
+        }
+    | Article
+        { photo : Photo
+        , headlineClicked : Msg
+        , fullscreenClicked : Msg
+        }
 
 
-init : flags -> Url -> Browser.Navigation.Key -> ( Model, Cmd msg )
+teaser : Int -> Photo -> ListPhoto
+teaser index photo =
+    Teaser
+        { photo = photo
+        , headlineClicked = TeaserHeadlineClicked index photo
+        }
+
+
+article : Int -> Photo -> ListPhoto
+article index photo =
+    Article
+        { photo = photo
+        , headlineClicked = ArticleHeadlineClicked index photo
+        , fullscreenClicked = OpenFullscreen photo.image
+        }
+
+
+init : {} -> Url -> Browser.Navigation.Key -> ( Model, Cmd msg )
 init _ _ _ =
-    let
-        teaser =
-            \photo -> { photo = photo, photoView = Teaser }
-    in
-    ( { list = Array.map teaser <| Array.fromList Assets.photos, fullscreen = Nothing }, Cmd.none )
+    ( { list = Array.indexedMap teaser <| Array.fromList Assets.photos, fullscreen = Nothing }, Cmd.none )
 
 
 bodyStyle : Html msg
@@ -63,33 +76,62 @@ bodyStyle =
         ]
 
 
-viewPhoto : Float -> PhotoInList -> Msg -> Html Msg
-viewPhoto animationDuration { photo, photoView } headlineClick =
-    case photoView of
-        Article ->
-            Components.Photo.article animationDuration photo headlineClick (GoToFullscreen photo)
-
-        Teaser ->
-            Components.Photo.teaser animationDuration photo headlineClick None
+container : List (Attribute msg) -> List (Html msg) -> Html msg
+container =
+    styled div
+        [ position relative, overflow hidden, width (vw 100) ]
 
 
-viewPhotoInList : Float -> Int -> PhotoInList -> Html Msg
-viewPhotoInList animationDuration index photoInList =
-    viewPhoto animationDuration photoInList (HeadlineClicked index photoInList)
+photoHeadline : Float -> String -> msg -> Html msg
+photoHeadline bottomPercent headlineText headlineClick =
+    Common.blueHeadline
+        [ onClick headlineClick
+        , css
+            [ margin4 zero zero (em 1) (pct 5)
+            , position absolute
+            , bottom (pct bottomPercent)
+            , zIndex (int 1)
+            ]
+        ]
+        [ span [] [ Html.Styled.text headlineText ] ]
 
 
-viewPhotos : Array PhotoInList -> Html Msg
+viewPhotoInList : ListPhoto -> Html Msg
+viewPhotoInList photoInList =
+    case photoInList of
+        Teaser { photo, headlineClicked } ->
+            -- calc(100vw / 16 * 3); Images ratio is 4:3, 1/4 of image is displayed
+            container
+                [ css [ height (vw 18.75), backgroundColor black ] ]
+                [ photoHeadline 0 photo.headline headlineClicked -- (HeadlineClicked index photo)
+                , Photo.teaserImage photo.image
+                ]
+
+        Article { photo, headlineClicked, fullscreenClicked } ->
+            -- calc(50vw / 4 * 3); Images ratio is 4:3, whole image is displayed
+            container
+                [ css [ height (vw 37.5), backgroundColor black ] ]
+                [ photoHeadline 8 photo.headline headlineClicked
+                , Photo.articleImage photo.image
+                , Photo.articleText photo.text
+                , Common.blueButton
+                    [ onClick fullscreenClicked, css [ topLeft (pct 10) (pct 5) ] ]
+                    [ fullscreenIcon ]
+                ]
+
+
+viewPhotos : Array ListPhoto -> Html Msg
 viewPhotos list =
-    div [] <| Array.toList <| Array.indexedMap (viewPhotoInList 333) list
+    div [] <| Array.toList <| Array.map viewPhotoInList list
 
 
-viewFullscreen : Maybe Photo -> List (Html Msg)
+viewFullscreen : Maybe String -> List (Html Msg)
 viewFullscreen fullscreen =
     case fullscreen of
         Nothing ->
             []
 
-        Just { image } ->
+        Just image ->
             [ Common.fullscreen CloseFullscreen image ]
 
 
@@ -97,39 +139,34 @@ view : Model -> Document Msg
 view model =
     Document Assets.document <|
         List.map toUnstyled <|
-            bodyStyle
-                :: Common.header Assets.headline Assets.description
-                :: viewPhotos model.list
-                :: Common.footer
-                :: viewFullscreen model.fullscreen
-
-
-
--- ( { model | list = Array.set index { photoView = ToArticle, photo = photo } model.list }, Task.perform (\_ -> OpenArticle index photo) (Process.sleep 500) )
+            [ bodyStyle
+            , Common.header Assets.headline Assets.description
+            , viewPhotos model.list
+            , Common.footer
+            ]
+                ++ viewFullscreen model.fullscreen
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        HeadlineClicked index { photo, photoView } ->
-            case photoView of
-                Teaser ->
-                    ( { model | list = Array.set index { photoView = Article, photo = photo } model.list, fullscreen = Nothing }, Cmd.none )
+        TeaserHeadlineClicked index photo ->
+            ( { model | list = Array.set index (article index photo) model.list, fullscreen = Nothing }, Cmd.none )
 
-                Article ->
-                    ( { model | list = Array.set index { photoView = Teaser, photo = photo } model.list, fullscreen = Nothing }, Cmd.none )
+        ArticleHeadlineClicked index photo ->
+            ( { model | list = Array.set index (teaser index photo) model.list, fullscreen = Nothing }, Cmd.none )
 
-        GoToFullscreen photo ->
+        OpenFullscreen photo ->
             ( { model | fullscreen = Just photo }, Cmd.none )
 
         CloseFullscreen ->
             ( { model | fullscreen = Nothing }, Cmd.none )
 
-        _ ->
+        None ->
             ( model, Cmd.none )
 
 
-main : Platform.Program Flags Model Msg
+main : Platform.Program {} Model Msg
 main =
     Browser.application
         { init = init

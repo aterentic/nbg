@@ -1,8 +1,8 @@
-module Components.Common exposing (blueButton, footer, fullscreen, fullscreenIcon, header)
+module Components.Common exposing (blueButton, blueHeadline, footer, fullscreen, fullscreenIcon, header)
 
 import Components.Utils exposing (black, blue, setAlpha, topRight, white, zeroMarginAndPadding)
-import Css exposing (Style, auto, backgroundColor, batch, block, border3, borderBottom3, borderTop3, calc, center, color, cursor, display, em, fixed, fontSize, fontWeight, height, hidden, hover, int, left, letterSpacing, lighter, margin2, marginLeft, marginTop, maxHeight, maxWidth, minus, overflow, padding4, pct, pointer, position, px, solid, textAlign, top, vh, vw, width, zIndex, zero)
-import Html.Styled exposing (Attribute, Html, div, h1, h3, img, span, styled, text)
+import Css exposing (auto, backgroundColor, batch, block, border3, borderBottom3, borderTop3, calc, center, color, cursor, display, em, fixed, fontSize, fontWeight, height, hidden, hover, int, left, letterSpacing, lighter, margin2, marginLeft, marginTop, maxHeight, maxWidth, minus, overflow, padding, padding4, pct, pointer, position, px, solid, textAlign, top, vh, vw, width, zIndex, zero)
+import Html.Styled exposing (Attribute, Html, div, h1, h2, h3, img, span, styled, text)
 import Html.Styled.Attributes exposing (css, src)
 import Html.Styled.Events exposing (onClick)
 
@@ -14,6 +14,19 @@ import Html.Styled.Events exposing (onClick)
 fullscreenIcon : Html msg
 fullscreenIcon =
     text "⛶"
+
+
+blueHeadline : List (Attribute msg) -> List (Html msg) -> Html msg
+blueHeadline =
+    styled h2
+        [ fontSize (em 1.75)
+        , fontWeight lighter
+        , color white
+        , backgroundColor <| setAlpha blue 0.75
+        , padding (em 0.5)
+        , cursor pointer
+        , hover [ backgroundColor blue ]
+        ]
 
 
 blueButton : List (Attribute msg) -> List (Html msg) -> Html msg
