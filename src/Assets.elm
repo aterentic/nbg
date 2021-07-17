@@ -5,12 +5,12 @@ import Data exposing (Photo)
 
 document : String
 document =
-    "NBG"
+    "NBG favourites"
 
 
 headline : String
 headline =
-    "NBG"
+    "NBG favourites"
 
 
 description : String
