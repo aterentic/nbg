@@ -1,19 +1,17 @@
-module Main exposing (Model, Msg(..), init, main, update, view)
+module Main exposing (Model, Msg(..), main, update, view)
 
 import Array exposing (Array)
 import Assets
 import Browser exposing (Document)
-import Browser.Navigation
 import Components.Common as Common exposing (fullscreenIcon)
-import Components.Photo as Photo exposing (teaserImage)
+import Components.Photo as Photo
 import Components.Utils exposing (black, blue, topLeft)
 import Css exposing (absolute, backgroundColor, bottom, em, fontFamilies, height, hidden, int, margin, margin4, overflow, overflowX, pct, position, px, relative, vw, width, zIndex, zero)
 import Css.Global exposing (global, selector)
 import Data exposing (Photo)
-import Html.Styled exposing (Attribute, Html, div, header, span, styled, toUnstyled)
+import Html.Styled exposing (Attribute, Html, div, span, styled, toUnstyled)
 import Html.Styled.Attributes exposing (css)
 import Html.Styled.Events exposing (onClick)
-import Url exposing (Url)
 
 
 type alias Model =
@@ -59,9 +57,9 @@ article index photo =
         }
 
 
-init : {} -> Url -> Browser.Navigation.Key -> ( Model, Cmd msg )
-init _ _ _ =
-    ( { list = Array.indexedMap teaser <| Array.fromList Assets.photos, fullscreen = Nothing }, Cmd.none )
+initGallery : List Photo -> Model
+initGallery photos =
+    { list = Array.indexedMap teaser <| Array.fromList photos, fullscreen = Nothing }
 
 
 bodyStyle : Html msg
@@ -135,12 +133,12 @@ viewFullscreen fullscreen =
             [ Common.fullscreen CloseFullscreen image ]
 
 
-view : Model -> Document Msg
-view model =
-    Document Assets.document <|
+view : String -> String -> String -> Model -> Document Msg
+view title headline description model =
+    Document title <|
         List.map toUnstyled <|
             [ bodyStyle
-            , Common.header Assets.headline Assets.description
+            , Common.header headline description
             , viewPhotos model.list
             , Common.footer
             ]
@@ -169,8 +167,8 @@ update msg model =
 main : Platform.Program {} Model Msg
 main =
     Browser.application
-        { init = init
-        , view = view
+        { init = \_ _ _ -> ( initGallery Assets.photos, Cmd.none )
+        , view = view Assets.document Assets.headline Assets.description
         , update = update
         , subscriptions = \_ -> Sub.none
         , onUrlRequest = \_ -> None
