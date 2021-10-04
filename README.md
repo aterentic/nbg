@@ -8,11 +8,9 @@ Run **make build** command to compile project to **/docs** folder. This folder i
 
 ### /src
 
-**Main.elm** is entry point which contains main view and update functions.
+**Main.elm** is entry point which contains data and main function.
 
-**Data.elm** contains data structures used to define content.
-
-**Assets.elm** contains actual site data (article text and links to photos)
+**Gallery.elm** contains component functions and data structures.
 
 ### /src/assets
 

@@ -80,6 +80,190 @@ function A9(fun, a, b, c, d, e, f, g, h, i) {
 console.warn('Compiled in DEV mode. Follow the advice at https://elm-lang.org/0.19.1/optimize for better performance and smaller assets.');
 
 
+// EQUALITY
+
+function _Utils_eq(x, y)
+{
+	for (
+		var pair, stack = [], isEqual = _Utils_eqHelp(x, y, 0, stack);
+		isEqual && (pair = stack.pop());
+		isEqual = _Utils_eqHelp(pair.a, pair.b, 0, stack)
+		)
+	{}
+
+	return isEqual;
+}
+
+function _Utils_eqHelp(x, y, depth, stack)
+{
+	if (x === y)
+	{
+		return true;
+	}
+
+	if (typeof x !== 'object' || x === null || y === null)
+	{
+		typeof x === 'function' && _Debug_crash(5);
+		return false;
+	}
+
+	if (depth > 100)
+	{
+		stack.push(_Utils_Tuple2(x,y));
+		return true;
+	}
+
+	/**/
+	if (x.$ === 'Set_elm_builtin')
+	{
+		x = $elm$core$Set$toList(x);
+		y = $elm$core$Set$toList(y);
+	}
+	if (x.$ === 'RBNode_elm_builtin' || x.$ === 'RBEmpty_elm_builtin')
+	{
+		x = $elm$core$Dict$toList(x);
+		y = $elm$core$Dict$toList(y);
+	}
+	//*/
+
+	/**_UNUSED/
+	if (x.$ < 0)
+	{
+		x = $elm$core$Dict$toList(x);
+		y = $elm$core$Dict$toList(y);
+	}
+	//*/
+
+	for (var key in x)
+	{
+		if (!_Utils_eqHelp(x[key], y[key], depth + 1, stack))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+var _Utils_equal = F2(_Utils_eq);
+var _Utils_notEqual = F2(function(a, b) { return !_Utils_eq(a,b); });
+
+
+
+// COMPARISONS
+
+// Code in Generate/JavaScript.hs, Basics.js, and List.js depends on
+// the particular integer values assigned to LT, EQ, and GT.
+
+function _Utils_cmp(x, y, ord)
+{
+	if (typeof x !== 'object')
+	{
+		return x === y ? /*EQ*/ 0 : x < y ? /*LT*/ -1 : /*GT*/ 1;
+	}
+
+	/**/
+	if (x instanceof String)
+	{
+		var a = x.valueOf();
+		var b = y.valueOf();
+		return a === b ? 0 : a < b ? -1 : 1;
+	}
+	//*/
+
+	/**_UNUSED/
+	if (typeof x.$ === 'undefined')
+	//*/
+	/**/
+	if (x.$[0] === '#')
+	//*/
+	{
+		return (ord = _Utils_cmp(x.a, y.a))
+			? ord
+			: (ord = _Utils_cmp(x.b, y.b))
+				? ord
+				: _Utils_cmp(x.c, y.c);
+	}
+
+	// traverse conses until end of a list or a mismatch
+	for (; x.b && y.b && !(ord = _Utils_cmp(x.a, y.a)); x = x.b, y = y.b) {} // WHILE_CONSES
+	return ord || (x.b ? /*GT*/ 1 : y.b ? /*LT*/ -1 : /*EQ*/ 0);
+}
+
+var _Utils_lt = F2(function(a, b) { return _Utils_cmp(a, b) < 0; });
+var _Utils_le = F2(function(a, b) { return _Utils_cmp(a, b) < 1; });
+var _Utils_gt = F2(function(a, b) { return _Utils_cmp(a, b) > 0; });
+var _Utils_ge = F2(function(a, b) { return _Utils_cmp(a, b) >= 0; });
+
+var _Utils_compare = F2(function(x, y)
+{
+	var n = _Utils_cmp(x, y);
+	return n < 0 ? $elm$core$Basics$LT : n ? $elm$core$Basics$GT : $elm$core$Basics$EQ;
+});
+
+
+// COMMON VALUES
+
+var _Utils_Tuple0_UNUSED = 0;
+var _Utils_Tuple0 = { $: '#0' };
+
+function _Utils_Tuple2_UNUSED(a, b) { return { a: a, b: b }; }
+function _Utils_Tuple2(a, b) { return { $: '#2', a: a, b: b }; }
+
+function _Utils_Tuple3_UNUSED(a, b, c) { return { a: a, b: b, c: c }; }
+function _Utils_Tuple3(a, b, c) { return { $: '#3', a: a, b: b, c: c }; }
+
+function _Utils_chr_UNUSED(c) { return c; }
+function _Utils_chr(c) { return new String(c); }
+
+
+// RECORDS
+
+function _Utils_update(oldRecord, updatedFields)
+{
+	var newRecord = {};
+
+	for (var key in oldRecord)
+	{
+		newRecord[key] = oldRecord[key];
+	}
+
+	for (var key in updatedFields)
+	{
+		newRecord[key] = updatedFields[key];
+	}
+
+	return newRecord;
+}
+
+
+// APPEND
+
+var _Utils_append = F2(_Utils_ap);
+
+function _Utils_ap(xs, ys)
+{
+	// append Strings
+	if (typeof xs === 'string')
+	{
+		return xs + ys;
+	}
+
+	// append Lists
+	if (!xs.b)
+	{
+		return ys;
+	}
+	var root = _List_Cons(xs.a, ys);
+	xs = xs.b
+	for (var curr = root; xs.b; xs = xs.b) // WHILE_CONS
+	{
+		curr = curr.b = _List_Cons(xs.a, ys);
+	}
+	return root;
+}
+
+
+
 var _List_Nil_UNUSED = { $: 0 };
 var _List_Nil = { $: '[]' };
 
@@ -605,190 +789,6 @@ function _Debug_regionToString(region)
 		return 'on line ' + region.start.line;
 	}
 	return 'on lines ' + region.start.line + ' through ' + region.end.line;
-}
-
-
-
-// EQUALITY
-
-function _Utils_eq(x, y)
-{
-	for (
-		var pair, stack = [], isEqual = _Utils_eqHelp(x, y, 0, stack);
-		isEqual && (pair = stack.pop());
-		isEqual = _Utils_eqHelp(pair.a, pair.b, 0, stack)
-		)
-	{}
-
-	return isEqual;
-}
-
-function _Utils_eqHelp(x, y, depth, stack)
-{
-	if (x === y)
-	{
-		return true;
-	}
-
-	if (typeof x !== 'object' || x === null || y === null)
-	{
-		typeof x === 'function' && _Debug_crash(5);
-		return false;
-	}
-
-	if (depth > 100)
-	{
-		stack.push(_Utils_Tuple2(x,y));
-		return true;
-	}
-
-	/**/
-	if (x.$ === 'Set_elm_builtin')
-	{
-		x = $elm$core$Set$toList(x);
-		y = $elm$core$Set$toList(y);
-	}
-	if (x.$ === 'RBNode_elm_builtin' || x.$ === 'RBEmpty_elm_builtin')
-	{
-		x = $elm$core$Dict$toList(x);
-		y = $elm$core$Dict$toList(y);
-	}
-	//*/
-
-	/**_UNUSED/
-	if (x.$ < 0)
-	{
-		x = $elm$core$Dict$toList(x);
-		y = $elm$core$Dict$toList(y);
-	}
-	//*/
-
-	for (var key in x)
-	{
-		if (!_Utils_eqHelp(x[key], y[key], depth + 1, stack))
-		{
-			return false;
-		}
-	}
-	return true;
-}
-
-var _Utils_equal = F2(_Utils_eq);
-var _Utils_notEqual = F2(function(a, b) { return !_Utils_eq(a,b); });
-
-
-
-// COMPARISONS
-
-// Code in Generate/JavaScript.hs, Basics.js, and List.js depends on
-// the particular integer values assigned to LT, EQ, and GT.
-
-function _Utils_cmp(x, y, ord)
-{
-	if (typeof x !== 'object')
-	{
-		return x === y ? /*EQ*/ 0 : x < y ? /*LT*/ -1 : /*GT*/ 1;
-	}
-
-	/**/
-	if (x instanceof String)
-	{
-		var a = x.valueOf();
-		var b = y.valueOf();
-		return a === b ? 0 : a < b ? -1 : 1;
-	}
-	//*/
-
-	/**_UNUSED/
-	if (typeof x.$ === 'undefined')
-	//*/
-	/**/
-	if (x.$[0] === '#')
-	//*/
-	{
-		return (ord = _Utils_cmp(x.a, y.a))
-			? ord
-			: (ord = _Utils_cmp(x.b, y.b))
-				? ord
-				: _Utils_cmp(x.c, y.c);
-	}
-
-	// traverse conses until end of a list or a mismatch
-	for (; x.b && y.b && !(ord = _Utils_cmp(x.a, y.a)); x = x.b, y = y.b) {} // WHILE_CONSES
-	return ord || (x.b ? /*GT*/ 1 : y.b ? /*LT*/ -1 : /*EQ*/ 0);
-}
-
-var _Utils_lt = F2(function(a, b) { return _Utils_cmp(a, b) < 0; });
-var _Utils_le = F2(function(a, b) { return _Utils_cmp(a, b) < 1; });
-var _Utils_gt = F2(function(a, b) { return _Utils_cmp(a, b) > 0; });
-var _Utils_ge = F2(function(a, b) { return _Utils_cmp(a, b) >= 0; });
-
-var _Utils_compare = F2(function(x, y)
-{
-	var n = _Utils_cmp(x, y);
-	return n < 0 ? $elm$core$Basics$LT : n ? $elm$core$Basics$GT : $elm$core$Basics$EQ;
-});
-
-
-// COMMON VALUES
-
-var _Utils_Tuple0_UNUSED = 0;
-var _Utils_Tuple0 = { $: '#0' };
-
-function _Utils_Tuple2_UNUSED(a, b) { return { a: a, b: b }; }
-function _Utils_Tuple2(a, b) { return { $: '#2', a: a, b: b }; }
-
-function _Utils_Tuple3_UNUSED(a, b, c) { return { a: a, b: b, c: c }; }
-function _Utils_Tuple3(a, b, c) { return { $: '#3', a: a, b: b, c: c }; }
-
-function _Utils_chr_UNUSED(c) { return c; }
-function _Utils_chr(c) { return new String(c); }
-
-
-// RECORDS
-
-function _Utils_update(oldRecord, updatedFields)
-{
-	var newRecord = {};
-
-	for (var key in oldRecord)
-	{
-		newRecord[key] = oldRecord[key];
-	}
-
-	for (var key in updatedFields)
-	{
-		newRecord[key] = updatedFields[key];
-	}
-
-	return newRecord;
-}
-
-
-// APPEND
-
-var _Utils_append = F2(_Utils_ap);
-
-function _Utils_ap(xs, ys)
-{
-	// append Strings
-	if (typeof xs === 'string')
-	{
-		return xs + ys;
-	}
-
-	// append Lists
-	if (!xs.b)
-	{
-		return ys;
-	}
-	var root = _List_Cons(xs.a, ys);
-	xs = xs.b
-	for (var curr = root; xs.b; xs = xs.b) // WHILE_CONS
-	{
-		curr = curr.b = _List_Cons(xs.a, ys);
-	}
-	return root;
 }
 
 
@@ -4392,33 +4392,11 @@ var _Bitwise_shiftRightZfBy = F2(function(offset, a)
 {
 	return a >>> offset;
 });
+var $author$project$Gallery$None = {$: 'None'};
 var $elm$core$Basics$EQ = {$: 'EQ'};
+var $elm$core$Basics$GT = {$: 'GT'};
 var $elm$core$Basics$LT = {$: 'LT'};
 var $elm$core$List$cons = _List_cons;
-var $elm$core$Elm$JsArray$foldr = _JsArray_foldr;
-var $elm$core$Array$foldr = F3(
-	function (func, baseCase, _v0) {
-		var tree = _v0.c;
-		var tail = _v0.d;
-		var helper = F2(
-			function (node, acc) {
-				if (node.$ === 'SubTree') {
-					var subTree = node.a;
-					return A3($elm$core$Elm$JsArray$foldr, helper, acc, subTree);
-				} else {
-					var values = node.a;
-					return A3($elm$core$Elm$JsArray$foldr, func, acc, values);
-				}
-			});
-		return A3(
-			$elm$core$Elm$JsArray$foldr,
-			helper,
-			A3($elm$core$Elm$JsArray$foldr, func, baseCase, tail),
-			tree);
-	});
-var $elm$core$Array$toList = function (array) {
-	return A3($elm$core$Array$foldr, $elm$core$List$cons, _List_Nil, array);
-};
 var $elm$core$Dict$foldr = F3(
 	function (func, acc, t) {
 		foldr:
@@ -4471,8 +4449,30 @@ var $elm$core$Set$toList = function (_v0) {
 	var dict = _v0.a;
 	return $elm$core$Dict$keys(dict);
 };
-var $elm$core$Basics$GT = {$: 'GT'};
-var $author$project$Main$None = {$: 'None'};
+var $elm$core$Elm$JsArray$foldr = _JsArray_foldr;
+var $elm$core$Array$foldr = F3(
+	function (func, baseCase, _v0) {
+		var tree = _v0.c;
+		var tail = _v0.d;
+		var helper = F2(
+			function (node, acc) {
+				if (node.$ === 'SubTree') {
+					var subTree = node.a;
+					return A3($elm$core$Elm$JsArray$foldr, helper, acc, subTree);
+				} else {
+					var values = node.a;
+					return A3($elm$core$Elm$JsArray$foldr, func, acc, values);
+				}
+			});
+		return A3(
+			$elm$core$Elm$JsArray$foldr,
+			helper,
+			A3($elm$core$Elm$JsArray$foldr, func, baseCase, tail),
+			tree);
+	});
+var $elm$core$Array$toList = function (array) {
+	return A3($elm$core$Array$foldr, $elm$core$List$cons, _List_Nil, array);
+};
 var $elm$core$Result$Err = function (a) {
 	return {$: 'Err', a: a};
 };
@@ -5182,9 +5182,12 @@ var $elm$core$Task$perform = F2(
 				A2($elm$core$Task$map, toMessage, task)));
 	});
 var $elm$browser$Browser$application = _Browser_application;
-var $author$project$Assets$description = 'Blokovi, Sava, i poneki opis...';
-var $author$project$Assets$document = 'NBG favourites';
-var $author$project$Assets$headline = 'NBG favourites';
+var $author$project$Main$description = 'Blokovi, Sava, i poneki opis...';
+var $author$project$Main$headline = 'NBG favourites';
+var $author$project$Gallery$Model = F2(
+	function (list, fullscreen) {
+		return {fullscreen: fullscreen, list: list};
+	});
 var $elm$core$Array$fromListHelp = F3(
 	function (list, nodeList, nodeListSize) {
 		fromListHelp:
@@ -5263,35 +5266,40 @@ var $elm$core$Array$indexedMap = F2(
 			true,
 			A3($elm$core$Elm$JsArray$foldl, helper, initialBuilder, tree));
 	});
-var $author$project$Main$Teaser = function (a) {
+var $elm$core$Platform$Cmd$batch = _Platform_batch;
+var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
+var $author$project$Gallery$Teaser = function (a) {
 	return {$: 'Teaser', a: a};
 };
-var $author$project$Main$TeaserHeadlineClicked = F2(
+var $author$project$Gallery$TeaserHeadlineClicked = F2(
 	function (a, b) {
 		return {$: 'TeaserHeadlineClicked', a: a, b: b};
 	});
-var $author$project$Main$teaser = F2(
+var $author$project$Gallery$teaser = F2(
 	function (index, photo) {
-		return $author$project$Main$Teaser(
+		return $author$project$Gallery$Teaser(
 			{
-				headlineClicked: A2($author$project$Main$TeaserHeadlineClicked, index, photo),
+				headlineClicked: A2($author$project$Gallery$TeaserHeadlineClicked, index, photo),
 				photo: photo
 			});
 	});
-var $author$project$Main$initGallery = function (photos) {
-	return {
-		fullscreen: $elm$core$Maybe$Nothing,
-		list: A2(
-			$elm$core$Array$indexedMap,
-			$author$project$Main$teaser,
-			$elm$core$Array$fromList(photos))
-	};
+var $author$project$Gallery$init = function (photos) {
+	return F3(
+		function (_v0, _v1, _v2) {
+			return _Utils_Tuple2(
+				A2(
+					$author$project$Gallery$Model,
+					A2(
+						$elm$core$Array$indexedMap,
+						$author$project$Gallery$teaser,
+						$elm$core$Array$fromList(photos)),
+					$elm$core$Maybe$Nothing),
+				$elm$core$Platform$Cmd$none);
+		});
 };
-var $elm$core$Platform$Cmd$batch = _Platform_batch;
-var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
-var $author$project$Assets$photos = _List_fromArray(
+var $author$project$Main$photos = _List_fromArray(
 	[
 		{headline: 'Međublokovski prostor', image: 'assets/01.jpg', text: 'Zapravo, zato smo se i doselili ovde. Automobili samo kod garaža, sa jedne strane klinci muljaju po pesku, igraju fudbal na male goliće, platani ih hlade kad je 37 stepeni, kad otvoriš prozor, neko se dere \"Maaaaaamaaaaa\", uveče klinci vare na klupi, i, jebi ga, malo se deru kad treba da se spava. Gomila nedovršenog zelenila i prostora, vidiš komšijin prozor, ali u daljini. Između zapravo možeš da sediš na klupi u hladu, da čekaš klince dok voze bajs, da čekaš klince dok se zimi sankaju niz brdašce od atomskog skloništa. Čak i sneška možeš da praviš jer je površina dovoljno velika da sneg ne upropasti masa ljudi i vozila. A ima i baštica, uvek ima nekog ko bi da se petlja sa tim.'},
 		{headline: 'Savski kej', image: 'assets/02.jpg', text: 'Predivan pogled na divlju gradnju često kvare zalasci sunca na Savi.'},
@@ -5299,22 +5307,22 @@ var $author$project$Assets$photos = _List_fromArray(
 		{headline: 'Gazela', image: 'assets/04.jpg', text: 'Sa pogledaom na očaj...'},
 		{headline: 'Jesen', image: 'assets/05.jpg', text: 'Lepo i opasno (ispod jesenjeg lišća)'}
 	]);
-var $author$project$Main$Article = function (a) {
+var $author$project$Gallery$Article = function (a) {
 	return {$: 'Article', a: a};
 };
-var $author$project$Main$ArticleHeadlineClicked = F2(
+var $author$project$Gallery$ArticleHeadlineClicked = F2(
 	function (a, b) {
 		return {$: 'ArticleHeadlineClicked', a: a, b: b};
 	});
-var $author$project$Main$OpenFullscreen = function (a) {
+var $author$project$Gallery$OpenFullscreen = function (a) {
 	return {$: 'OpenFullscreen', a: a};
 };
-var $author$project$Main$article = F2(
+var $author$project$Gallery$article = F2(
 	function (index, photo) {
-		return $author$project$Main$Article(
+		return $author$project$Gallery$Article(
 			{
-				fullscreenClicked: $author$project$Main$OpenFullscreen(photo.image),
-				headlineClicked: A2($author$project$Main$ArticleHeadlineClicked, index, photo),
+				fullscreenClicked: $author$project$Gallery$OpenFullscreen(photo.image),
+				headlineClicked: A2($author$project$Gallery$ArticleHeadlineClicked, index, photo),
 				photo: photo
 			});
 	});
@@ -5365,7 +5373,7 @@ var $elm$core$Array$set = F3(
 			A4($elm$core$Array$setHelp, startShift, index, value, tree),
 			tail));
 	});
-var $author$project$Main$update = F2(
+var $author$project$Gallery$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
 			case 'TeaserHeadlineClicked':
@@ -5379,7 +5387,7 @@ var $author$project$Main$update = F2(
 							list: A3(
 								$elm$core$Array$set,
 								index,
-								A2($author$project$Main$article, index, photo),
+								A2($author$project$Gallery$article, index, photo),
 								model.list)
 						}),
 					$elm$core$Platform$Cmd$none);
@@ -5394,7 +5402,7 @@ var $author$project$Main$update = F2(
 							list: A3(
 								$elm$core$Array$set,
 								index,
-								A2($author$project$Main$teaser, index, photo),
+								A2($author$project$Gallery$teaser, index, photo),
 								model.list)
 						}),
 					$elm$core$Platform$Cmd$none);
@@ -7373,7 +7381,7 @@ var $rtfeldman$elm_css$Css$Global$selector = F2(
 			styles,
 			A2($rtfeldman$elm_css$Css$Structure$CustomSelector, selectorStr, _List_Nil));
 	});
-var $author$project$Main$bodyStyle = $rtfeldman$elm_css$Css$Global$global(
+var $author$project$Gallery$bodyStyle = $rtfeldman$elm_css$Css$Global$global(
 	_List_fromArray(
 		[
 			A2(
@@ -8450,7 +8458,7 @@ var $rtfeldman$elm_css$VirtualDom$Styled$toUnstyled = function (vdom) {
 	}
 };
 var $rtfeldman$elm_css$Html$Styled$toUnstyled = $rtfeldman$elm_css$VirtualDom$Styled$toUnstyled;
-var $author$project$Main$CloseFullscreen = {$: 'CloseFullscreen'};
+var $author$project$Gallery$CloseFullscreen = {$: 'CloseFullscreen'};
 var $rtfeldman$elm_css$Css$auto = {alignItemsOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible, cursor: $rtfeldman$elm_css$Css$Structure$Compatible, flexBasis: $rtfeldman$elm_css$Css$Structure$Compatible, intOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible, justifyContentOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrAutoOrCoverOrContain: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNumberOrAutoOrNoneOrContent: $rtfeldman$elm_css$Css$Structure$Compatible, overflow: $rtfeldman$elm_css$Css$Structure$Compatible, pointerEvents: $rtfeldman$elm_css$Css$Structure$Compatible, tableLayout: $rtfeldman$elm_css$Css$Structure$Compatible, textRendering: $rtfeldman$elm_css$Css$Structure$Compatible, touchAction: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'auto'};
 var $author$project$Components$Utils$black = A3($rtfeldman$elm_css$Css$rgb, 0, 0, 0);
 var $rtfeldman$elm_css$Css$block = {display: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'block'};
@@ -8810,14 +8818,14 @@ var $author$project$Components$Common$fullscreen = F2(
 						[$author$project$Components$Common$fullscreenIcon]))
 				]));
 	});
-var $author$project$Main$viewFullscreen = function (fullscreen) {
+var $author$project$Gallery$viewFullscreen = function (fullscreen) {
 	if (fullscreen.$ === 'Nothing') {
 		return _List_Nil;
 	} else {
 		var image = fullscreen.a;
 		return _List_fromArray(
 			[
-				A2($author$project$Components$Common$fullscreen, $author$project$Main$CloseFullscreen, image)
+				A2($author$project$Components$Common$fullscreen, $author$project$Gallery$CloseFullscreen, image)
 			]);
 	}
 };
@@ -8944,7 +8952,7 @@ var $author$project$Components$Photo$articleText = function (value) {
 			]));
 };
 var $rtfeldman$elm_css$Css$relative = {position: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'relative'};
-var $author$project$Main$container = A2(
+var $author$project$Gallery$container = A2(
 	$rtfeldman$elm_css$Html$Styled$styled,
 	$rtfeldman$elm_css$Html$Styled$div,
 	_List_fromArray(
@@ -8976,7 +8984,7 @@ var $author$project$Components$Common$blueHeadline = A2(
 				]))
 		]));
 var $rtfeldman$elm_css$Css$bottom = $rtfeldman$elm_css$Css$prop1('bottom');
-var $author$project$Main$photoHeadline = F3(
+var $author$project$Gallery$photoHeadline = F3(
 	function (bottomPercent, headlineText, headlineClick) {
 		return A2(
 			$author$project$Components$Common$blueHeadline,
@@ -9057,12 +9065,12 @@ var $author$project$Components$Utils$topLeft = F2(
 					$rtfeldman$elm_css$Css$left(leftPos)
 				]));
 	});
-var $author$project$Main$viewPhotoInList = function (photoInList) {
+var $author$project$Gallery$viewPhotoInList = function (photoInList) {
 	if (photoInList.$ === 'Teaser') {
 		var photo = photoInList.a.photo;
 		var headlineClicked = photoInList.a.headlineClicked;
 		return A2(
-			$author$project$Main$container,
+			$author$project$Gallery$container,
 			_List_fromArray(
 				[
 					$rtfeldman$elm_css$Html$Styled$Attributes$css(
@@ -9075,7 +9083,7 @@ var $author$project$Main$viewPhotoInList = function (photoInList) {
 				]),
 			_List_fromArray(
 				[
-					A3($author$project$Main$photoHeadline, 0, photo.headline, headlineClicked),
+					A3($author$project$Gallery$photoHeadline, 0, photo.headline, headlineClicked),
 					$author$project$Components$Photo$teaserImage(photo.image)
 				]));
 	} else {
@@ -9083,7 +9091,7 @@ var $author$project$Main$viewPhotoInList = function (photoInList) {
 		var headlineClicked = photoInList.a.headlineClicked;
 		var fullscreenClicked = photoInList.a.fullscreenClicked;
 		return A2(
-			$author$project$Main$container,
+			$author$project$Gallery$container,
 			_List_fromArray(
 				[
 					$rtfeldman$elm_css$Html$Styled$Attributes$css(
@@ -9096,7 +9104,7 @@ var $author$project$Main$viewPhotoInList = function (photoInList) {
 				]),
 			_List_fromArray(
 				[
-					A3($author$project$Main$photoHeadline, 8, photo.headline, headlineClicked),
+					A3($author$project$Gallery$photoHeadline, 8, photo.headline, headlineClicked),
 					$author$project$Components$Photo$articleImage(photo.image),
 					$author$project$Components$Photo$articleText(photo.text),
 					A2(
@@ -9118,14 +9126,14 @@ var $author$project$Main$viewPhotoInList = function (photoInList) {
 				]));
 	}
 };
-var $author$project$Main$viewPhotos = function (list) {
+var $author$project$Gallery$viewPhotos = function (list) {
 	return A2(
 		$rtfeldman$elm_css$Html$Styled$div,
 		_List_Nil,
 		$elm$core$Array$toList(
-			A2($elm$core$Array$map, $author$project$Main$viewPhotoInList, list)));
+			A2($elm$core$Array$map, $author$project$Gallery$viewPhotoInList, list)));
 };
-var $author$project$Main$view = F4(
+var $author$project$Gallery$view = F4(
 	function (title, headline, description, model) {
 		return A2(
 			$elm$browser$Browser$Document,
@@ -9136,32 +9144,27 @@ var $author$project$Main$view = F4(
 				_Utils_ap(
 					_List_fromArray(
 						[
-							$author$project$Main$bodyStyle,
+							$author$project$Gallery$bodyStyle,
 							A2($author$project$Components$Common$header, headline, description),
-							$author$project$Main$viewPhotos(model.list),
+							$author$project$Gallery$viewPhotos(model.list),
 							$author$project$Components$Common$footer
 						]),
-					$author$project$Main$viewFullscreen(model.fullscreen))));
+					$author$project$Gallery$viewFullscreen(model.fullscreen))));
 	});
 var $author$project$Main$main = $elm$browser$Browser$application(
 	{
-		init: F3(
-			function (_v0, _v1, _v2) {
-				return _Utils_Tuple2(
-					$author$project$Main$initGallery($author$project$Assets$photos),
-					$elm$core$Platform$Cmd$none);
-			}),
-		onUrlChange: function (_v3) {
-			return $author$project$Main$None;
+		init: $author$project$Gallery$init($author$project$Main$photos),
+		onUrlChange: function (_v0) {
+			return $author$project$Gallery$None;
 		},
-		onUrlRequest: function (_v4) {
-			return $author$project$Main$None;
+		onUrlRequest: function (_v1) {
+			return $author$project$Gallery$None;
 		},
-		subscriptions: function (_v5) {
+		subscriptions: function (_v2) {
 			return $elm$core$Platform$Sub$none;
 		},
-		update: $author$project$Main$update,
-		view: A3($author$project$Main$view, $author$project$Assets$document, $author$project$Assets$headline, $author$project$Assets$description)
+		update: $author$project$Gallery$update,
+		view: A3($author$project$Gallery$view, 'NBG favourites', $author$project$Main$headline, $author$project$Main$description)
 	});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(
